@@ -18,7 +18,6 @@ exports.registerUser = async(req,res)=>{
    })
   }
 
-
    await User.create({ 
        name : username,
        phoneNumber : phoneNumber,
@@ -38,7 +37,7 @@ exports.loginUser = async(req,res)=>{
             message : "please provide email and password"
         })
     }
-    //check if user with that email exists or not
+    
     const userFound = await User.find({email : email})
     if(userFound.length == 0) {
         return res.status(404).json({
@@ -48,14 +47,10 @@ exports.loginUser = async(req,res)=>{
     //password check
     const isMatched = bcrypt.compareSync(password,userFound[0].password)
     if(isMatched) {
-        // generate token
+       
         const token = jwt.sign({id : userFound[0]._id},process.env.SECRET_KEY,{
         expiresIn : '30d'
         })
-        
-        
-
-
         res.status(200).json({
             message : " User logged in successfully ",
             data : token
