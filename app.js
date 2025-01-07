@@ -1,5 +1,8 @@
 const express = require('express')
+const { connectDatabase } = require('./database/database')
 const app = express()
+
+connectDatabase()
 
 app.get("/",(req,res)=>{  
     res.status(200).json({
