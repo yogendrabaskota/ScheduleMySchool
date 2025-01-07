@@ -8,15 +8,16 @@ const userSchema = new Schema({
         unique : true,
         lowercase : true
     },
+    name : {
+        type : String,
+        required : [true,"userName must be provided"]
+    },
     phoneNumber : {
         type : String,
         required : [true, 'userPhoneNumber must be provided']
    
     },
-    name : {
-        type : String,
-        required : [true,"userName must be provided"]
-    },
+
     password : {
         type : String,
         required : [true,'userPasssword must be provided'],
@@ -26,7 +27,7 @@ const userSchema = new Schema({
 
     role : {
         type : String,
-        enum : ["teacher","student"],
+        enum : ["teacher","student","guest"],
         default : "student"
     },
     
