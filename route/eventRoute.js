@@ -1,5 +1,5 @@
 
-const {createEvent, getAllEvent, deleteEvent } = require("../controller/teacher/teacherController")
+const {createEvent, getAllEvent, deleteEvent, updateEvent } = require("../controller/teacher/teacherController")
 const isAuthenticated = require("../middleware/isAuthenticated")
 const catchAsync = require("../services/catchAsync")
 
@@ -12,6 +12,7 @@ router.route("/")
     .get(catchAsync(getAllEvent))
 router.route("/:id")
     .delete(isAuthenticated,catchAsync(deleteEvent))
+    .patch(isAuthenticated,catchAsync(updateEvent))
 
 
 

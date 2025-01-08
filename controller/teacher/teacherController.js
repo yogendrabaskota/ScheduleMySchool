@@ -17,8 +17,9 @@ exports.getAllUser = async(req,res)=>{
      
   }
 
-  exports.createEvent = async(req,res)=>{
-    const {title, description,date,time,location} = req.body
+exports.createEvent = async(req,res)=>{
+  const userId = req.user.id
+  const {title, description,date,time,location} = req.body
 
     if(!title ||  !description || !date || !time || !location) {
       return res.status(400).json({
@@ -31,16 +32,21 @@ exports.getAllUser = async(req,res)=>{
       description,
       date,
       time,
-      location
+      location,
+      createdby : userId
     })
     return res.status(200).json({
       message : "Event created successfully",
       data : output
     })
-  }
+}
 
-  exports.getAllEvent = async(req,res)=>{
-    const events = await Event.find({}, "-createdAt -updatedAt -__v")
+exports.getAllEvent = async(req,res)=>{
+    const events = await Event.find({}, "-createdAt -updatedAt -__v").populate({
+      path:"createdby",
+      model : "User",
+      select : "-createdAt -updatedAt -__v -password -role"
+  }) 
     if(events.length == 0){
         return res.status(404).json({
             message : "No Event found",
@@ -54,7 +60,7 @@ exports.getAllUser = async(req,res)=>{
     })
 
 }
-  exports.deleteEvent = async(req,res)=>{
+exports.deleteEvent = async(req,res)=>{
     const{id} = req.params
     if(!id){
         return res.status(400).json({
@@ -72,4 +78,43 @@ exports.getAllUser = async(req,res)=>{
     res.status(200).json({
         message : "Event deleted successfully"
     })
+}
+
+exports.updateEvent = async(req,res)=>{
+   
+  const { id } = req.params
+  const userId = req.user.id
+  const {title, description, date, time, location } = req.body
+  if(!title || !description || !date || !time || !location){
+      return res.status(400).json({
+          message : "Please provide title, description, date, time, location "
+      })
+  }
+
+  const existingEvent = await Event.findById(id)
+  // console.log("this ",existingEvent)
+  // console.log("this ",existingEvent.createdby)
+  //console.log("this ",existingEvent.createdby.toString())
+  //console.log("id ",userId)
+  if(!existingEvent){
+      return res.status(400).json({
+          message : "No Event with that id"
+      })
+  }
+
+  // check the user who is trying to update is the user who created the event or not
+
+  if(existingEvent.createdby.toString() !== userId){
+      return res.status(400).json({
+          message : "You don't have permission to update"
+      })
+  }
+
+
+  const updatedEvent = await Event.findByIdAndUpdate(id,{title, description, date, time, location},{new:true}) 
+  res.status(200).json({
+      message : "Event updated successfully",
+      data : updatedEvent
+
+  })
 }
