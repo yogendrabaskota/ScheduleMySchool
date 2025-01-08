@@ -15,10 +15,13 @@ app.get("/",(req,res)=>{
 })
 const authRoute = require("./route/authRoute")
 const teacherRoute = require("./route/teacherRoute")
+const eventRoute = require("./route/eventRoute")
 
 
 app.use("/api/auth",authRoute)
 app.use("/api/user",teacherRoute)
+app.use("/api/event",eventRoute)
+
 
 
 
