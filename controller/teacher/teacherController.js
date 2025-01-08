@@ -38,3 +38,38 @@ exports.getAllUser = async(req,res)=>{
       data : output
     })
   }
+
+  exports.getAllEvent = async(req,res)=>{
+    const events = await Event.find({}, "-createdAt -updatedAt -__v")
+    if(events.length == 0){
+        return res.status(404).json({
+            message : "No Event found",
+            data : []
+        })
+    }
+    res.status(200).json({
+        message : "events fetched successfully",
+        data : events
+
+    })
+
+}
+  exports.deleteEvent = async(req,res)=>{
+    const{id} = req.params
+    if(!id){
+        return res.status(400).json({
+            message : "Please provide Id"
+        })
+    }
+
+    const oldData = await Event.findById(id)
+    if(!oldData){
+        return res.status(404).json({
+            message : "No Event found with that id"
+        })
+    }
+    await Event.findByIdAndDelete(id)
+    res.status(200).json({
+        message : "Event deleted successfully"
+    })
+}
