@@ -9,9 +9,6 @@ exports.bookTicket = async(req,res)=>{
 
    // console.log("eventid",eventId)
    // console.log("user id",userId)
-
-
-
     if(!eventId || !userId || !quantity){
         return res.status(400).json({
             message : "Please provide eventId and userId and quantity"
@@ -26,7 +23,7 @@ exports.bookTicket = async(req,res)=>{
             message : "No event found with that event id"
         })
     }
-    if(event.ticketsBooked >= event.totalTickets){
+    if(event.ticketsBooked + quantity >= event.totalTickets){
         return res.status(400).json({
             message : "Sorry!! Ticket is already sold out"
         })
@@ -34,7 +31,7 @@ exports.bookTicket = async(req,res)=>{
     const ticket = await Ticket.create({
         eventId,
         userId,
-        ticketNumber: `TICKET-${Date.now()}-${userId}`, // Generate unique ticket number
+        ticketNumber: `TICKET-${Date.now()}-${userId}`, 
         quantity
       });
       event.ticketsBooked += quantity
@@ -58,11 +55,18 @@ exports.getMyTicket = async(req,res) =>{
     }
     const tickets = await Ticket.find({ userId }).populate('eventId', 'title date');
 
+    if(tickets.length < 1){
+        return res.status(404).json({
+            message : "This user have no ticket"
+        })
+    }
     res.status(200).json({
         message : "Your tickets are",        
          data : tickets 
     });
 }
+
+
 
 exports.getAllTicket = async(req,res) =>{
     const eventId = req.params.id
@@ -84,6 +88,11 @@ exports.getAllTicket = async(req,res) =>{
         select: "-__v -updatedAt -createdAt -description -createdby",
       });
 
+      if(tickets.length < 1){
+        return res.status(404).json({
+            message : "no ticket found for this event"
+        })
+      }
     res.status(200).json({
         message : "ticket details about this event are",        
          data : tickets 
