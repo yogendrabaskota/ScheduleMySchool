@@ -60,7 +60,8 @@ exports.getAllEvent = async(req,res)=>{
     })
 
 }
-exports.deleteEvent = async(req,res)=>{
+exports.cancelEvent = async(req,res)=>{
+  const userId = req.user.id
     const{id} = req.params
     if(!id){
         return res.status(400).json({
@@ -74,6 +75,11 @@ exports.deleteEvent = async(req,res)=>{
             message : "No Event found with that id"
         })
     }
+    if(oldData.createdby.toString() !== userId){
+      return res.status(400).json({
+          message : "You don't have permission to delete"
+      })
+  }
     await Event.findByIdAndDelete(id)
     res.status(200).json({
         message : "Event deleted successfully"
@@ -85,11 +91,11 @@ exports.updateEvent = async(req,res)=>{
   const { id } = req.params
   const userId = req.user.id
   const {title, description, date, time, location } = req.body
-  if(!title || !description || !date || !time || !location){
-      return res.status(400).json({
-          message : "Please provide title, description, date, time, location "
-      })
-  }
+  // if(!title || !description || !date || !time || !location){
+  //     return res.status(400).json({
+  //         message : "Please provide title, description, date, time, location "
+  //     })
+  // }
 
   const existingEvent = await Event.findById(id)
   // console.log("this ",existingEvent)
@@ -111,8 +117,22 @@ exports.updateEvent = async(req,res)=>{
   }
 
 
-  const updatedEvent = await Event.findByIdAndUpdate(id,{title, description, date, time, location},{new:true}) 
-  res.status(200).json({
+ // const updatedEvent = await Event.findByIdAndUpdate(id,{title, description, date, time, location},{new:true}) 
+ const updatedData = {};
+        if (title) updatedData.title = title
+        if (description) updatedData.description = description
+        if (date) updatedData.date= date
+        if (time) updatedData.time= time
+        if (location) updatedData.location= location
+        const updatedEvent = await Event.findByIdAndUpdate(id,
+            {
+               $set: updatedData
+              },
+            {
+               new: true 
+              }); 
+ 
+ res.status(200).json({
       message : "Event updated successfully",
       data : updatedEvent
 
