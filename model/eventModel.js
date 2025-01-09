@@ -23,6 +23,14 @@ const eventSchema = new Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : 'User'
     },
+    totalTickets: {
+        type: Number,
+        default: 100
+    },
+    ticketsBooked: {
+        type: Number,
+        default: 0
+    },
     
 },{
     timestamps : true

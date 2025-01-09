@@ -17,11 +17,46 @@ exports.getAllUser = async(req,res)=>{
      
   }
 
+exports.deleteUser = async(req,res) =>{
+  const userId = req.params.id
+  const id = req.user.id
+  if(!userId){
+      res.status(400).json({
+          message : "Please provide userid"
+      })
+
+  }
+    //check that userId exist or not
+
+  const user = await User.findById(userId)
+  console.log("this is user.id ",user?.id)
+  console.log("this is userid",id)
+  console.log("this is userid ",userId)
+  if(!user){
+      return res.status(400).json({
+          message : "User not found with that userId"
+      })
+
+     }
+    
+      if(id !== userId){
+        return res.status(400).json({
+            message : "You don't have permission to update"
+        })
+
+  }else{
+      await User.findByIdAndDelete(userId)
+      res.status(200).json({
+          message : "User Deleted Successfully"
+      })
+  }
+}  
+
 exports.createEvent = async(req,res)=>{
   const userId = req.user.id
-  const {title, description,date,time,location} = req.body
+  const {title, description,date,time,location,totalTickets} = req.body
 
-    if(!title ||  !description || !date || !time || !location) {
+    if(!title ||  !description || !date || !time || !location || !totalTickets) {
       return res.status(400).json({
         message : "Please provide title, description,date,time,location"
       })
@@ -33,6 +68,8 @@ exports.createEvent = async(req,res)=>{
       date,
       time,
       location,
+      totalTickets,
+      ticketsBooked,
       createdby : userId
     })
     return res.status(200).json({
@@ -122,6 +159,8 @@ exports.updateEvent = async(req,res)=>{
         if (title) updatedData.title = title
         if (description) updatedData.description = description
         if (date) updatedData.date= date
+        if (time) updatedData.totalTickets= totalTickets
+        if (time) updatedData.ticketsBooked= ticketsBooked
         if (time) updatedData.time= time
         if (location) updatedData.location= location
         const updatedEvent = await Event.findByIdAndUpdate(id,
