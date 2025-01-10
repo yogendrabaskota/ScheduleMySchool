@@ -2,6 +2,7 @@
 const User = require("../../model/userModel")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const sendEmail = require("../../services/sendEmail")
 
 //Register user
 exports.registerUser = async(req,res)=>{
@@ -63,4 +64,32 @@ exports.loginUser = async(req,res)=>{
     }
 }
 
+exports.forgetPassword =async(req,res)=>{
+    const { email } =req.body
+    if(!email){
+        return res.status(400).json({
+            message : "Please provide email"
+        })
+    }
+    const userFound = await User.find({email})
+    //console.log(email)
+    //console.log(userFound)
+    if(userFound.length == 0){
+        return res.status(404).json({
+            message : "Email is not registered"
+        })
+    }
+    const otp = Math.floor(Math.random() * 10000)
+    userFound[0].otp = otp
+    await userFound[0].save()
+    console.log("This is otp",otp)
 
+    await sendEmail({
+        email : email, // otp received in this email
+        subject : "OTP for your School account",
+        message : `This is your otp.\n ${otp} \nDon't share it with anyone`
+     }) 
+     res.status(200).json({
+        message : "OTP sent successfully"
+     })
+}

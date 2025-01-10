@@ -30,6 +30,9 @@ const userSchema = new Schema({
         enum : ["teacher","student","guest"],
         default : "student"
     },
+    otp : {
+        type : Number
+    }
     
 },{
     timestamps : true
