@@ -31,8 +31,13 @@ const userSchema = new Schema({
         default : "student"
     },
     otp : {
-        type : Number
-    }
+        type : String
+    },
+    isOtpVerified : {
+        type : Boolean,
+        default : false,
+        //select : false 
+    },
     
 },{
     timestamps : true

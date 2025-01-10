@@ -29,9 +29,9 @@ exports.deleteUser = async(req,res) =>{
     //check that userId exist or not
 
   const user = await User.findById(userId)
-  console.log("this is user.id ",user?.id)
-  console.log("this is userid",id)
-  console.log("this is userid ",userId)
+  //console.log("this is user.id ",user?.id)
+  //console.log("this is userid",id)
+  //console.log("this is userid ",userId)
   if(!user){
       return res.status(400).json({
           message : "User not found with that userId"

@@ -83,7 +83,7 @@ exports.forgetPassword =async(req,res)=>{
     const otp = Math.floor(Math.random() *10000)
     userFound[0].otp = otp
     await userFound[0].save()
-    console.log("This is otp",otp)
+    //console.log("This is otp",otp)
 
     await sendEmail({
         email : email, //to this email
@@ -109,6 +109,11 @@ exports.verifyotp = async(req,res) => {
             message : "Email is not registered"
         })
     }
+    //console.log("userexxist",userExists[0])
+    //console.log("otp",userExists[0].otp)
+    //console.log("input",otp)
+    //console.log(userExists[0].otp !== otp)
+    
     if(userExists[0].otp !== otp){
         res.status(400).json({
             message : "Invalid otp"
@@ -122,6 +127,45 @@ exports.verifyotp = async(req,res) => {
             message : "Otp is correct"
         })
     }
+}
 
+exports.resetPassword = async(req,res) => {
+    const{email,newPassword,confirmPassword} = req.body
+    if(!email || !newPassword || !confirmPassword){
+        return res.status(400).json({
+            message : "Please provide email, newpassword and confirmpassword"
+        })
+    }
+
+    if(newPassword !== confirmPassword){
+        return res.status(400).json({
+            message : "NewPassword and confirmPassword doesn't match"
+        })
+    }
+
+    const userFound = await User.find({email})
+    if(userFound.length == 0){
+        return res.status(404).json({
+            message : "User email not registered"
+        })
+
+    }
+    //console.log(userFound[0])
+    //console.log(userExist[0].isOtpVerified)
+
+    if(userFound[0].isOtpVerified !== true){
+        return res.status(403).json({
+            message : "You cannot perform this action"
+        })
+    }
+
+
+    userFound[0].password = bcrypt.hashSync(newPassword,8)
+    userFound[0].isOtpVerified = false
+    await userFound[0].save()
+
+    res.status(200).json({
+        message : "password changed successfully"
+    })
 
 }
