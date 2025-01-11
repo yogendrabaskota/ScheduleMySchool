@@ -17,13 +17,15 @@ const authRoute = require("./route/authRoute")
 const teacherRoute = require("./route/teacherRoute")
 const eventRoute = require("./route/eventRoute")
 const ticketRoute = require("./route/ticketRoute")
+const paymentRoute = require("./route/paymentRoute")
+
 
 
 app.use("/api/auth",authRoute)
 app.use("/api/user",teacherRoute)
 app.use("/api/event",eventRoute)
 app.use("/api/ticket",ticketRoute)
-
+app.use("/api/payment",paymentRoute)
 
 
 

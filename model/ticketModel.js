@@ -26,10 +26,27 @@ quantity: {
     min: 1,
     max: 5
   },
+  
   purchaseDate:{
     type: Date,
     default: Date.now
 },
+paymentDetails : {
+  pidx : {
+      type : String
+  },
+  method : {
+      type : String,
+      enum : ['Khalti'],
+      
+  },
+  status : {
+      type : String,
+      enum : ['paid','unpaid','pending'],
+      default : 'pending'
+  }
+}
+
 });
 
 const Ticket = mongoose.model('Ticket', TicketSchema)
