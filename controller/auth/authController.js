@@ -114,7 +114,7 @@ exports.verifyotp = async(req,res) => {
     //console.log("input",otp)
     //console.log(userExists[0].otp !== otp)
     
-    if(userExists[0].otp !== otp){
+    if(userExists[0].otp != otp){
         res.status(400).json({
             message : "Invalid otp"
         })
