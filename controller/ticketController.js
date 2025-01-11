@@ -6,6 +6,7 @@ exports.bookTicket = async(req,res)=>{
     const eventId = req.params.id
     const userId = req.user?.id 
     const { quantity } = req.body
+    const userRole = req.user?.role
 
    // console.log("eventid",eventId)
    // console.log("user id",userId)
@@ -23,25 +24,58 @@ exports.bookTicket = async(req,res)=>{
             message : "No event found with that event id"
         })
     }
+
+    const existingTicket = await Ticket.findOne({ eventId, userId });
+    if (existingTicket) {
+        return res.status(400).json({
+            message:
+                "You already have booked a ticket for this event. Users are not allowed to buy tickets more than once for the same event.",
+        });
+    }
     if(event.ticketsBooked + quantity >= event.totalTickets){
         return res.status(400).json({
             message : "Sorry!! Ticket is already sold out"
         })
     }
+
+    if(userRole === 'guest'){
     const ticket = await Ticket.create({
         eventId,
         userId,
         ticketNumber: `TICKET-${Date.now()}-${userId}`, 
-        quantity
+        quantity,
+        paymentDetails : {
+            status : 'pending'
+        }
       });
-      event.ticketsBooked += quantity
-      await event.save() 
 
-   res.status(200).json({
-        message : "ticket booked successfully",
+   return res.status(200).json({
+        message : "Guest have to pay for ticket. Proceed to payment",
         data : ticket
   
     })
+}else if(userRole === 'student' || userRole === 'teacher'){
+    const ticket = await Ticket.create({
+        eventId,
+        userId,
+        ticketNumber: `TICKET-${Date.now()}-${userId}`,
+        quantity,
+        paymentDetails: {
+            status: "paid", // Automatically mark as paid
+            method: "Free", 
+        },
+    });
+    event.ticketsBooked += quantity
+    await event.save() 
+    return res.status(200).json({
+        message : "Ticket booked successfully",
+        data : ticket
+    })
+} else {
+    return res.status(400).json({
+        message : "Failure"
+    })
+}
 }
 
 

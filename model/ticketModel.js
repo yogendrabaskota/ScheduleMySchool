@@ -37,7 +37,7 @@ paymentDetails : {
   },
   method : {
       type : String,
-      enum : ['Khalti'],
+      enum : ['Khalti','Free'],
       
   },
   status : {
