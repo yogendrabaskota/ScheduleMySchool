@@ -7,7 +7,7 @@ const router = require("express").Router()
 
 
 router.route("/")
-    .get(getAllUser)
+    .get( isAuthenticated,restrictTo('teacher'),catchAsync(getAllUser))
 router.route("/:id")
     .delete(isAuthenticated,catchAsync(deleteUser))
 
