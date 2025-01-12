@@ -18,10 +18,10 @@ exports.initiateKhaltiPayment = async(req,res)=>{
     }
     const response = await axios.post("https://a.khalti.com/api/v2/epayment/initiate/",data,{
         headers : {
-            'Authorization' : 'key 1bede2f3815e47eb98a472675e017104',
+            'Authorization' : `key ${process.env.AUTHORIZATION}`,
         }
     })
-    console.log(response.data)
+    //console.log(response.data)
     let ticket = await Ticket.findById(ticketNum)
     //console.log("ticket",ticket)
     ticket.paymentDetails.pidx = response.data.pidx

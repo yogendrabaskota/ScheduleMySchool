@@ -27,7 +27,7 @@ quantity: {
     max: 5
   },
   
-  purchaseDate:{
+  purchaseDate:{ 
     type: Date,
     default: Date.now
 },

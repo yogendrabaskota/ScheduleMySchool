@@ -61,7 +61,7 @@ exports.bookTicket = async(req,res)=>{
         ticketNumber: `TICKET-${Date.now()}-${userId}`,
         quantity,
         paymentDetails: {
-            status: "paid", // Automatically mark as paid
+            status: "paid", // No need to pay
             method: "Free", 
         },
     });
@@ -77,7 +77,6 @@ exports.bookTicket = async(req,res)=>{
     })
 }
 }
-
 
 exports.getMyTicket = async(req,res) =>{
     const userId = req.user.id
@@ -99,8 +98,6 @@ exports.getMyTicket = async(req,res) =>{
          data : tickets 
     });
 }
-
-
 
 exports.getAllTicket = async(req,res) =>{
     const eventId = req.params.id
