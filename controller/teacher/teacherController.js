@@ -41,7 +41,7 @@ exports.deleteUser = async(req,res) =>{
     
       if(id !== userId){
         return res.status(400).json({
-            message : "You don't have permission to update"
+            message : "You don't have permission to delete"
         })
 
   }else{
@@ -54,6 +54,7 @@ exports.deleteUser = async(req,res) =>{
 
 exports.createEvent = async(req,res)=>{
   const userId = req.user.id
+  //const { ticketBooked } = 0
   const {title, description,date,time,location,totalTickets} = req.body
 
     if(!title ||  !description || !date || !time || !location || !totalTickets) {
@@ -69,7 +70,7 @@ exports.createEvent = async(req,res)=>{
       time,
       location,
       totalTickets,
-      ticketsBooked,
+      ticketsBooked : 0,
       createdby : userId
     })
     return res.status(200).json({
@@ -127,7 +128,7 @@ exports.updateEvent = async(req,res)=>{
    
   const { id } = req.params
   const userId = req.user.id
-  const {title, description, date, time, location } = req.body
+  const {title, description, date, time, location, totalTickets, ticketsBooked } = req.body
   // if(!title || !description || !date || !time || !location){
   //     return res.status(400).json({
   //         message : "Please provide title, description, date, time, location "
@@ -159,8 +160,8 @@ exports.updateEvent = async(req,res)=>{
         if (title) updatedData.title = title
         if (description) updatedData.description = description
         if (date) updatedData.date= date
-        if (time) updatedData.totalTickets= totalTickets
-        if (time) updatedData.ticketsBooked= ticketsBooked
+        if (totalTickets) updatedData.totalTickets= totalTickets
+        if (ticketsBooked) updatedData.ticketsBooked= ticketsBooked
         if (time) updatedData.time= time
         if (location) updatedData.location= location
         const updatedEvent = await Event.findByIdAndUpdate(id,
