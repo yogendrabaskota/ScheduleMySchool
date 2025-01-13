@@ -8,6 +8,11 @@ app.use(express.json());
 
 connectDatabase()
 
+const cors = require('cors');
+app.use(cors());
+
+
+
 app.get("/",(req,res)=>{  
     res.status(200).json({
     message : "I am here"
