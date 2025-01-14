@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
@@ -41,6 +42,7 @@ const Home = () => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(`${baseURL}/api/event`);
+        console.log('Response data:', response);
         setEvents(response.data.data); // Set the events state
       } catch (error) {
         console.error('Error fetching events:', error);
@@ -51,7 +53,11 @@ const Home = () => {
   }, []);
 
   return (
+    <>
+    
+    
     <div className="mx-auto bg-gray-100 min-h-screen flex flex-wrap justify-center items-center px-8 py-8">
+     
       {events.map((event) => (
         <EventCard
           key={event._id}
@@ -66,6 +72,7 @@ const Home = () => {
         />
       ))}
     </div>
+    </>
   );
 };
 

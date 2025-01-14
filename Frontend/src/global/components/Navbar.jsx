@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   return (
@@ -33,22 +34,20 @@ const Navbar = () => {
           </div>
       
           <div className="hidden lg:flex space-x-6">
-            <a href="#"
+            <Link to={`/`}
               className="text-white hover:text-yellow-300 transition duration-300">
               Home
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link  to={`/about`}
               className="text-white hover:text-yellow-300 transition duration-300"
             >
               About Us
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link  to={`/contact`}
               className="text-white hover:text-yellow-300 transition duration-300"
             >
               Contact
-            </a>
+            </Link>
 
       
 
@@ -56,7 +55,7 @@ const Navbar = () => {
 
             <a
               href="#"
-              className="text-white hover:text-yellow-300 mr-0 transition duration-300"
+              className="text-white hover:text-yellow-300 transition duration-300"
             >
               Register
             </a>
@@ -75,16 +74,15 @@ const Navbar = () => {
       </div>
 
      
-      <div className="lg:hidden">
+      {/* <div className="lg:hidden">
         <div className="px-4 pt-2 pb-4 space-y-2">
-          <a
-            href="#"
+          <Link to={`/home`}
             className="block text-white hover:text-yellow-300 transition duration-300"
           >
             Home
-          </a>
+          </Link>
           <a
-            href="#"
+            href="/"
             className="block text-white hover:text-yellow-300 transition duration-300"
           >
             About Us
@@ -96,7 +94,7 @@ const Navbar = () => {
             Contact
           </a>
         </div>
-      </div>
+      </div> */}
     </nav>
     </>
   );
