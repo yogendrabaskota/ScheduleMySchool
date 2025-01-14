@@ -1,4 +1,4 @@
-# Schedule Manager for School 
+# Event Manager for School 
 
 **ScheduleMySchool** is a web application designed to streamline event management for schools. Teachers can create, update, and delete events, while students can easily view and stay informed about school events. This system ensures efficient communication and organization of school activities.  
 
