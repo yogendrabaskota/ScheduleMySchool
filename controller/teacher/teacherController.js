@@ -83,7 +83,7 @@ exports.getAllEvent = async(req,res)=>{
     const events = await Event.find({}, "-createdAt -updatedAt -__v").populate({
       path:"createdby",
       model : "User",
-      select : "-createdAt -updatedAt -__v -password -role"
+      select : "-createdAt -updatedAt -__v -password -role -isOtpVerified"
   }) 
     if(events.length == 0){
         return res.status(404).json({
