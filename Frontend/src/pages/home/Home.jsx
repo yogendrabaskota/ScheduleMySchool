@@ -1,8 +1,8 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
-const EventCard = ({ title, description, location, date, time, availableTickets, createdBy }) => {
+const EventCard = ({ id, title, description, location, date, time, availableTickets, createdBy }) => {
   return (
     <div className="flex flex-col bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-80 h-auto p-6 m-4">
       <h2 className="text-2xl font-bold text-gray-800 mb-2">{title}</h2>
@@ -24,26 +24,24 @@ const EventCard = ({ title, description, location, date, time, availableTickets,
           <span className="font-semibold">👤 Created By:</span> {createdBy.name} ({createdBy.email})
         </div>
       )}
-      <button className="mt-auto bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold py-2 px-4 rounded-lg">
-        View Details
-      </button>
+      <Link to={`/event/${id}`}>
+        <button className="mt-auto bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold py-2 px-4 rounded-lg">
+          View Details
+        </button>
+      </Link>
     </div>
   );
 };
 
 const Home = () => {
   const [events, setEvents] = useState([]);
-
-  // Base URL of the backend
-  const baseURL = 'https://schedulemyschool.onrender.com';
+  const baseURL = 'http://localhost:5000';
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        // Fetch data from the backend
         const response = await axios.get(`${baseURL}/api/event`);
-        const fetchedEvents = response.data.data; // Extracting `data` array from response
-        setEvents(fetchedEvents); // Set the events state
+        setEvents(response.data.data); // Set the events state
       } catch (error) {
         console.error('Error fetching events:', error);
       }
@@ -57,6 +55,7 @@ const Home = () => {
       {events.map((event) => (
         <EventCard
           key={event._id}
+          id={event._id}
           title={event.title}
           description={event.description}
           location={event.location}

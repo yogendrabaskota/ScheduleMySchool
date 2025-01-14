@@ -8,7 +8,7 @@ const Navbar = () => {
     
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          {/* Left section: Brand/Logo */}
+        
           <div className="flex items-center">
             <h1 className="text-xl font-bold">
                 <a href='/'
@@ -21,31 +21,20 @@ const Navbar = () => {
           <div className="lg:hidden">
             <button
               className="text-white focus:outline-none"
-              aria-label="Toggle Menu"
-            >
-              <svg
-                className="h-6 w-6"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+              aria-label="Toggle Menu">
+              <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth="2"
-                  d="M4 6h16M4 12h16m-7 6h7"
-                />
+                  d="M4 6h16M4 12h16m-7 6h7"/>
               </svg>
             </button>
           </div>
-
       
           <div className="hidden lg:flex space-x-6">
-            <a
-              href="#"
-              className="text-white hover:text-yellow-300 transition duration-300"
-            >
+            <a href="#"
+              className="text-white hover:text-yellow-300 transition duration-300">
               Home
             </a>
             <a
@@ -60,6 +49,27 @@ const Navbar = () => {
             >
               Contact
             </a>
+
+      
+
+
+
+            <a
+              href="#"
+              className="text-white hover:text-yellow-300 mr-0 transition duration-300"
+            >
+              Register
+            </a>
+
+
+            <a
+              href="#"
+              className="text-white hover:text-yellow-300 transition duration-300"
+            >
+              Login
+            </a>
+
+
           </div>
         </div>
       </div>
