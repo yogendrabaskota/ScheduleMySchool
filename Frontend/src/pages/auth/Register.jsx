@@ -40,6 +40,7 @@ const Register = () => {
         value={formData.email}
         onChange={handleChange}
         className="mb-4 p-2 border border-gray-300 rounded w-full"
+        required = 'email is required'
       />
       <input
         type="password"
@@ -48,6 +49,7 @@ const Register = () => {
         value={formData.password}
         onChange={handleChange}
         className="mb-4 p-2 border border-gray-300 rounded w-full"
+        required = 'password is required'
       />
       <input
         type="text"
@@ -56,6 +58,7 @@ const Register = () => {
         value={formData.phoneNumber}
         onChange={handleChange}
         className="mb-4 p-2 border border-gray-300 rounded w-full"
+        required = 'phonenumber is required'
       />
       <input
         type="text"
@@ -64,12 +67,14 @@ const Register = () => {
         value={formData.username}
         onChange={handleChange}
         className="mb-4 p-2 border border-gray-300 rounded w-full"
+        required = 'username is required'
       />
       <select
         name="role"
         value={formData.role}
         onChange={handleChange}
         className="mb-4 p-2 border border-gray-300 rounded w-full"
+        required = 'role is required'
       >
         <option value="">Select Role</option>
         <option value="teacher">Teacher</option>
