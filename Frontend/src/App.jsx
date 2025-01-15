@@ -6,6 +6,7 @@ import Home from './pages/home/Home'
 import EventDetails from './pages/eventDetails/EventDetails'
 import Register from './pages/auth/Register'
 import Login from './pages/auth/Login'
+import ForgotPassword from './pages/auth/ForgetPassword'
 
 
 
@@ -23,6 +24,7 @@ function App() {
       <Route path="/event/:id" element={<EventDetails />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/forget-password" element={<ForgotPassword />} />
 
     </Routes>
       

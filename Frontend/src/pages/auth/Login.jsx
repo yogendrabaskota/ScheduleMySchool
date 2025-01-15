@@ -18,22 +18,23 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5000/api/auth/login', formData);
-      
+
       // Save the token in local storage
       localStorage.setItem('token', response.data.data);
-      //console.log("full",response)
       
       alert(response.data.message);
- 
-     // console.log("this is data",response.data)
-      //console.log("this is token",response.data.data)
- 
+      
       // Redirect to the home page
       navigate('/');
     } catch (error) {
       console.error(error);
       alert('Login failed');
     }
+  };
+
+  const handleForgotPassword = () => {
+    // Redirect to forgot password page or show a modal
+    navigate('/forget-password');  // Replace with your Forgot Password route
   };
 
   return (
@@ -55,7 +56,17 @@ const Login = () => {
         onChange={handleChange}
         className="mb-4 p-2 border border-gray-300 rounded w-full"
       />
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Login</button>
+      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded w-full mb-2">
+        Login
+      </button>
+      
+      <button
+        type="button"
+        onClick={handleForgotPassword}
+        className="text-blue-500 hover:text-blue-700 text-sm w-full text-center"
+      >
+        Forgot Password?
+      </button>
     </form>
   );
 };
