@@ -53,20 +53,18 @@ const Navbar = () => {
 
 
 
-            <a
-              href="#"
+            <Link to={`/register`}
               className="text-white hover:text-yellow-300 transition duration-300"
             >
               Register
-            </a>
+            </Link>
 
 
-            <a
-              href="#"
+            <Link to={`login`}
               className="text-white hover:text-yellow-300 transition duration-300"
             >
               Login
-            </a>
+            </Link>
 
 
           </div>

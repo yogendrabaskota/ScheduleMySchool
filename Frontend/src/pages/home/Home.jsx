@@ -34,15 +34,25 @@ const EventCard = ({ id, title, description, location, date, time, availableTick
   );
 };
 
+
 const Home = () => {
+
+  //const navigate = useNavigate()
   const [events, setEvents] = useState([]);
   const baseURL = 'http://localhost:5000';
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem('token');
+  //   if (!token) {
+  //     navigate('/login');
+  //   }
+  // }, [navigate]);
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(`${baseURL}/api/event`);
-        console.log('Response data:', response);
+       // console.log('Response data:', response);
         setEvents(response.data.data); // Set the events state
       } catch (error) {
         console.error('Error fetching events:', error);

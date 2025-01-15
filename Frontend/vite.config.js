@@ -6,7 +6,8 @@ export default defineConfig({
   plugins: [react()],
 
   server: {
-    hmr: false
-  }
+    hmr: true,
+  },
+
 })
 
