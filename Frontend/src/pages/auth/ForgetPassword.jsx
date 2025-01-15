@@ -18,10 +18,9 @@ const ForgotPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isOtpSent) {
+      // Send email to get OTP
       try {
-        // Send the email to get the OTP
-        const response = await axios.post('http://localhost:5000/api/auth/forgetPassword', { email: formData.email });
-        console.log("response ",response)
+        const response = await axios.post('http://localhost:5000/api/auth/forgetpassword', { email: formData.email });
 
         if (response.status === 200) {
           setIsOtpSent(true);  // Show OTP input field if OTP is sent
@@ -32,9 +31,18 @@ const ForgotPassword = () => {
         setMessage('Error sending OTP. Please try again.');
       }
     } else {
-      // Handle OTP submission here if needed
-      console.log('OTP:', formData.otp);
-      // You can add another API call here to verify the OTP or reset the password
+      // Verify OTP after sending it
+      try {
+        const response = await axios.post('http://localhost:5000/api/auth/verifyOtp', { email: formData.email, otp: formData.otp });
+
+        if (response.status === 200) {
+          // Redirect to reset password page after OTP is verified
+          navigate('/reset-password');
+        }
+      } catch (error) {
+        console.error(error);
+        setMessage('Invalid OTP. Please try again.');
+      }
     }
   };
 
