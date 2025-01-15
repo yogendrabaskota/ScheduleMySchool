@@ -1,10 +1,17 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   // Check if the token exists in localStorage
   const token = localStorage.getItem('token');
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Remove token from localStorage and redirect to home or login page
+    localStorage.removeItem('token');
+    navigate('/');  // Redirect to login page or homepage
+  };
 
   return (
     <>
@@ -13,10 +20,7 @@ const Navbar = () => {
           <div className="flex justify-between h-16 items-center">
             <div className="flex items-center">
               <h1 className="text-xl font-bold">
-                <a
-                  href="/"
-                  className="text-xl font-bold"
-                >
+                <a href="/" className="text-xl font-bold">
                   Bhanu Secondary School
                 </a>
               </h1>
@@ -64,8 +68,8 @@ const Navbar = () => {
                 Contact
               </Link>
 
-              {/* Conditionally render Login/Register buttons */}
-              {!token && (
+              {/* Conditionally render Login/Register or Logout buttons */}
+              {!token ? (
                 <>
                   <Link
                     to={`/register`}
@@ -80,6 +84,13 @@ const Navbar = () => {
                     Login
                   </Link>
                 </>
+              ) : (
+                <button
+                  onClick={handleLogout}
+                  className="text-white hover:text-yellow-300 transition duration-300"
+                >
+                  Logout
+                </button>
               )}
             </div>
           </div>
