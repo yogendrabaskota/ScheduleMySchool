@@ -39,7 +39,7 @@ const Home = () => {
 
   //const navigate = useNavigate()
   const [events, setEvents] = useState([]);
-  const baseURL = 'http://localhost:5000';
+  const baseURL = 'https://schedulemyschool.onrender.com/';
 
   // useEffect(() => {
   //   const token = localStorage.getItem('token');

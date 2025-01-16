@@ -25,7 +25,7 @@ const ResetPassword = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/resetPassword', formData);
+      const response = await axios.post('https://schedulemyschool.onrender.com/api/auth/resetPassword', formData);
 
       if (response.status === 200) {
         setMessage('Password reset successful. Redirecting to login page..');

@@ -33,7 +33,7 @@ const ForgotPassword = () => {
     } else {
       // Verify OTP after sending it
       try {
-        const response = await axios.post('http://localhost:5000/api/auth/verifyOtp', { email: formData.email, otp: formData.otp });
+        const response = await axios.post('https://schedulemyschool.onrender.com/api/auth/verifyOtp', { email: formData.email, otp: formData.otp });
 
         if (response.status === 200) {
           // Redirect to reset password page after OTP is verified

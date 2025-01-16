@@ -95,7 +95,7 @@ const Navbar = () => {
                     Logout
                   </button>
                   {/* Show "Teacher Dashboard" for teachers, otherwise display role */}
-                  {role === 'teacher' ? (
+                  {role == 'teacher' ? (
                     <Link
                       to={`/teacher-dashboard`}
                       className="text-white hover:text-yellow-300 transition duration-300"
