@@ -10,64 +10,54 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  // Update form data on input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //  try {
-    //   const response = await axios.post('http://localhost:5000/api/auth/login', formData);
-
-    //   // Save the token in local storage
-    //   localStorage.setItem('token', response.data.data);
-      
-    //   alert(response.data.message);
-      
-    //   // Redirect to the home page
-    //   navigate('/');
-    // } catch (error) {
-    //   console.error(error);
-    //   alert(error.message);
-    // }
-
-
-    
     try {
+      // Send login request to the server
       const response = await axios.post('http://localhost:5000/api/auth/login', formData);
-    
-    
+
       if (response.status === 200) {
-  
-        localStorage.setItem('token', response.data.data)
+        // Save token and role in localStorage
+        const { token, role } = response.data.data; // Assuming response contains token and role
+        localStorage.setItem('token', token);
+        localStorage.setItem('role', role);
+
+        // Show success message and redirect
         alert(response.data.message);
         navigate('/');
       } else {
-        alert(response.data.message || 'An unexpected error occurred.'); // won't trigget in most cases
+        alert(response.data.message || 'An unexpected error occurred.');
       }
     } catch (error) {
       if (error.response) {
+        // Server responded with an error
         alert(error.response.data.message || 'Login failed. Please try again.');
       } else if (error.request) {
+        // No response from the server
         alert('No response from the server. Please check your connection.');
       } else {
-        // For other errors
+        // Other errors
         alert('An error occurred: ' + error.message);
       }
     }
-    
+  };
 
-
-    
-   };
-
+  // Handle forgot password click
   const handleForgotPassword = () => {
-    // Redirect to forgot password page or show a modal
-    navigate('/forget-password');  // Replace with your Forgot Password route
+    navigate('/forget-password'); // Navigate to Forgot Password page
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-6 w-96 mx-auto bg-white shadow-md rounded-md">
+    <form
+      onSubmit={handleSubmit}
+      className="p-6 w-96 mx-auto bg-white shadow-md rounded-md"
+    >
       <h2 className="text-2xl font-bold mb-4">Login</h2>
       <input
         type="email"
@@ -76,6 +66,7 @@ const Login = () => {
         value={formData.email}
         onChange={handleChange}
         className="mb-4 p-2 border border-gray-300 rounded w-full"
+        required
       />
       <input
         type="password"
@@ -84,11 +75,14 @@ const Login = () => {
         value={formData.password}
         onChange={handleChange}
         className="mb-4 p-2 border border-gray-300 rounded w-full"
+        required
       />
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded w-full mb-2">
+      <button
+        type="submit"
+        className="bg-blue-500 text-white px-4 py-2 rounded w-full mb-2"
+      >
         Login
       </button>
-      
       <button
         type="button"
         onClick={handleForgotPassword}

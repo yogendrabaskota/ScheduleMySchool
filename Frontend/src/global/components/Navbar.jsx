@@ -3,14 +3,16 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
-  // Check if the token exists in localStorage
+  // Check if the token and role exist in localStorage
   const token = localStorage.getItem('token');
+  const role = localStorage.getItem('role'); // Fetch the role from localStorage
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Remove token from localStorage and redirect to home or login page
+    // Remove token and role from localStorage and redirect to home or login page
     localStorage.removeItem('token');
-    navigate('/');  // Redirect to login page or homepage
+    localStorage.removeItem('role');
+    navigate('/'); // Redirect to login page or homepage
   };
 
   return (
@@ -48,7 +50,7 @@ const Navbar = () => {
               </button>
             </div>
 
-            <div className="hidden lg:flex space-x-6">
+            <div className="hidden lg:flex space-x-6 items-center">
               <Link
                 to={`/`}
                 className="text-white hover:text-yellow-300 transition duration-300"
@@ -85,12 +87,20 @@ const Navbar = () => {
                   </Link>
                 </>
               ) : (
-                <button
-                  onClick={handleLogout}
-                  className="text-white hover:text-yellow-300 transition duration-300"
-                >
-                  Logout
-                </button>
+                <>
+                  {/* Show role when logged in */}
+                  {role && (
+                    <span className="text-sm text-gray-300">
+                      Role: <strong>{role}</strong>
+                    </span>
+                  )}
+                  <button
+                    onClick={handleLogout}
+                    className="text-white hover:text-yellow-300 transition duration-300"
+                  >
+                    Logout
+                  </button>
+                </>
               )}
             </div>
           </div>
