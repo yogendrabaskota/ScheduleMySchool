@@ -8,9 +8,7 @@ import Register from './pages/auth/Register'
 import Login from './pages/auth/Login'
 import ForgotPassword from './pages/auth/ForgetPassword'
 import ResetPassword from './pages/auth/ResetPassword'
-import TeacherDashboard from './pages/teacherDashboard'
-//import TeacherDashboard from './pages/teacherDashboard'
-
+import TeacherDashboard from './pages/TeacherDashboard'
 
 
 
