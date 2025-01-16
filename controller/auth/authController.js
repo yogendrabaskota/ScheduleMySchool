@@ -42,6 +42,7 @@ exports.loginUser = async(req,res)=>{
     }
     
     const userFound = await User.find({email : email})
+    //console.log("from",userFound[0].role)
     if(userFound.length == 0) {
         return res.status(404).json({
             message : "User with that email is not registered"
@@ -56,7 +57,8 @@ exports.loginUser = async(req,res)=>{
         })
         res.status(200).json({
             message : " User logged in successfully ",
-            data : token
+            data : token,
+            role : userFound[0].role
         })
     }else{
         res.status(404).json({
