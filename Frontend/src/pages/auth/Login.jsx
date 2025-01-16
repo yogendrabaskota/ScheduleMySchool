@@ -16,21 +16,50 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    //  try {
+    //   const response = await axios.post('http://localhost:5000/api/auth/login', formData);
+
+    //   // Save the token in local storage
+    //   localStorage.setItem('token', response.data.data);
+      
+    //   alert(response.data.message);
+      
+    //   // Redirect to the home page
+    //   navigate('/');
+    // } catch (error) {
+    //   console.error(error);
+    //   alert(error.message);
+    // }
+
+
+    
     try {
       const response = await axios.post('http://localhost:5000/api/auth/login', formData);
-
-      // Save the token in local storage
-      localStorage.setItem('token', response.data.data);
-      
-      alert(response.data.message);
-      
-      // Redirect to the home page
-      navigate('/');
+    
+    
+      if (response.status === 200) {
+  
+        localStorage.setItem('token', response.data.data)
+        alert(response.data.message);
+        navigate('/');
+      } else {
+        alert(response.data.message || 'An unexpected error occurred.'); // won't trigget in most cases
+      }
     } catch (error) {
-      console.error(error);
-      alert('Login failed');
+      if (error.response) {
+        alert(error.response.data.message || 'Login failed. Please try again.');
+      } else if (error.request) {
+        alert('No response from the server. Please check your connection.');
+      } else {
+        // For other errors
+        alert('An error occurred: ' + error.message);
+      }
     }
-  };
+    
+
+
+    
+   };
 
   const handleForgotPassword = () => {
     // Redirect to forgot password page or show a modal
