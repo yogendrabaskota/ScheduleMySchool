@@ -24,8 +24,8 @@ const Login = () => {
 
       if (response.status === 200) {
         // Save token and role in localStorage
-        const { token, role } = response.data.data; // Assuming response contains token and role
-        localStorage.setItem('token', token);
+        const { data, role } = response.data; // Assuming response contains token and role
+        localStorage.setItem('token', data);
         localStorage.setItem('role', role);
 
         // Show success message and redirect

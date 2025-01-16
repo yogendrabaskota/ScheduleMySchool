@@ -88,18 +88,22 @@ const Navbar = () => {
                 </>
               ) : (
                 <>
-                  {/* Show role when logged in */}
-                  {role && (
-                    <span className="text-sm text-gray-300">
-                      Role: <strong>{role}</strong>
-                    </span>
-                  )}
-                  <button
+
+
+                    <button
                     onClick={handleLogout}
                     className="text-white hover:text-yellow-300 transition duration-300"
                   >
                     Logout
                   </button>
+                  {/* Show role when logged in */}
+
+                  {role && (
+                    <span className="text-sm text-gray-300">
+                     <strong>{role}</strong>
+                    </span>
+                  )}
+                  
                 </>
               )}
             </div>
