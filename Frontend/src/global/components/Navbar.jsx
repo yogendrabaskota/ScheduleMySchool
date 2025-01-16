@@ -88,22 +88,25 @@ const Navbar = () => {
                 </>
               ) : (
                 <>
-
-
-                    <button
+                  <button
                     onClick={handleLogout}
                     className="text-white hover:text-yellow-300 transition duration-300"
                   >
                     Logout
                   </button>
-                  {/* Show role when logged in */}
-
-                  {role && (
+                  {/* Show "Teacher Dashboard" for teachers, otherwise display role */}
+                  {role === 'teacher' ? (
+                    <Link
+                      to={`/teacher-dashboard`}
+                      className="text-white hover:text-yellow-300 transition duration-300"
+                    >
+                      Teacher Dashboard
+                    </Link>
+                  ) : (
                     <span className="text-sm text-gray-300">
-                     <strong>{role}</strong>
+                      <strong>{role}</strong>
                     </span>
                   )}
-                  
                 </>
               )}
             </div>
