@@ -98,6 +98,29 @@ exports.getAllEvent = async(req,res)=>{
     })
 
 }
+
+exports.getMyEvent = async(req,res)=>{
+  const userId = req.user.id
+  const events = await Event.find({createdby : userId}, "-createdAt -updatedAt -__v").populate({
+    path:"createdby",
+    model : "User",
+    select : "-createdAt -updatedAt -__v -password -role -isOtpVerified"
+}) 
+
+  if(events.length == 0){
+      return res.status(404).json({
+          message : "No Event found",
+          data : []
+      })
+  }
+  res.status(200).json({
+      message : "events fetched successfully",
+      data : events
+
+  })
+
+}
+
 exports.cancelEvent = async(req,res)=>{
   const userId = req.user.id
     const{id} = req.params
