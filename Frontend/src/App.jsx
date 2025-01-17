@@ -10,6 +10,7 @@ import ForgotPassword from './pages/auth/ForgetPassword'
 import ResetPassword from './pages/auth/ResetPassword'
 import TeacherDashboard from './pages/teacher/TeacherDashboard'
 import CreateEvent from './pages/teacher/CreateEvent'
+import YourEvents from './pages/teacher/YourEvent'
 
 
 
@@ -30,6 +31,7 @@ function App() {
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
       <Route path="/create-event" element={<CreateEvent />} />
+      <Route path="/your-event" element={<YourEvents />} />
 
     </Routes>
       
