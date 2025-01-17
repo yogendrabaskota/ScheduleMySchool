@@ -3,7 +3,7 @@
 **ScheduleMySchool** is a web application designed to streamline event management for schools. Teachers can create, update, and delete events, while students can easily view and stay informed about school events. This system ensures efficient communication and organization of school activities.  
 
 
-### Click [Here]() to visit this site.
+### Click [Here](https://schedule-my-school.vercel.app/) to visit this site.
 
 ---
 ## Features  
@@ -91,7 +91,7 @@ cd Frontend
 
 ### Backend is live [Here](https://schedulemyschool.onrender.com/)
 
-### Frontend is live [Here]()
+### Frontend is live [Here](https://schedule-my-school.vercel.app/)
 
 
 
