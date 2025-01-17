@@ -27,7 +27,7 @@ const CreateEvent = () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:5000/api/event", // Update this URL with your backend endpoint
+        "https://schedulemyschool.onrender.com/api/event", // Update this URL with your backend endpoint
         formData,
         {
           headers: {

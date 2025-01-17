@@ -31,7 +31,7 @@ const EventCard = ({ id, title, description, location, date, time, availableTick
 
 const YourEvents = () => {
   const [events, setEvents] = useState([]);
-  const baseURL = 'http://localhost:5000'; // Update with your backend's base URL
+  const baseURL = 'https://schedulemyschool.onrender.com'; // Update with your backend's base URL
  const token = localStorage.getItem('token');
 
 
