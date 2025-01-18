@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-const EventCard = ({ id, title, description, location, date, time, availableTickets }) => {
+const EventCard = ({ id, title, description, location, date, time, availableTickets, ticketsBooked }) => {
   return (
     <div className="flex flex-col bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-80 h-auto p-6 m-4">
       <h2 className="text-2xl font-bold text-gray-800 mb-2">{title}</h2>
@@ -19,6 +19,10 @@ const EventCard = ({ id, title, description, location, date, time, availableTick
       </div>
       <div className={`text-sm font-bold mb-3 ${availableTickets > 0 ? "text-green-500" : "text-red-500"}`}>
         🎟️ Available Tickets: {availableTickets > 0 ? availableTickets : "Sold Out"}
+      </div>
+      <div className="text-sm font-bold mb-3">
+      <span className="font-semibold">🎟️ Ticket Booked: </span>{ticketsBooked}
+        
       </div>
       <div className="flex justify-between">
         <Link to={`/event/${id}`}>
@@ -109,6 +113,7 @@ const YourEvents = () => {
                 date={event.date}
                 time={event.time}
                 availableTickets={event.totalTickets - event.ticketsBooked}
+                ticketsBooked={event.ticketsBooked}
               />
             ))
           ) : (

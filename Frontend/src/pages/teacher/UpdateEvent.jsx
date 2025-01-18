@@ -26,7 +26,7 @@ const UpdateEvent = () => {
     const fetchEventDetails = async () => {
       try {
         const response = await axios.get(`${baseURL}/api/event/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
+          headers: { Authorization: `${token}` },
         });
         setEvent(response.data); // Populate form with fetched event data
         setLoading(false);
@@ -78,9 +78,10 @@ const UpdateEvent = () => {
             </label>
             <input
               type="text"
-              id="title"
+             // id="title"
+             placeholder= {event.data.title}
               name="title"
-              value={event.title}
+              value={event.title} // Use event.title
               onChange={handleChange}
               className="w-full border rounded-lg px-3 py-2"
             />
@@ -92,7 +93,8 @@ const UpdateEvent = () => {
             <textarea
               id="description"
               name="description"
-              value={event.description}
+              placeholder= {event.data.description}
+              value={event.description} // Use event.description
               onChange={handleChange}
               className="w-full border rounded-lg px-3 py-2"
               rows="4"
@@ -106,7 +108,8 @@ const UpdateEvent = () => {
               type="text"
               id="location"
               name="location"
-              value={event.location}
+              placeholder= {event.data.location}
+              value={event.location} // Use event.location
               onChange={handleChange}
               className="w-full border rounded-lg px-3 py-2"
             />
@@ -119,7 +122,8 @@ const UpdateEvent = () => {
               type="date"
               id="date"
               name="date"
-              value={event.date ? event.date.slice(0, 10) : ""}
+              placeholder= {event.data.date}
+              value={event.date ? event.date.slice(0, 10) : ""} // Use event.date
               onChange={handleChange}
               className="w-full border rounded-lg px-3 py-2"
             />
@@ -132,7 +136,8 @@ const UpdateEvent = () => {
               type="time"
               id="time"
               name="time"
-              value={event.time}
+              placeholder= {event.data.time}
+              value={event.time} // Use event.time
               onChange={handleChange}
               className="w-full border rounded-lg px-3 py-2"
             />
@@ -145,7 +150,8 @@ const UpdateEvent = () => {
               type="number"
               id="totalTickets"
               name="totalTickets"
-              value={event.totalTickets}
+              placeholder= {event.data.totalTickets}
+              value={event.totalTickets} // Use event.totalTickets
               onChange={handleChange}
               className="w-full border rounded-lg px-3 py-2"
             />
@@ -158,7 +164,8 @@ const UpdateEvent = () => {
               type="number"
               id="ticketsBooked"
               name="ticketsBooked"
-              value={event.ticketsBooked}
+              placeholder= {event.data.ticketsBooked}
+              value={event.ticketsBooked} // Use event.ticketsBooked
               onChange={handleChange}
               className="w-full border rounded-lg px-3 py-2"
             />

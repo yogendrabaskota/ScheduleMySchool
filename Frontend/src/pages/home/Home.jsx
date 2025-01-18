@@ -20,6 +20,10 @@ const EventCard = ({ id, title, description, location, date, time, availableTick
       <div className={`text-sm font-bold mb-3 ${availableTickets > 0 ? 'text-green-500' : 'text-red-500'}`}>
         🎟️ Available Tickets: {availableTickets > 0 ? availableTickets : 'Sold Out'}
       </div>
+      {/* <div className="text-sm font-bold mb-3">
+      <span className="font-semibold"> 🎟️ Ticket Booked:</span> {ticketsBooked}
+        
+      </div> */}
       {createdBy && (
         <div className="text-gray-700 mb-3">
           <span className="font-semibold">👤 Created By:</span> {createdBy.name} ({createdBy.email})
@@ -79,6 +83,7 @@ const Home = () => {
           time={event.time}
           availableTickets={event.totalTickets - event.ticketsBooked}
           createdBy={event.createdby}
+         // ticketsBooked={event.ticketsBooked}
         />
       ))}
     </div>
