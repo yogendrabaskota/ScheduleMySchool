@@ -54,8 +54,23 @@ exports.loginUser = async(req,res)=>{
             message : "User with that email is not registered"
         })
     }
+
+  // console.log(userFound[0].isUserVerified)
+   //console.log(!userFound.isUserVerified)
+
+   if(!userFound.isUserVerified){
+    return res.status(403).json({
+        message: "User is not verified yet"
+    });
+}
+    
     //password check
     const isMatched = bcrypt.compareSync(password,userFound[0].password)
+  //  if (!userFound.isUserVerified) return res.status(403).json({ error: 'User not verified.' });
+
+    
+
+
     if(isMatched) {
        
         const token = jwt.sign({id : userFound[0]._id},process.env.SECRET_KEY,{
