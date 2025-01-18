@@ -13,6 +13,8 @@ import CreateEvent from './pages/teacher/CreateEvent'
 import YourEvents from './pages/teacher/YourEvent'
 import UpdateEvent from './pages/teacher/UpdateEvent'
 import Report from './pages/teacher/Report'
+import UserVerification from './pages/auth/UserVerification'
+import UserManager from './pages/teacher/UserManager'
 
 
 
@@ -36,6 +38,8 @@ function App() {
       <Route path="/your-event" element={<YourEvents />} />
       <Route path="/event/update/:id" element={<UpdateEvent />} />
       <Route path="/event/report/:id" element={<Report />} />
+      <Route path="/all-users" element={<UserManager />} />
+      <Route path="/user-verification" element={<UserVerification />} />
 
 
     </Routes>

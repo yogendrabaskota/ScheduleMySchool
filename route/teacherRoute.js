@@ -10,7 +10,7 @@ router.route("/")
     .get( isAuthenticated,restrictTo('teacher'),catchAsync(getAllUser))
 
 router.route("/verified")
-    .get(isAuthenticated,restrictTo("teacher"),catchAsync(getVerifiedUser))
+    .get(isAuthenticated,restrictTo('teacher'),catchAsync(getVerifiedUser))
 
 router.route("/:id")
     .delete(isAuthenticated,catchAsync(deleteUser))

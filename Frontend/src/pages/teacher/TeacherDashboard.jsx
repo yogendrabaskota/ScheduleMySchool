@@ -51,7 +51,7 @@ const TeacherDashboard = () => {
               onClick={handleAllUsers}
               className="w-full text-left bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition duration-300"
             >
-              All Users
+              User Manager
             </button>
           </li>
         </ul>
