@@ -4,6 +4,19 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const EventCard = ({ id, title, description, location, date, time, availableTickets, ticketsBooked }) => {
+  const eventDate = new Date(date);
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1); // Set yesterday's date
+
+  // Set the time to midnight for both dates to compare only the date part
+  today.setHours(0, 0, 0, 0);
+  yesterday.setHours(0, 0, 0, 0);
+
+  // Determine if the event date is after today or before yesterday
+  const isAfterToday = eventDate > today;
+  const isBeforeYesterday = eventDate < yesterday;
+
   return (
     <div className="flex flex-col bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-80 h-auto p-6 m-4">
       <h2 className="text-2xl font-bold text-gray-800 mb-2">{title}</h2>
@@ -21,8 +34,7 @@ const EventCard = ({ id, title, description, location, date, time, availableTick
         🎟️ Available Tickets: {availableTickets > 0 ? availableTickets : "Sold Out"}
       </div>
       <div className="text-sm font-bold mb-3">
-      <span className="font-semibold">🎟️ Ticket Booked: </span>{ticketsBooked}
-        
+        <span className="font-semibold">🎟️ Ticket Booked: </span>{ticketsBooked}
       </div>
       <div className="flex justify-between">
         <Link to={`/event/${id}`}>
@@ -30,11 +42,22 @@ const EventCard = ({ id, title, description, location, date, time, availableTick
             View Details
           </button>
         </Link>
-        <Link to={`/event/update/${id}`}>
-          <button className="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold py-2 px-4 rounded-lg">
-            Update Event
-          </button>
-        </Link>
+        {/* Show Update Event button if the event is after today */}
+        {isAfterToday && !isBeforeYesterday && (
+          <Link to={`/event/update/${id}`}>
+            <button className="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold py-2 px-4 rounded-lg">
+              Update Event
+            </button>
+          </Link>
+        )}
+        {/* Show Generate Report button if the event is before yesterday */}
+        {isBeforeYesterday && (
+          <Link to={`/event/report/${id}`}>
+            <button className="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold py-2 px-4 rounded-lg">
+              Generate Report
+            </button>
+          </Link>
+        )}
       </div>
     </div>
   );
