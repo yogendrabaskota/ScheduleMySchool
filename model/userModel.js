@@ -30,6 +30,10 @@ const userSchema = new Schema({
         enum : ["teacher","student","guest"],
         default : "student"
     },
+    isUserVerified: {
+        type: Boolean,
+        default: false,
+      },
     otp : {
         type : String
     },

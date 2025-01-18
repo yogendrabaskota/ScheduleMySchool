@@ -20,19 +20,25 @@ exports.registerUser = async(req,res)=>{
        message : "user with that email already exist. please use unique email"
    })
   }
+  const isUserVerified = role === "guest"; // Only 'guest' role is automatically verified
+
 
    await User.create({ 
        name : username,
        phoneNumber : phoneNumber,
        email : email,
        password : bcrypt.hashSync(password,8),
-       role : role
+       role : role,
+       isUserVerified: isUserVerified,
    })
    res.status(201).json({
-       message : "Successfully Registered"
-   })
+    message: isUserVerified
+      ? "Successfully Registered"
+      : "Registration successful. Waiting for admin approval.",
+  });
    
 }
+
 exports.loginUser = async(req,res)=>{
     const{email, password} = req.body
     if(!email || !password) {
@@ -171,3 +177,56 @@ exports.resetPassword = async(req,res) => {
     })
 
 }
+
+// exports.approveUser = async (req, res) => {
+//     const { userId } = req.params;
+  
+//     try {
+//       const user = await User.findById(userId);
+  
+//       if (!user) {
+//         return res.status(404).json({ message: "User not found" });
+//       }
+  
+//       if (user.role === "guest") {
+//         return res.status(400).json({ message: "Guest users do not require approval" });
+//       }
+  
+//       if (user.isUserVerified) {
+//         return res.status(400).json({ message: "User is already verified" });
+//       }
+  
+//       user.isUserVerified = true;
+//       await user.save();
+  
+//       res.status(200).json({ message: `${user.role} verified successfully` });
+//     } catch (error) {
+//       res.status(500).json({ message: "Error approving user", error: error.message });
+//     }
+//   };
+
+
+  exports.approveUser = async (req, res) => {
+    const { id } = req.params;
+
+    const user = await User.findById(id);
+    if (!user) {
+        const error = new Error("User not found");
+        error.statusCode = 404;
+        throw error;
+    }
+
+    if (user.isUserVerified) {
+        const error = new Error("User is already verified");
+        error.statusCode = 400;
+        throw error;
+    }
+    if (user.role === "guest") {
+        return res.status(400).json({ message: "Guest users do not require approval" });
+      }
+
+    user.isUserVerified = true;
+    await user.save();
+
+    res.status(200).json({ message: "User verified successfully" });
+};

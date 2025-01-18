@@ -17,6 +17,8 @@ exports.getAllUser = async(req,res)=>{
      
   }
 
+
+
 exports.deleteUser = async(req,res) =>{
   const userId = req.params.id
   const id = req.user.id
@@ -201,3 +203,25 @@ exports.updateEvent = async(req,res)=>{
 
   })
 }
+
+exports.getVerifiedUser = async (req, res) => {
+  try {
+      const verifiedUsers = await User.find({ isUserVerified: true }); // Filter for verified users
+      
+      if (verifiedUsers.length === 0) {
+          return res.status(404).json({
+              message: "No verified users found",
+          });
+      }
+
+      res.status(200).json({
+          message: "Verified users fetched successfully",
+          data: verifiedUsers,
+      });
+  } catch (error) {
+      res.status(500).json({
+          message: "An error occurred while fetching users",
+          error: error.message,
+      });
+  }
+};

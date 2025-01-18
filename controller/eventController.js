@@ -76,7 +76,7 @@ exports.getEventReport = async (req, res) => {
     doc.moveDown();
 
     // Event statistics
-    doc.text(`Total Participants: ${event.totalParticipants}`);
+    doc.text(`Total Participants: ${event.ticketsBooked}`);
     doc.text(`Tickets Sold: ${event.ticketsSold}`);
     doc.text(`Revenue Collected: $${revenue.toFixed(2)}`);
     doc.moveDown();
