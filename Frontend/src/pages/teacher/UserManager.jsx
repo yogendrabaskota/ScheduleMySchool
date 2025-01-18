@@ -5,47 +5,58 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const UserManager = () => {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const [users, setUsers] = useState([]);  // State to store the list of users
+  const [loading, setLoading] = useState(false);  // State to manage loading state
+  const [error, setError] = useState("");  // State to manage error message
+  const navigate = useNavigate();  // Initialize useNavigate hook
 
   // Function to get the token from localStorage
   const getToken = () => {
-    return localStorage.getItem("token"); // Adjust to sessionStorage if necessary
+    return localStorage.getItem("token");  // Adjust to sessionStorage if necessary
   };
 
-  // Axios instance with token
+  // Axios instance with token for authenticated requests
   const axiosInstance = axios.create({
     headers: {
-      Authorization: `${getToken()}`, // Add token to Authorization header
+      Authorization: `${getToken()}`,  // Add token to Authorization header
     },
   });
 
-  // Fetch verified users
+  // Fetch verified users from the backend
   const fetchVerifiedUsers = async () => {
-    setLoading(true);
+    setLoading(true);  // Set loading state to true
     try {
       const response = await axiosInstance.get("http://localhost:5000/api/user/verified");
-      setUsers(response.data.data);
-      setLoading(false);
+      setUsers(response.data.data);  // Set users data
+      setLoading(false);  // Set loading state to false
     } catch (err) {
-      setError("Failed to fetch users. Please try again.");
-      setLoading(false);
+      setError("Failed to fetch users. Please try again.");  // Handle error
+      setLoading(false);  // Set loading state to false
     }
   };
 
-  // Navigate to user verification page
+  // Navigate to user verification page when clicked
   const handleSeeRequestClick = () => {
-    navigate("/user-verification"); // Navigate to the user verification page using useNavigate
+    navigate("/user-verification");  // Navigate to the user verification page using useNavigate
   };
 
+  // Fetch verified users when component mounts
   useEffect(() => {
     fetchVerifiedUsers();
-  }, []);
+  }, []);  // Empty dependency array means this effect runs once when the component mounts
 
+  // If loading, display loading message
   if (loading) return <div className="text-center mt-10">Loading...</div>;
+
+  // If error, display error message
   if (error) return <div className="text-center mt-10 text-red-500">{error}</div>;
+
+  // Categorize users based on roles (teachers, students, guests)
+  const categorizedUsers = {
+    teachers: users.filter(user => user.role === "teacher"),
+    students: users.filter(user => user.role === "student"),
+    guests: users.filter(user => user.role === "guest"),
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex">
@@ -92,23 +103,34 @@ const UserManager = () => {
           </button>
         </div>
 
-        {users.length === 0 ? (
-          <div className="text-center text-gray-500">No verified users found.</div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {users.map((user) => (
-              <div
-                key={user._id}
-                className="bg-white shadow-md rounded-lg p-4 border border-gray-200"
-              >
-                <h2 className="text-lg font-bold">{user.name}</h2>
-                <p>Email: {user.email}</p>
-                <p>Role: {user.role}</p>
-                <p>Status: {user.isUserVerified ? "Verified" : "Not Verified"}</p>
+        {/* Loop through the categories and display users */}
+        {Object.keys(categorizedUsers).map((category) => (
+          <div key={category} className="mb-8">
+            <h2 className="text-xl font-semibold mb-4 capitalize">{category}</h2>
+            
+            {/* If no users found for this category, show message */}
+            {categorizedUsers[category].length === 0 ? (
+              <div className="text-center text-gray-500">No {category} found.</div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {/* Display users in this category */}
+                {categorizedUsers[category].map((user) => (
+                  <div
+                    key={user._id}
+                    className="bg-white shadow-md rounded-lg p-4 border border-gray-200"
+                  >
+                    <h2 className="text-lg font-bold">{user.name}</h2>
+                    <p>Email: {user.email}</p>
+                    <p>Role: {user.role}</p>
+                    <p>Status: {user.isUserVerified ? "Verified" : "Not Verified"}</p>
+                  </div>
+                ))}
               </div>
-            ))}
+            )}
+            {/* Add a line after each category */}
+            <hr className="my-6 border-gray-300" />
           </div>
-        )}
+        ))}
       </div>
     </div>
   );
