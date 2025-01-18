@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 
 const Report = () => {
   const { id } = useParams(); // Get the event ID from the URL
-  const [eventReport, setEventReport] = useState(null);
+  const [pdfUrl, setPdfUrl] = useState(null); // To store the URL of the PDF file
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -20,10 +20,15 @@ const Report = () => {
       }
 
       try {
+        // Make the API call to get the PDF file
         const response = await axios.get(`${baseURL}/api/event/report/${id}`, {
-          headers: { Authorization: `${token}` },
+          headers: { Authorization: `Bearer ${token}` },
+          responseType: "blob", // This will tell axios to handle the response as binary data
         });
-        setEventReport(response.data.data); // Assuming response contains the report data
+
+        // Create a URL for the PDF blob
+        const fileURL = URL.createObjectURL(response.data);
+        setPdfUrl(fileURL); // Set the PDF URL for display
         setLoading(false);
       } catch (error) {
         setError(error.response?.data?.message || error.message);
@@ -33,6 +38,15 @@ const Report = () => {
 
     fetchEventReport();
   }, [id, token]);
+
+  const handleDownload = () => {
+    if (pdfUrl) {
+      const link = document.createElement("a");
+      link.href = pdfUrl;
+      link.download = `event-report-${id}.pdf`;
+      link.click();
+    }
+  };
 
   if (loading) {
     return <div className="text-center text-lg">Loading report...</div>;
@@ -46,37 +60,25 @@ const Report = () => {
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-8">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">Event Report</h2>
 
-      {eventReport ? (
+      {pdfUrl ? (
         <div className="bg-white rounded-lg shadow-md p-8 w-full max-w-4xl">
-          <h3 className="text-2xl font-semibold text-gray-800 mb-4">Event Details</h3>
-          <div className="space-y-4">
-            <div>
-              <strong className="font-semibold">Event Title:</strong> {eventReport.title}
-            </div>
-            <div>
-              <strong className="font-semibold">Location:</strong> {eventReport.location}
-            </div>
-            <div>
-              <strong className="font-semibold">Date:</strong> {new Date(eventReport.date).toLocaleDateString()}
-            </div>
-            <div>
-              <strong className="font-semibold">Time:</strong> {eventReport.time}
-            </div>
+          <div className="flex justify-between items-center">
+            <h3 className="text-2xl font-semibold text-gray-800 mb-4">Event Report PDF</h3>
+            <button
+              onClick={handleDownload}
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            >
+              Download PDF
+            </button>
           </div>
 
           <div className="mt-6">
-            <h3 className="text-2xl font-semibold text-gray-800 mb-4">Report Data</h3>
-            <div className="space-y-2">
-              <div>
-                <strong className="font-semibold">Total Participants:</strong> {eventReport.totalParticipants}
-              </div>
-              <div>
-                <strong className="font-semibold">Tickets Sold:</strong> {eventReport.ticketsSold}
-              </div>
-              <div>
-                <strong className="font-semibold">Revenue Collected:</strong> ${eventReport.revenue}
-              </div>
-            </div>
+            <iframe
+              src={pdfUrl}
+              width="100%"
+              height="600px"
+              title="Event Report PDF"
+            ></iframe>
           </div>
         </div>
       ) : (
