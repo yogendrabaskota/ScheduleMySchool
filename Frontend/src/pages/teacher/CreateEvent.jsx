@@ -55,117 +55,155 @@ const CreateEvent = () => {
     }
   };
 
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100 p-6 flex items-center justify-center">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
-        <h1 className="text-2xl font-bold text-blue-600 text-center mb-6">
-          Create Event
-        </h1>
+    <div className="min-h-screen flex bg-gray-100">
+      {/* Sidebar */}
+      <div className="w-64 bg-white shadow-lg p-6">
+        <h1 className="text-xl font-bold text-blue-600 mb-4">Teacher Dashboard</h1>
+        <ul className="space-y-4">
+          <li>
+            <button
+              onClick={() => handleNavigate("/create-event")}
+              className="w-full text-left bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300"
+            >
+              Create Event
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => handleNavigate("/your-event")}
+              className="w-full text-left bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
+            >
+              Your Event
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => handleNavigate("/all-users")}
+              className="w-full text-left bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition duration-300"
+            >
+              All Users
+            </button>
+          </li>
+        </ul>
+      </div>
 
-        {error && (
-          <p className="text-red-500 text-center mb-4">{error}</p>
-        )}
-        {success && (
-          <p className="text-green-500 text-center mb-4">{success}</p>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-              Title
-            </label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-              Description
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              required
-            ></textarea>
-          </div>
-
-          <div>
-            <label htmlFor="date" className="block text-sm font-medium text-gray-700">
-              Date
-            </label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              value={formData.date}
-              onChange={handleChange}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="time" className="block text-sm font-medium text-gray-700">
-              Time
-            </label>
-            <input
-              type="time"
-              id="time"
-              name="time"
-              value={formData.time}
-              onChange={handleChange}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="location" className="block text-sm font-medium text-gray-700">
-              Location
-            </label>
-            <input
-              type="text"
-              id="location"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              required
-            />
-          </div>
-
-          <div>
-            <label htmlFor="totalTickets" className="block text-sm font-medium text-gray-700">
-              Total Tickets
-            </label>
-            <input
-              type="number"
-              id="totalTickets"
-              name="totalTickets"
-              value={formData.totalTickets}
-              onChange={handleChange}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-300"
-          >
+      {/* Main Content */}
+      <div className="flex-grow flex items-center justify-center p-8">
+        <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8">
+          <h1 className="text-2xl font-bold text-blue-600 text-center mb-6">
             Create Event
-          </button>
-        </form>
+          </h1>
+
+          {error && (
+            <p className="text-red-500 text-center mb-4">{error}</p>
+          )}
+          {success && (
+            <p className="text-green-500 text-center mb-4">{success}</p>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+                Title
+              </label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+                Description
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                required
+              ></textarea>
+            </div>
+
+            <div>
+              <label htmlFor="date" className="block text-sm font-medium text-gray-700">
+                Date
+              </label>
+              <input
+                type="date"
+                id="date"
+                name="date"
+                value={formData.date}
+                onChange={handleChange}
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="time" className="block text-sm font-medium text-gray-700">
+                Time
+              </label>
+              <input
+                type="time"
+                id="time"
+                name="time"
+                value={formData.time}
+                onChange={handleChange}
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="location" className="block text-sm font-medium text-gray-700">
+                Location
+              </label>
+              <input
+                type="text"
+                id="location"
+                name="location"
+                value={formData.location}
+                onChange={handleChange}
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="totalTickets" className="block text-sm font-medium text-gray-700">
+                Total Tickets
+              </label>
+              <input
+                type="number"
+                id="totalTickets"
+                name="totalTickets"
+                value={formData.totalTickets}
+                onChange={handleChange}
+                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition duration-300"
+            >
+              Create Event
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

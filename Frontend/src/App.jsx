@@ -11,6 +11,7 @@ import ResetPassword from './pages/auth/ResetPassword'
 import TeacherDashboard from './pages/teacher/TeacherDashboard'
 import CreateEvent from './pages/teacher/CreateEvent'
 import YourEvents from './pages/teacher/YourEvent'
+import UpdateEvent from './pages/teacher/UpdateEvent'
 
 
 
@@ -32,6 +33,8 @@ function App() {
       <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
       <Route path="/create-event" element={<CreateEvent />} />
       <Route path="/your-event" element={<YourEvents />} />
+      <Route path="/event/update/:id" element={<UpdateEvent />} />
+
 
     </Routes>
       
