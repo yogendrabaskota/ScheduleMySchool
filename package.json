@@ -16,10 +16,12 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.3",
+    "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.16",
     "nodemon": "^3.1.9",
+    "pdfkit": "^0.16.0",
     "schedulemyschool": "file:",
     "util": "^0.12.5",
-    "utils": "^0.3.1"
+    "utils": "^0.2.2"
   }
 }

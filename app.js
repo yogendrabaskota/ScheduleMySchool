@@ -1,6 +1,7 @@
 const express = require('express')
 const { connectDatabase } = require('./database/database')
 const app = express()
+const path = require('path');
 
 
 require("dotenv").config()
@@ -11,6 +12,7 @@ connectDatabase()
 const cors = require('cors');
 app.use(cors());
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 app.get("/",(req,res)=>{  
