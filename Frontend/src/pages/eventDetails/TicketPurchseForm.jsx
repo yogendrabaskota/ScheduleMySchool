@@ -8,7 +8,7 @@ const TicketPurchaseForm = () => {
   const [quantity, setQuantity] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState(''); // Start with an empty value
   const baseURL = 'http://localhost:5000';
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Get role from localStorage and set the payment method
@@ -29,13 +29,21 @@ const TicketPurchaseForm = () => {
   const handlePurchase = async (e) => {
     e.preventDefault();
 
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        alert('You need to log in to purchase tickets!');
-        return;
-      }
+    const token = localStorage.getItem('token');
+    const role = localStorage.getItem('role');
 
+    if (!token) {
+      alert('You need to log in to purchase tickets!');
+      return;
+    }
+
+    if (role === 'guest') {
+      // Redirect guest users to checkout page when they try to purchase
+      navigate(`/checkout/${id}`);
+      return; // Prevent form submission after redirect
+    }
+
+    try {
       const response = await axios.post(
         `${baseURL}/api/ticket/${id}`,
         { quantity, paymentMethod },
@@ -45,12 +53,11 @@ const TicketPurchaseForm = () => {
       );
 
       alert('Ticket purchased successfully!');
-      navigate("/")
+      navigate("/"); // Redirect to home or any other page after successful purchase
       
     } catch (error) {
       console.error('Error purchasing ticket:', error.response?.data?.message || error.message);
-      alert(error.response.data.message)
-      //alert('Failed to purchase ticket. Please try again.');
+      alert(error.response?.data?.message || 'Failed to purchase ticket. Please try again.');
     }
   };
 
