@@ -57,12 +57,18 @@ exports.loginUser = async(req,res)=>{
 
   // console.log(userFound[0].isUserVerified)
    //console.log(!userFound.isUserVerified)
+   //console.log(userFound[0].isUserVerified == false)
 
-   if(!userFound.isUserVerified){
-    return res.status(403).json({
-        message: "User is not verified yet"
-    });
-}
+//    if(!userFound.isUserVerified){
+//     return res.status(403).json({
+//         message: "User is not verified yet"
+//         });
+//     }
+    if(userFound[0].isUserVerified == false){
+        return res.status(403).json({
+         message: "User is not verified yet"
+            });
+    }
     
     //password check
     const isMatched = bcrypt.compareSync(password,userFound[0].password)
