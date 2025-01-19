@@ -15,6 +15,7 @@ import UpdateEvent from './pages/teacher/UpdateEvent'
 import Report from './pages/teacher/Report'
 import UserVerification from './pages/auth/UserVerification'
 import UserManager from './pages/teacher/UserManager'
+import PastEvents from './pages/teacher/PastEvent'
 
 
 
@@ -40,6 +41,7 @@ function App() {
       <Route path="/event/report/:id" element={<Report />} />
       <Route path="/all-users" element={<UserManager />} />
       <Route path="/user-verification" element={<UserVerification />} />
+      <Route path="/past-event" element={<PastEvents />} />
 
 
     </Routes>

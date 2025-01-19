@@ -3,9 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
-const EventCard = ({ id, title, description, location, date, time, availableTickets, ticketsBooked }) => {
-  const eventDate = new Date(date);
-
+const PastEventCard = ({ id, title, description, location, date, time }) => {
   return (
     <div className="flex flex-col bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow w-80 h-auto p-6 m-4">
       <h2 className="text-2xl font-bold text-gray-800 mb-2">{title}</h2>
@@ -19,29 +17,16 @@ const EventCard = ({ id, title, description, location, date, time, availableTick
       <div className="text-gray-700 mb-3">
         <span className="font-semibold">⏰ Time:</span> {time}
       </div>
-      <div className={`text-sm font-bold mb-3 ${availableTickets > 0 ? "text-green-500" : "text-red-500"}`}>
-        🎟️ Available Tickets: {availableTickets > 0 ? availableTickets : "Sold Out"}
-      </div>
-      <div className="text-sm font-bold mb-3">
-        <span className="font-semibold">🎟️ Ticket Booked: </span>{ticketsBooked}
-      </div>
-      <div className="flex justify-between">
-        <Link to={`/event/${id}`}>
-          <button className="bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold py-2 px-4 rounded-lg">
-            View Details
-          </button>
-        </Link>
-        <Link to={`/event/update/${id}`}>
-          <button className="bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold py-2 px-4 rounded-lg">
-            Update Event
-          </button>
-        </Link>
-      </div>
+      <Link to={`/event/report/${id}`}>
+        <button className="bg-red-500 hover:bg-red-600 text-white text-sm font-semibold py-2 px-4 rounded-lg">
+          Generate Report
+        </button>
+      </Link>
     </div>
   );
 };
 
-const YourEvents = () => {
+const PastEvents = () => {
   const [events, setEvents] = useState([]);
   const baseURL = "https://schedulemyschool.onrender.com";
   const token = localStorage.getItem("token");
@@ -61,14 +46,17 @@ const YourEvents = () => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        const upcomingEvents = response.data.data.filter((event) => {
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
+
+        const pastEvents = response.data.data.filter((event) => {
           const eventDate = new Date(event.date);
-          return eventDate >= today;
+          return eventDate < yesterday;
         });
 
-        setEvents(upcomingEvents);
+        setEvents(pastEvents);
       } catch (error) {
-        console.error("Error fetching your events:", error.response?.data?.message || error.message);
+        console.error("Error fetching past events:", error.response?.data?.message || error.message);
       }
     };
 
@@ -118,11 +106,11 @@ const YourEvents = () => {
 
       {/* Main Content */}
       <div className="flex-grow p-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Your Upcoming Events</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Your Past Events</h2>
         <div className="flex flex-wrap justify-center items-center">
           {events.length > 0 ? (
             events.map((event) => (
-              <EventCard
+              <PastEventCard
                 key={event._id}
                 id={event._id}
                 title={event.title}
@@ -130,12 +118,10 @@ const YourEvents = () => {
                 location={event.location}
                 date={event.date}
                 time={event.time}
-                availableTickets={event.totalTickets - event.ticketsBooked}
-                ticketsBooked={event.ticketsBooked}
               />
             ))
           ) : (
-            <p className="text-gray-600 text-lg">No upcoming events found. Create one to get started!</p>
+            <p className="text-gray-600 text-lg">No past events found.</p>
           )}
         </div>
       </div>
@@ -143,4 +129,4 @@ const YourEvents = () => {
   );
 };
 
-export default YourEvents;
+export default PastEvents;

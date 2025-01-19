@@ -47,6 +47,15 @@ const TeacherDashboard = () => {
             </button>
           </li>
           <li>
+          <button
+              onClick={() => navigate("/past-event")}
+              className="w-full text-left bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-300"
+            >
+              Past Event
+            </button>
+          </li>
+
+          <li>
             <button
               onClick={handleAllUsers}
               className="w-full text-left bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition duration-300"
