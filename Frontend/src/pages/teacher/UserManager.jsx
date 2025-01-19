@@ -26,7 +26,7 @@ const UserManager = () => {
   const fetchVerifiedUsers = async () => {
     setLoading(true);  // Set loading state to true
     try {
-      const response = await axiosInstance.get("http://localhost:5000/api/user/verified");
+      const response = await axiosInstance.get("https://schedulemyschool.onrender.com/api/user/verified");
       setUsers(response.data.data);  // Set users data
       setLoading(false);  // Set loading state to false
     } catch (err) {

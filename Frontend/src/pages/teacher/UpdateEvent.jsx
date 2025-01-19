@@ -5,7 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 const UpdateEvent = () => {
   const { id } = useParams(); // Get the event ID from the URL
   const navigate = useNavigate();
-  const baseURL = "http://localhost:5000"; // Replace with your backend URL
+  const baseURL = "https://schedulemyschool.onrender.com"; // Replace with your backend URL
   const token = localStorage.getItem("token");
 
   const [event, setEvent] = useState({
