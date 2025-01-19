@@ -251,3 +251,39 @@ exports.resetPassword = async(req,res) => {
 
     res.status(200).json({ message: "User verified successfully" });
 };
+
+exports.rejectUser = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        // Find the user by ID
+        const user = await User.findById(id);
+        if (!user) {
+            const error = new Error("User not found");
+            error.statusCode = 404;
+            throw error;
+        }
+
+        // Check if the user is already verified
+        if (user.isUserVerified) {
+            const error = new Error("Verified users cannot be rejected");
+            error.statusCode = 400;
+            throw error;
+        }
+
+        // Check if the user role is 'guest'
+        if (user.role === "guest") {
+            return res.status(400).json({ message: "Guest users cannot be rejected" });
+        }
+
+        // Delete the user or mark as rejected (soft delete)
+        await User.findByIdAndDelete(id); // For hard delete
+        // Alternatively, use a soft delete like setting `user.isRejected = true;` if required:
+        // user.isRejected = true;
+        // await user.save();
+
+        res.status(200).json({ message: "User rejected successfully" });
+    } catch (error) {
+        res.status(error.statusCode || 500).json({ message: error.message || "Internal server error" });
+    }
+};

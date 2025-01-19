@@ -1,5 +1,5 @@
 
-const { registerUser, loginUser, forgetPassword, verifyotp, resetPassword, approveUser } = require("../controller/auth/authController")
+const { registerUser, loginUser, forgetPassword, verifyotp, resetPassword, approveUser, rejectUser } = require("../controller/auth/authController")
 const catchAsync = require("../services/catchAsync")
 
 
@@ -19,6 +19,8 @@ router.route("/resetPassword")
     .post(catchAsync(resetPassword))
 router.route("/verifyUser/:id")
     .put(catchAsync(approveUser))
+router.route("/rejectUser/:id")
+    .put(catchAsync(rejectUser))
 
 
 module.exports = router
