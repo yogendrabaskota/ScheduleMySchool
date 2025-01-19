@@ -16,6 +16,7 @@ import Report from './pages/teacher/Report'
 import UserVerification from './pages/auth/UserVerification'
 import UserManager from './pages/teacher/UserManager'
 import PastEvents from './pages/teacher/PastEvent'
+import TicketPurchaseForm from './pages/eventDetails/TicketPurchseForm'
 
 
 
@@ -42,6 +43,8 @@ function App() {
       <Route path="/all-users" element={<UserManager />} />
       <Route path="/user-verification" element={<UserVerification />} />
       <Route path="/past-event" element={<PastEvents />} />
+      <Route path="/ticket-purchase/:id" element={<TicketPurchaseForm />} />
+   
 
 
     </Routes>

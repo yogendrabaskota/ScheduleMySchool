@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const EventDetails = () => {
   const { id } = useParams(); // Get event ID from URL
   const [event, setEvent] = useState(null);
+  const navigate = useNavigate(); // To redirect
   const baseURL = 'http://localhost:5000';
 
   useEffect(() => {
@@ -25,8 +26,7 @@ const EventDetails = () => {
   }
 
   const handleRegister = () => {
-    //alert('Registration functionality coming soon!');
-    // Logic for registration can be added here
+    navigate(`/ticket-purchase/${id}`); // Redirect to ticket purchasing form
   };
 
   return (
