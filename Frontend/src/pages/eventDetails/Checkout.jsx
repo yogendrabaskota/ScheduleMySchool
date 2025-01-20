@@ -1,12 +1,16 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const CheckoutPage = () => {
   const { id } = useParams(); // Get event ID from URL
+  const eventId = id
   const [ticketDetails, setTicketDetails] = useState(null);
   const [paymentStatus, setPaymentStatus] = useState('pending');
   const navigate = useNavigate();
+
+  const totalAmount = 100
 
   useEffect(() => {
     // Fetch ticket details for the guest user
@@ -20,12 +24,20 @@ const CheckoutPage = () => {
     const fetchTicketDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/ticket/${id}`,
+          `http://localhost:5000/api/ticket`,
           {
             headers: { Authorization: `${token}` },
           }
         );
         setTicketDetails(response.data.data); // Assuming this will contain ticket info
+        console.log("resp",response.data.data)
+        //console.log("resp",ticketDetails[0].ticketNumber)
+        //console.log("resp",ticketDetails[0])
+
+        //console.log("resp",response.data.data.eventId)
+        //console.log("resp",response.data.data.totalAmount)
+        //console.log("resp",response.data.data.quantity)
+      
       } catch (error) {
         console.error('Error fetching ticket details:', error);
         alert('Failed to load ticket details.');
@@ -33,6 +45,7 @@ const CheckoutPage = () => {
     };
 
     fetchTicketDetails();
+    
   }, [id, navigate]);
 
   const handlePayment = async () => {
@@ -77,9 +90,9 @@ const CheckoutPage = () => {
         <h1 className="text-2xl font-bold text-gray-800 mb-6">Checkout</h1>
         <div className="mb-4">
           <h3 className="text-xl font-semibold text-gray-700">Event Details</h3>
-          <p className="text-gray-600">Event ID: {ticketDetails.eventId}</p>
-          <p className="text-gray-600">Quantity: {ticketDetails.quantity}</p>
-          <p className="text-gray-600">Total Price: {/* Implement price logic here */} Free</p>
+          <p className="text-gray-600">Event ID: {eventId}</p>
+          <p className="text-gray-600">Quantity: {ticketDetails[0].quantity}</p>
+          <p className="text-gray-600">Total Price: {/* Implement price logic here */} {totalAmount * ticketDetails[0].quantity}</p>
         </div>
 
         <div className="mb-4">
