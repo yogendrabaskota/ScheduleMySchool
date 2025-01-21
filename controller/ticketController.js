@@ -86,8 +86,16 @@ exports.getMyTicket = async(req,res) =>{
             message : "Please provide userId"
         })
     }
-    const tickets = await Ticket.find({ userId }).populate('eventId', 'title date');
-
+     const tickets = await Ticket.find({userId}, "-createdAt -updatedAt -__v").populate({
+        path:"eventId",
+        model : "Event",
+        select : "-createdAt -updatedAt -__v"
+    }).populate({
+        path:"userId",
+        model : "User",
+        select : "-createdAt -updatedAt -__v"
+    }) 
+    console.log(tickets)
     if(tickets.length < 1){
         return res.status(404).json({
             message : "This user have no ticket"

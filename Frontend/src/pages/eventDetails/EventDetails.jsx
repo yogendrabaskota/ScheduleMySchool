@@ -6,7 +6,7 @@ const EventDetails = () => {
   const { id } = useParams(); // Get event ID from URL
   const [event, setEvent] = useState(null);
   const navigate = useNavigate(); // To redirect
-  const baseURL = 'http://localhost:5000';
+  const baseURL = 'https://schedulemyschool.onrender.com/';
 
   useEffect(() => {
     const fetchEventDetails = async () => {

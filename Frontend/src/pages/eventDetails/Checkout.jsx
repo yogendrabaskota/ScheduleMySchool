@@ -57,7 +57,7 @@ const CheckoutPage = () => {
       }
 
       const response = await axios.post(
-        `http://localhost:5000/api/payment/${id}`,
+        `https://schedulemyschool.onrender.com/api/payment/${id}`,
         { status: 'paid' },
         {
           headers: { Authorization: `Bearer ${token}` },
