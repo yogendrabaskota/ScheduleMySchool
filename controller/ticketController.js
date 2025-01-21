@@ -25,13 +25,13 @@ exports.bookTicket = async(req,res)=>{
         })
     }
 
-    const existingTicket = await Ticket.findOne({ eventId, userId });
-    if (existingTicket) {
-        return res.status(400).json({
-            message:
-                "You already have booked a ticket for this event. Users are not allowed to buy tickets more than once for the same event.",
-        });
-    }
+    // const existingTicket = await Ticket.findOne({ eventId, userId });
+    // if (existingTicket) {
+    //     return res.status(400).json({
+    //         message:
+    //             "You already have booked a ticket for this event. Users are not allowed to buy tickets more than once for the same event.",
+    //     });
+    // }
     if(event.ticketsBooked + quantity >= event.totalTickets){
         return res.status(400).json({
             message : "Sorry!! Ticket is already sold out"
@@ -42,7 +42,8 @@ exports.bookTicket = async(req,res)=>{
     const ticket = await Ticket.create({
         eventId,
         userId,
-        ticketNumber: `TICKET-${Date.now()}-${userId}`, 
+        ticketNumber: `TICKET-${Date.now()}${userId}`, 
+       // ticketNumber: userId, 
         quantity,
         paymentDetails : {
             status : 'pending'
@@ -95,7 +96,7 @@ exports.getMyTicket = async(req,res) =>{
         model : "User",
         select : "-createdAt -updatedAt -__v"
     }) 
-    console.log(tickets)
+   // console.log(tickets)
     if(tickets.length < 1){
         return res.status(404).json({
             message : "This user have no ticket"

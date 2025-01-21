@@ -37,10 +37,55 @@ const TicketPurchaseForm = () => {
       return;
     }
 
-    if (role === 'guest') {
-      // Redirect guest users to checkout page when they try to purchase
-      navigate(`/checkout/${id}`);
-      return; // Prevent form submission after redirect
+    if (paymentMethod === 'khalti') {
+      try {
+        // First API call to create the ticket
+        const ticketResponse = await axios.post(
+          `${baseURL}/api/ticket/${id}`,
+          { quantity, paymentMethod },
+          {
+            headers: { Authorization: `${token}` },
+          }
+        );
+    
+        // Log the full ticket response for debugging
+        console.log("Ticket Response:", ticketResponse);
+    
+        // Ensure the response data structure is correct
+        if (!ticketResponse?.data?.data?._id) {
+          console.error('Invalid response from ticket API:', ticketResponse.data);
+          alert('Failed to fetch ticket details.');
+          return;
+        }
+    
+        // Extract the ticket ID (_id) from the response
+        const ticketNum = ticketResponse.data.data._id; // Use _id from the ticket model
+        const quantityFromResponse = ticketResponse.data.data.quantity; // Ensure this is initialized properly
+        const initialAmount = 100;  // Assuming each ticket is priced 100
+        const amount = initialAmount * quantityFromResponse;  // Calculate amount based on quantity
+    
+        console.log("Extracted Ticket ID:", ticketNum);
+        console.log("Calculated Amount:", amount);
+    
+        // Second API call using the extracted _id as ticketNum
+        const paymentResponse = await axios.post(
+          `${baseURL}/api/payment`,
+          { ticketNum, amount },
+          {
+            headers: { Authorization: `${token}` },
+          }
+        );
+    
+        // Redirect user to the Khalti payment page
+      
+        console.log("payment url",paymentResponse.data.payment_url)
+        window.location.href = paymentResponse.data.payment_url;  // Use the payment URL from the response
+        console.log('Payment Response:', paymentResponse.data);
+      } catch (error) {
+        console.error('Error during payment:', error);
+        alert('An error occurred. Please try again.');
+      }
+      return;
     }
 
     try {
@@ -56,8 +101,8 @@ const TicketPurchaseForm = () => {
       navigate("/"); // Redirect to home or any other page after successful purchase
       
     } catch (error) {
-      console.error('Error purchasing ticket:', error.response?.data?.message || error.message);
-      alert(error.response?.data?.message || 'Failed to purchase ticket. Please try again.');
+      console.error('Error purchasing ticket 1:', error.response?.data?.message || error.message);
+      alert(error.response?.data?.message || 'Failed to purchase ticket. Please try again. 1');
     }
   };
 

@@ -5,15 +5,14 @@ import axios from 'axios';
 
 const CheckoutPage = () => {
   const { id } = useParams(); // Get event ID from URL
-  const eventId = id
+  const eventId = id;
   const [ticketDetails, setTicketDetails] = useState(null);
   const [paymentStatus, setPaymentStatus] = useState('pending');
   const navigate = useNavigate();
 
-  const totalAmount = 100
+  const totalAmount = 100; // Example total amount
 
   useEffect(() => {
-    // Fetch ticket details for the guest user
     const token = localStorage.getItem('token');
     if (!token) {
       alert('You need to log in to proceed!');
@@ -23,21 +22,19 @@ const CheckoutPage = () => {
     // Fetch ticket details for the event
     const fetchTicketDetails = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/api/ticket`,
+        const response = await axios.post(
+        //  `http://localhost:5000/api/ticket`,
+              `http://api/ticket/${id}`,
+              {},
           {
             headers: { Authorization: `${token}` },
           }
         );
-        setTicketDetails(response.data.data); // Assuming this will contain ticket info
-        console.log("resp",response.data.data)
-        //console.log("resp",ticketDetails[0].ticketNumber)
-        //console.log("resp",ticketDetails[0])
 
-        //console.log("resp",response.data.data.eventId)
-        //console.log("resp",response.data.data.totalAmount)
-        //console.log("resp",response.data.data.quantity)
-      
+        console.log("Here")
+       // setTicketDetails(response.data.data); // Assuming this will contain ticket info
+       // console.log("details",ticketDetails[0])
+        //console.log(ticketDetails[0].ticketNumber)
       } catch (error) {
         console.error('Error fetching ticket details:', error);
         alert('Failed to load ticket details.');
@@ -45,8 +42,22 @@ const CheckoutPage = () => {
     };
 
     fetchTicketDetails();
-    
   }, [id, navigate]);
+
+
+
+
+  useEffect(() => {
+    if (ticketDetails) {
+      console.log('Updated Ticket Details:', ticketDetails[0]);
+      console.log(ticketDetails[0].ticketNumber);
+    }
+  }, [ticketDetails]); // This runs only when `ticketDetails` updates
+
+
+
+
+
 
   const handlePayment = async () => {
     try {
@@ -56,18 +67,34 @@ const CheckoutPage = () => {
         return;
       }
 
+      if (!ticketDetails || ticketDetails.length === 0) {
+        alert('Ticket details are not available!');
+        return;
+      }
+      
+
+      const ticketNumm = ticketDetails[0].ticketNumber; // Fetch ticket number dynamically
+      console.log("numm",ticketNumm)
+
+      const ticketNum = ticketNumm.split('TICKET-')[1]; // Extract the part after "TICKET-"
+
+
+
       const response = await axios.post(
-        `https://schedulemyschool.onrender.com/api/payment/${id}`,
-        { status: 'paid' },
+        `http://localhost:5000/api/payment`,
         {
-          headers: { Authorization: `Bearer ${token}` },
+          ticketNum, // Send ticket number
+          amount: totalAmount * ticketDetails[0].quantity, // Calculate total amount dynamically
+          status: 'paid', // Include status if required
+        },
+        {
+          headers: { Authorization: `${token}` },
         }
       );
 
       setPaymentStatus('paid'); // Set payment status to 'paid'
       alert('Payment Successful! Your ticket has been booked.');
       navigate('/'); // Redirect to homepage or wherever necessary
-
     } catch (error) {
       console.error('Error during payment:', error);
       alert('Payment failed. Please try again.');
@@ -92,7 +119,7 @@ const CheckoutPage = () => {
           <h3 className="text-xl font-semibold text-gray-700">Event Details</h3>
           <p className="text-gray-600">Event ID: {eventId}</p>
           <p className="text-gray-600">Quantity: {ticketDetails[0].quantity}</p>
-          <p className="text-gray-600">Total Price: {/* Implement price logic here */} {totalAmount * ticketDetails[0].quantity}</p>
+          <p className="text-gray-600">Total Price: {totalAmount * ticketDetails[0].quantity}</p>
         </div>
 
         <div className="mb-4">

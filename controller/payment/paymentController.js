@@ -21,7 +21,7 @@ exports.initiateKhaltiPayment = async(req,res)=>{
             'Authorization' : `key ${process.env.AUTHORIZATION}`,
         }
     })
-    //console.log(response.data)
+    console.log(response.data)
     let ticket = await Ticket.findById(ticketNum)
     //console.log("ticket",ticket)
     ticket.paymentDetails.pidx = response.data.pidx
