@@ -26,7 +26,11 @@ exports.initiateKhaltiPayment = async(req,res)=>{
     //console.log("ticket",ticket)
     ticket.paymentDetails.pidx = response.data.pidx
     await ticket.save()
-    res.redirect(response.data.payment_url)
+    // res.redirect(response.data.payment_url)
+    res.status(200).json({
+        message: "Payment initiation successful",
+        payment_url: response.data.payment_url
+    });
     
 }
 
@@ -53,7 +57,10 @@ exports.verifyPidx = async(req,res)=>{
 
 
         //notify to success frontend
-        res.redirect("http://localhost:5000/successPage")
+       // res.redirect("http://localhost:5000/successPage")
+       const walletUrl = `https://test-pay.khalti.com/wallet?pidx=${pidx}`;
+            return res.redirect(walletUrl);
+       //alert("successful")
        // io.emit("payment",{message : "Payment Successfully"})
 
     }else{
