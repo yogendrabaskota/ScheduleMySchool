@@ -7,7 +7,7 @@ const TicketPurchaseForm = () => {
   const { id } = useParams(); // Get event ID from URL
   const [quantity, setQuantity] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState(''); // Start with an empty value
-  const baseURL = 'http://localhost:5000';
+  const baseURL = 'https://schedulemyschool.onrender.com';
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const TicketPurchaseForm = () => {
           }
         );
 
-        console.log('Ticket Response:', ticketResponse);
+        //console.log('Ticket Response:', ticketResponse);
 
         if (!ticketResponse?.data?.data?._id) {
           console.error('Invalid response from ticket API:', ticketResponse.data);
@@ -61,8 +61,8 @@ const TicketPurchaseForm = () => {
         const initialAmount = 100*100; // Assuming each ticket costs 100
         const amount = initialAmount * quantityFromResponse;
 
-        console.log('Extracted Ticket ID:', ticketNum);
-        console.log('Calculated Amount:', amount);
+        //console.log('Extracted Ticket ID:', ticketNum);
+        //console.log('Calculated Amount:', amount);
 
         // Process payment (second API call)
         const paymentResponse = await axios.post(
@@ -73,8 +73,8 @@ const TicketPurchaseForm = () => {
           }
         );
 
-        console.log('Payment Response:', paymentResponse.data);
-        console.log('Payment URL:', paymentResponse.data.payment_url);
+        //console.log('Payment Response:', paymentResponse.data);
+        //console.log('Payment URL:', paymentResponse.data.payment_url);
 
         // Redirect to Khalti payment page
         window.location.href = paymentResponse.data.payment_url;
