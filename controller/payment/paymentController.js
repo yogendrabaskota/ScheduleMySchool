@@ -9,7 +9,7 @@ exports.initiateKhaltiPayment = async(req,res)=>{
         })
     }
     const data = {
-        return_url : "http://localhost:5000/api/payment/success",
+        return_url : "https://schedulemyschool.onrender.com/api/payment/success",
         purchase_order_id : ticketNum,
         amount : amount,
         website_url : "https://schedulemyschool.onrender.com/",
