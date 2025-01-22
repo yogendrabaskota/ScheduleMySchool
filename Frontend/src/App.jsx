@@ -18,7 +18,8 @@ import UserManager from './pages/teacher/UserManager'
 import PastEvents from './pages/teacher/PastEvent'
 import TicketPurchaseForm from './pages/eventDetails/TicketPurchseForm'
 import StudentDashboard from './pages/student/StudentDashboard'
-
+import ProfileManager from './pages/student/Profile'
+import TicketPage from './pages/student/TicketPage'
 
 
 function App() {
@@ -46,6 +47,8 @@ function App() {
       <Route path="/past-event" element={<PastEvents />} />
       <Route path="/ticket-purchase/:id" element={<TicketPurchaseForm />} />
       <Route path="/student-dashboard" element={<StudentDashboard />} />
+      <Route path="/profile" element={<ProfileManager />} />
+      <Route path="/ticket" element={<TicketPage />} />
 
 
 

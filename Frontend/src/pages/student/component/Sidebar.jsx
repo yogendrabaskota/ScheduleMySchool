@@ -10,15 +10,14 @@ const Sidebar = ({ title }) => {
     navigate(path);
   };
 
-
   return (
-    <div className="w-64 bg-white shadow-lg p-6">
-      <h1 className="text-xl font-bold text-blue-600 mb-4">{title}</h1>
-      <ul className="space-y-4">
-      <li>
+    <div className="w-64  p-6">
+      <h1 className="text-xl font-bold text-blue-600 mb-8">{title}</h1>
+      <ul className="space-y-6">
+        <li>
           <button
             onClick={() => handleNavigation("/profile")}
-            className="w-full text-left bg-green-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition duration-300"
+            className="w-full text-left bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300"
           >
             Profile Manager
           </button>
@@ -26,7 +25,7 @@ const Sidebar = ({ title }) => {
         <li>
           <button
             onClick={() => handleNavigation("/view-classes")}
-            className="w-full text-left bg-yellow-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300"
+            className="w-full text-left bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition duration-300"
           >
             View Classes
           </button>
@@ -39,9 +38,7 @@ const Sidebar = ({ title }) => {
             Your Assignments
           </button>
         </li>
-       
       </ul>
-
     </div>
   );
 };
