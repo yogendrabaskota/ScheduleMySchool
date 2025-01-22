@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
-  // Check if the token and role exist in localStorage
   const token = localStorage.getItem('token');
   const role = localStorage.getItem('role'); // Fetch the role from localStorage
   const navigate = useNavigate();
@@ -60,35 +59,34 @@ const Navbar = () => {
           {/* Links for large screens */}
           <div className="hidden lg:flex space-x-6 items-center">
             <Link
-              to={`/`}
+              to="/"
               className="text-white hover:text-yellow-300 transition duration-300"
             >
               Home
             </Link>
             <Link
-              to={`/about`}
+              to="/about"
               className="text-white hover:text-yellow-300 transition duration-300"
             >
               About Us
             </Link>
             <Link
-              to={`/contact`}
+              to="/contact"
               className="text-white hover:text-yellow-300 transition duration-300"
             >
               Contact
             </Link>
 
-            {/* Conditionally render Login/Register or Logout buttons */}
             {!token ? (
               <>
                 <Link
-                  to={`/register`}
+                  to="/register"
                   className="text-white hover:text-yellow-300 transition duration-300"
                 >
                   Register
                 </Link>
                 <Link
-                  to={`/login`}
+                  to="/login"
                   className="text-white hover:text-yellow-300 transition duration-300"
                 >
                   Login
@@ -102,18 +100,29 @@ const Navbar = () => {
                 >
                   Logout
                 </button>
-                {/* Show "Teacher Dashboard" for teachers, otherwise display role */}
-                {role === 'teacher' ? (
+                {role === 'teacher' && (
                   <Link
-                    to={`/teacher-dashboard`}
+                    to="/teacher-dashboard"
                     className="text-white hover:text-yellow-300 transition duration-300"
                   >
                     Teacher Dashboard
                   </Link>
-                ) : (
-                  <span className="text-sm text-gray-300">
-                    <strong>{role}</strong>
-                  </span>
+                )}
+                {role === 'student' && (
+                  <Link
+                    to="/student-dashboard"
+                    className="text-white hover:text-yellow-300 transition duration-300"
+                  >
+                    Student Dashboard
+                  </Link>
+                )}
+                {role === 'guest' && (
+                  <Link
+                    to="/guest-dashboard"
+                    className="text-white hover:text-yellow-300 transition duration-300"
+                  >
+                    Guest Dashboard
+                  </Link>
                 )}
               </>
             )}
@@ -125,38 +134,37 @@ const Navbar = () => {
           <div className="lg:hidden">
             <div className="space-y-2 mt-2">
               <Link
-                to={`/`}
+                to="/"
                 onClick={() => setIsMenuOpen(false)}
                 className="block text-white hover:text-yellow-300 transition duration-300"
               >
                 Home
               </Link>
               <Link
-                to={`/about`}
+                to="/about"
                 onClick={() => setIsMenuOpen(false)}
                 className="block text-white hover:text-yellow-300 transition duration-300"
               >
                 About Us
               </Link>
               <Link
-                to={`/contact`}
+                to="/contact"
                 onClick={() => setIsMenuOpen(false)}
                 className="block text-white hover:text-yellow-300 transition duration-300"
               >
                 Contact
               </Link>
-
               {!token ? (
                 <>
                   <Link
-                    to={`/register`}
+                    to="/register"
                     onClick={() => setIsMenuOpen(false)}
                     className="block text-white hover:text-yellow-300 transition duration-300"
                   >
                     Register
                   </Link>
                   <Link
-                    to={`/login`}
+                    to="/login"
                     onClick={() => setIsMenuOpen(false)}
                     className="block text-white hover:text-yellow-300 transition duration-300"
                   >
@@ -176,11 +184,29 @@ const Navbar = () => {
                   </button>
                   {role === 'teacher' && (
                     <Link
-                      to={`/teacher-dashboard`}
+                      to="/teacher-dashboard"
                       onClick={() => setIsMenuOpen(false)}
                       className="block text-white hover:text-yellow-300 transition duration-300"
                     >
                       Teacher Dashboard
+                    </Link>
+                  )}
+                  {role === 'student' && (
+                    <Link
+                      to="/student-dashboard"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="block text-white hover:text-yellow-300 transition duration-300"
+                    >
+                      Student Dashboard
+                    </Link>
+                  )}
+                  {role === 'guest' && (
+                    <Link
+                      to="/guest-dashboard"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="block text-white hover:text-yellow-300 transition duration-300"
+                    >
+                      Guest Dashboard
                     </Link>
                   )}
                 </>

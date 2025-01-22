@@ -17,6 +17,7 @@ import UserVerification from './pages/auth/UserVerification'
 import UserManager from './pages/teacher/UserManager'
 import PastEvents from './pages/teacher/PastEvent'
 import TicketPurchaseForm from './pages/eventDetails/TicketPurchseForm'
+import StudentDashboard from './pages/student/StudentDashboard'
 
 
 
@@ -44,6 +45,7 @@ function App() {
       <Route path="/user-verification" element={<UserVerification />} />
       <Route path="/past-event" element={<PastEvents />} />
       <Route path="/ticket-purchase/:id" element={<TicketPurchaseForm />} />
+      <Route path="/student-dashboard" element={<StudentDashboard />} />
 
 
 
