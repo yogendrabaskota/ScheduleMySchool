@@ -19,7 +19,7 @@ const TicketPage = () => {
   useEffect(() => {
     const fetchTickets = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/ticket", {
+        const response = await axios.get("https://schedulemyschool.onrender.com/api/ticket", {
           headers: {
             Authorization: `${token}`,
           },
