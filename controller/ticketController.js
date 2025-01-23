@@ -90,11 +90,11 @@ exports.getMyTicket = async(req,res) =>{
      const tickets = await Ticket.find({userId}, "-createdAt -updatedAt -__v").populate({
         path:"eventId",
         model : "Event",
-        select : "-createdAt -updatedAt -__v"
+        select : "-createdAt -updatedAt -__v -ticketsBooked -description -totalTickets"
     }).populate({
         path:"userId",
         model : "User",
-        select : "-createdAt -updatedAt -__v"
+        select : "-createdAt -updatedAt -__v -email -isOtpVerified -password -phoneNumber -role -isUserVerified"
     }) 
    // console.log(tickets)
     if(tickets.length < 1){

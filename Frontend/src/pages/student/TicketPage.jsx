@@ -87,12 +87,13 @@ const TicketPage = () => {
                 className="bg-white rounded-lg shadow-md p-6 border border-gray-200"
               >
                 <h2 className="text-xl font-bold text-gray-800 mb-2">
-                  {ticket.ticketNumber}
+                  {ticket.eventId.title}
                 </h2>
                 <p className="text-sm text-gray-600">
                   <strong>Purchase Date:</strong>{" "}
                   {new Date(ticket.purchaseDate).toLocaleDateString()}
                 </p>
+               
                 <p className="text-sm text-gray-600">
                   <strong>Quantity:</strong> {ticket.quantity}
                 </p>
@@ -100,16 +101,42 @@ const TicketPage = () => {
                   <strong>Payment Status:</strong>{" "}
                   {ticket.paymentDetails.status || "N/A"}
                 </p>
-                <p className="text-sm text-gray-600">
+
+                {/* <p className="text-sm text-gray-600">
                   <strong>Payment Method:</strong>{" "}
                   {ticket.paymentDetails.method || "N/A"}
+                </p> */}
+                <p className="text-sm text-gray-600">
+                  <strong>Purchase By:</strong>{" "}
+                  {ticket.userId.name || "N/A"}
                 </p>
                 <p className="text-sm text-gray-600">
+                  <strong>Ticket Number:</strong>{" "}
+                  {ticket.ticketNumber || "N/A"}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>Event Date:</strong>{" "}
+                  {new Date(ticket.eventId.date).toLocaleDateString()}
+                </p>
+
+
+
+                <p className="text-sm text-gray-600">
+                  <strong>Event Location:</strong>{" "}
+                  {ticket.eventId.location || "N/A"}
+                </p>
+                <p className="text-sm text-gray-600">
+                  <strong>Event Time:</strong>{" "}
+                  {ticket.eventId.time || "N/A"}
+                </p>
+
+
+                {/* <p className="text-sm text-gray-600">
                   <strong>Event:</strong>{" "}
                   {ticket.eventId
                     ? `${ticket.eventId.title} - ${ticket.eventId.location}`
                     : "No Event"}
-                </p>
+                </p> */}
 
                 <button
                   className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
