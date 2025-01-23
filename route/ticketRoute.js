@@ -1,5 +1,5 @@
 
-const { bookTicket, getMyTicket, getAllTicket } = require("../controller/ticketController")
+const { bookTicket, getMyTicket, getAllTicket, generateTicketPDF } = require("../controller/ticketController")
 const isAuthenticated = require("../middleware/isAuthenticated")
 const restrictTo = require("../middleware/restrictTo")
 const catchAsync = require("../services/catchAsync")
@@ -14,5 +14,7 @@ router.route("/:id")
 router.route("/")
     .get(isAuthenticated, catchAsync(getMyTicket))
 
+router.route("/generate/:ticketId")
+    .get(catchAsync(generateTicketPDF))
 
 module.exports = router

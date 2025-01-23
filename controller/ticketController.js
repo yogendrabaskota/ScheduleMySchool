@@ -1,5 +1,7 @@
 const Event = require("../model/eventModel")
 const Ticket = require("../model/ticketModel")
+const PDFDocument = require("pdfkit");
+
 
 
 exports.bookTicket = async(req,res)=>{
@@ -138,3 +140,71 @@ exports.getAllTicket = async(req,res) =>{
          data : tickets 
     });
 }
+
+
+exports.generateTicketPDF = async (req, res) => {
+  const { ticketId } = req.params;
+
+  try {
+    // Fetch ticket details along with event data
+    const ticket = await Ticket.findById(ticketId).populate({
+      path: "eventId",
+      model: "Event",
+      select: "-createdAt -updatedAt -__v", // Exclude unnecessary fields
+    }).populate({
+        path:"userId",
+        model : "User",
+        select : "-createdAt -updatedAt -__v -password -role -isOtpVerified"
+    }) 
+
+    if (!ticket) {
+      return res.status(404).json({ message: "Ticket not found" });
+    }
+
+    // Ensure necessary fields are populated
+    if (!ticket.eventId || !ticket.userId) {
+      return res.status(400).json({ message: "Invalid ticket data" });
+    }
+
+    // Create a new PDF document
+    const doc = new PDFDocument();
+
+    // Set response headers to display the PDF in the browser
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader(
+      "Content-Disposition",
+      `inline;`
+    );
+
+    // Pipe the PDF document to the response
+    doc.pipe(res);
+
+    // Add content to the PDF
+    doc.fontSize(20).text("Event Ticket", { align: "center" });
+    doc.moveDown();
+
+    doc.fontSize(16).text(`Event: ${ticket.eventId.title}`);
+    doc.text(`Date: ${new Date(ticket.eventId.date).toLocaleDateString()}`);
+    doc.text(`Time: ${ticket.eventId.time}`);
+    doc.text(`Location: ${ticket.eventId.location}`);
+    doc.text(`Ticket Number: ${ticket.ticketNumber}`);
+    doc.text(`Quantity: ${ticket.quantity}`);
+    doc.text(`Purchased By: ${ticket.userId.name || "N/A"}`);
+    doc.text(`Purchase Date: ${new Date(ticket.purchaseDate).toLocaleDateString()}`);
+    doc.text(`Payment Status: ${ticket.paymentDetails.status || "N/A"}`);
+    doc.moveDown();
+
+    doc.fontSize(12).text("Thank you for your purchase!", { align: "center" });
+
+    // Finalize the PDF and end the response
+    doc.end();
+  } catch (err) {
+    console.error("Error generating ticket PDF:", err);
+
+    if (!res.headersSent) {
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
+};
+
+  

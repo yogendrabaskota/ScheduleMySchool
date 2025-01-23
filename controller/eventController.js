@@ -13,7 +13,7 @@ exports.getSingleEvent = async(req,res)=>{
         path:"createdby",
         model : "User",
         select : "-createdAt -updatedAt -__v -password -role -isOtpVerified"
-    }) 
+    })
    // console.log("events",events)
     if(events.length == 0){
         return res.status(404).json({

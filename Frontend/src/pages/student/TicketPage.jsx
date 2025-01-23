@@ -70,9 +70,31 @@ const TicketPage = () => {
     setQrCodeData(ticketNumber); // Set the ticket number as QR code data
   };
 
-  const handleGenerateTicketClick = (ticketId) => {
+  const handleGenerateTicketClick = async (ticketId) => {
     console.log(`Generate Ticket button clicked for ticket ID: ${ticketId}`);
-    // Add your logic here (e.g., download ticket or navigate to another page)
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/api/ticket/generate/${ticketId}`,
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+          responseType: "blob", // Important for downloading files
+        }
+      );
+
+      // Create a link element and trigger download
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `ticket_${ticketId}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (err) {
+      console.error("Error generating ticket PDF:", err);
+      alert("Failed to generate ticket. Please try again.");
+    }
   };
 
   return (
