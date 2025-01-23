@@ -27,7 +27,7 @@ const Sidebar = ({ title }) => {
             onClick={() => handleNavigation("/view-classes")}
             className="w-full text-left bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition duration-300"
           >
-            View Classes
+            Your Tickets
           </button>
         </li>
         <li>
@@ -35,7 +35,7 @@ const Sidebar = ({ title }) => {
             onClick={() => handleNavigation("/your-assignments")}
             className="w-full text-left bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
           >
-            Your Assignments
+            Your History
           </button>
         </li>
       </ul>
