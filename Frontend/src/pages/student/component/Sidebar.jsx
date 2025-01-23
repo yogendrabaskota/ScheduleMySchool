@@ -24,7 +24,7 @@ const Sidebar = ({ title }) => {
         </li>
         <li>
           <button
-            onClick={() => handleNavigation("/view-classes")}
+            onClick={() => handleNavigation("/ticket")}
             className="w-full text-left bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition duration-300"
           >
             Your Tickets

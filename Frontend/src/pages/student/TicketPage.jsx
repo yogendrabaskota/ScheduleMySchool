@@ -3,24 +3,21 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "./component/Sidebar";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { QRCodeCanvas } from "qrcode.react"; // Import the QRCode component
 
 const TicketPage = () => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [selectedTicketId, setSelectedTicketId] = useState(null); // Track selected ticket
+  const [qrCodeData, setQrCodeData] = useState(""); // Track QR code data
   const navigate = useNavigate();
 
   // Authorization token
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-
-
-
-
-    // Fetch tickets from API
     const fetchTickets = async () => {
-
       try {
         const response = await axios.get("http://localhost:5000/api/ticket", {
           headers: {
@@ -36,13 +33,9 @@ const TicketPage = () => {
         setLoading(false);
       }
     };
-    const handleViewClick = (ticketId) => {
-   
-    };
 
     fetchTickets();
   }, []);
-
 
   if (loading) {
     return (
@@ -68,7 +61,18 @@ const TicketPage = () => {
 
   const handleViewClick = (ticketId) => {
     console.log(`View button clicked for ticket ID: ${ticketId}`);
-    // Add your logic here (e.g., redirect to a detailed view page or show a modal)
+    setSelectedTicketId(ticketId); // Set the selected ticket
+    setQrCodeData(""); // Reset QR code data when a new ticket is selected
+  };
+
+  const handleQRClick = (ticketId, ticketNumber) => {
+    console.log(`QR button clicked for ticket ID: ${ticketId}`);
+    setQrCodeData(ticketNumber); // Set the ticket number as QR code data
+  };
+
+  const handleGenerateTicketClick = (ticketId) => {
+    console.log(`Generate Ticket button clicked for ticket ID: ${ticketId}`);
+    // Add your logic here (e.g., download ticket or navigate to another page)
   };
 
   return (
@@ -93,7 +97,6 @@ const TicketPage = () => {
                   <strong>Purchase Date:</strong>{" "}
                   {new Date(ticket.purchaseDate).toLocaleDateString()}
                 </p>
-               
                 <p className="text-sm text-gray-600">
                   <strong>Quantity:</strong> {ticket.quantity}
                 </p>
@@ -101,49 +104,59 @@ const TicketPage = () => {
                   <strong>Payment Status:</strong>{" "}
                   {ticket.paymentDetails.status || "N/A"}
                 </p>
-
-                {/* <p className="text-sm text-gray-600">
-                  <strong>Payment Method:</strong>{" "}
-                  {ticket.paymentDetails.method || "N/A"}
-                </p> */}
                 <p className="text-sm text-gray-600">
-                  <strong>Purchase By:</strong>{" "}
-                  {ticket.userId.name || "N/A"}
+                  <strong>Purchase By:</strong> {ticket.userId.name || "N/A"}
                 </p>
                 <p className="text-sm text-gray-600">
-                  <strong>Ticket Number:</strong>{" "}
-                  {ticket.ticketNumber || "N/A"}
+                  <strong>Ticket Number:</strong> {ticket.ticketNumber || "N/A"}
                 </p>
                 <p className="text-sm text-gray-600">
                   <strong>Event Date:</strong>{" "}
                   {new Date(ticket.eventId.date).toLocaleDateString()}
                 </p>
-
-
-
                 <p className="text-sm text-gray-600">
                   <strong>Event Location:</strong>{" "}
                   {ticket.eventId.location || "N/A"}
                 </p>
                 <p className="text-sm text-gray-600">
-                  <strong>Event Time:</strong>{" "}
-                  {ticket.eventId.time || "N/A"}
+                  <strong>Event Time:</strong> {ticket.eventId.time || "N/A"}
                 </p>
 
-
-                {/* <p className="text-sm text-gray-600">
-                  <strong>Event:</strong>{" "}
-                  {ticket.eventId
-                    ? `${ticket.eventId.title} - ${ticket.eventId.location}`
-                    : "No Event"}
-                </p> */}
-
+                {/* View button */}
                 <button
                   className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-                  onClick={() => navigate(`/tickets/${ticket.ticketNumber}`)}
+                  onClick={() => handleViewClick(ticket._id)}
                 >
                   View
                 </button>
+
+                {/* Conditional rendering for additional buttons */}
+                {selectedTicketId === ticket._id && (
+                  <div className="mt-4 space-x-4">
+                    <button
+                      className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+                      onClick={() => handleQRClick(ticket._id, ticket.ticketNumber)}
+                    >
+                      QR verify
+                    </button>
+                    <button
+                      className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600"
+                      onClick={() => handleGenerateTicketClick(ticket._id)}
+                    >
+                      Generate Ticket
+                    </button>
+                  </div>
+                )}
+
+                {/* Display QR code */}
+                {qrCodeData && selectedTicketId === ticket._id && (
+                  <div className="mt-4">
+                    <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                      QR Code for Ticket
+                    </h3>
+                    <QRCodeCanvas value={qrCodeData} size={150} />
+                  </div>
+                )}
               </div>
             ))}
           </div>
