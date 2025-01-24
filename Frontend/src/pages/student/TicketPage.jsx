@@ -11,6 +11,7 @@ const TicketPage = () => {
   const [error, setError] = useState("");
   const [selectedTicketId, setSelectedTicketId] = useState(null); // Track selected ticket
   const [qrCodeData, setQrCodeData] = useState(""); // Track QR code data
+
   const navigate = useNavigate();
 
   // Authorization token
@@ -25,7 +26,9 @@ const TicketPage = () => {
           },
         });
 
-        console.log("response", response.data.data);
+        //const a = response.data.data;
+
+       // console.log("response 1", a[0]);
         setTickets(response.data.data);
         setLoading(false);
       } catch (err) {
@@ -60,40 +63,34 @@ const TicketPage = () => {
   }
 
   const handleViewClick = (ticketId) => {
-    console.log(`View button clicked for ticket ID: ${ticketId}`);
     setSelectedTicketId(ticketId); // Set the selected ticket
     setQrCodeData(""); // Reset QR code data when a new ticket is selected
   };
 
   const handleQRClick = (ticketId, ticketNumber) => {
-    console.log(`QR button clicked for ticket ID: ${ticketId}`);
     setQrCodeData(ticketNumber); // Set the ticket number as QR code data
   };
 
-  const handleGenerateTicketClick = async (ticketId) => {
-    console.log(`Generate Ticket button clicked for ticket ID: ${ticketId}`);
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/api/ticket/generate/${ticketId}`,
-        {
-          headers: {
-            Authorization: `${token}`,
-          },
-          responseType: "blob", // Important for downloading files
-        }
-      );
+  const handleNavigate = async (_id) => {
+   // console.log("clicked");
+    //console.log("tn", ticketNumber);
+     navigate(`/ticket/${_id}`)
+  };
 
-      // Create a link element and trigger download
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", `ticket_${ticketId}.pdf`);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+  const handleGenerateTicketClick = async (ticketId) => {
+    try {
+      const response = await axios.get("https://schedulemyschool.onrender.com/api/ticket", {
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+
+      console.log("ticketnumber");
+
+      setLoading(false);
     } catch (err) {
-      console.error("Error generating ticket PDF:", err);
-      alert("Failed to generate ticket. Please try again.");
+      setError("Failed to get tickets. Please try again.");
+      setLoading(false);
     }
   };
 
@@ -163,7 +160,7 @@ const TicketPage = () => {
                     </button>
                     <button
                       className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600"
-                      onClick={() => handleGenerateTicketClick(ticket._id)}
+                      onClick={() => handleNavigate(ticket._id)}
                     >
                       Generate Ticket
                     </button>

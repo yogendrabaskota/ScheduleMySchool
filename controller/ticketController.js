@@ -185,7 +185,7 @@ exports.generateTicketPDF = async (req, res) => {
 
     // Set response headers to display the PDF in the browser
     res.setHeader("Content-Type", "application/pdf");
-    res.setHeader("Content-Disposition", "inline;");
+    res.setHeader("Content-Disposition", "attachment; filename=ticket.pdf");
 
     // Pipe the PDF document to the response
     doc.pipe(res);
@@ -253,7 +253,7 @@ exports.generateTicketPDF = async (req, res) => {
     console.error("Error generating ticket PDF:", err);
 
     if (!res.headersSent) {
-      res.status(500).json({ message: "Internal server error" });
+      res.status(500).json({ message: "Internal server error here" });
     }
   }
 };
