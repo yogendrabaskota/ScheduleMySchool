@@ -140,10 +140,13 @@ exports.getAllTicket = async(req,res) =>{
          data : tickets 
     });
 }
+const QRCode = require("qrcode");
+
 
 
 exports.generateTicketPDF = async (req, res) => {
   const { ticketId } = req.params;
+  const { rq } = req.query; // Extract 'rq' from query parameters
 
   try {
     // Fetch ticket details along with event data
@@ -152,10 +155,10 @@ exports.generateTicketPDF = async (req, res) => {
       model: "Event",
       select: "-createdAt -updatedAt -__v", // Exclude unnecessary fields
     }).populate({
-        path:"userId",
-        model : "User",
-        select : "-createdAt -updatedAt -__v -password -role -isOtpVerified"
-    }) 
+      path: "userId",
+      model: "User",
+      select: "-createdAt -updatedAt -__v -password -role -isOtpVerified",
+    });
 
     if (!ticket) {
       return res.status(404).json({ message: "Ticket not found" });
@@ -166,35 +169,85 @@ exports.generateTicketPDF = async (req, res) => {
       return res.status(400).json({ message: "Invalid ticket data" });
     }
 
+    // Generate QR code with ticket details
+    const qrData = {
+      ticketNumber: ticket.ticketNumber,
+      event: ticket.eventId.title,
+      date: ticket.eventId.date,
+      purchaser: ticket.userId.name,
+      email: ticket.userId.email,
+      rq,
+    };
+
+    const qrCodeBase64 = await QRCode.toDataURL(JSON.stringify(qrData));
+
+
     // Create a new PDF document
-    const doc = new PDFDocument();
+    const doc = new PDFDocument({ margin: 30 });
 
     // Set response headers to display the PDF in the browser
     res.setHeader("Content-Type", "application/pdf");
-    res.setHeader(
-      "Content-Disposition",
-      `inline;`
-    );
+    res.setHeader("Content-Disposition", "inline;");
 
     // Pipe the PDF document to the response
     doc.pipe(res);
 
-    // Add content to the PDF
-    doc.fontSize(20).text("Event Ticket", { align: "center" });
-    doc.moveDown();
+    // Add company/event details header
+    doc.fontSize(16).text("BHANU SECONDARY SCHOOL", { align: "center", underline: true });
+    doc.moveDown(0.5);
+    doc.fontSize(10).text("estd: 2024", { align: "center" });
+    doc.text("Address: Jhiljhile Jhapa, Nepal", { align: "center" });
+    doc.text("Contact: 123-456-7890 | bhanuschool@gmail.com", { align: "center" });
+    doc.moveDown(1);
 
-    doc.fontSize(16).text(`Event: ${ticket.eventId.title}`);
-    doc.text(`Date: ${new Date(ticket.eventId.date).toLocaleDateString()}`);
-    doc.text(`Time: ${ticket.eventId.time}`);
-    doc.text(`Location: ${ticket.eventId.location}`);
-    doc.text(`Ticket Number: ${ticket.ticketNumber}`);
-    doc.text(`Quantity: ${ticket.quantity}`);
+    // Ticket information
+    doc.fontSize(14).text(`Ticket No: ${ticket.ticketNumber}`, { align: "center" });
+
+    // Include 'rq' if provided
+    if (rq) {
+      doc.fontSize(12).text(`Request No (RQ): ${rq}`, { align: "center" });
+    }
+
+    // Add Purchase Date
+    doc.text(`Purchase Date: ${new Date(ticket.purchaseDate).toLocaleDateString()}`, { align: "left" });
+    doc.moveDown(1);
+
+
+
+    // Embed QR Code aaaaa
+    const qrImage = qrCodeBase64.split(",")[1]; // Extract base64 data
+    const qrX = 400; // Position on the right side
+    const qrY = doc.y; // Just below Purchase Date
+    doc.image(Buffer.from(qrImage, "base64"), qrX, qrY, { width: 100, height: 100 });
+
+
+  
+
+    // // Add caption below the QR code
+    // const captionY = qrY + 110; // Adjust to place caption slightly below the QR code
+    // doc.fontSize(10).text("Verification QR Code", qrX, captionY, { align: "center" });
+
+    // Buyer and Event details (to the left of the QR code)
+    doc.moveDown(1);
+    doc.fontSize(12).text(`Event: ${ticket.eventId.title}`);
+    doc.text(`Date: ${new Date(ticket.eventId.date).toLocaleDateString()}`, { indent: 20 });
+    doc.text(`Time: ${ticket.eventId.time}`,{ indent: 20 });
+    doc.text(`Location: ${ticket.eventId.location}`, { indent: 20 });
+    doc.moveDown(1);
     doc.text(`Purchased By: ${ticket.userId.name || "N/A"}`);
-    doc.text(`Purchase Date: ${new Date(ticket.purchaseDate).toLocaleDateString()}`);
-    doc.text(`Payment Status: ${ticket.paymentDetails.status || "N/A"}`);
-    doc.moveDown();
+    doc.text(`Email: ${ticket.userId.email}`);
+    doc.moveDown(1);
 
-    doc.fontSize(12).text("Thank you for your purchase!", { align: "center" });
+    // Add table-like structure for items
+    doc.fontSize(12).text("Details:", { underline: true });
+    doc.moveDown(0.5);
+    doc.text(`Quantity: ${ticket.quantity}`, { indent: 20 });
+    doc.text(`Payment Status: ${ticket.paymentDetails.status || "N/A"}`, { indent: 20 });
+    doc.moveDown(1);
+
+    // Footer with return policy
+    doc.moveDown(2);
+    doc.fontSize(10).text("The return period expires on the event date.", { align: "center", italic: true });
 
     // Finalize the PDF and end the response
     doc.end();
