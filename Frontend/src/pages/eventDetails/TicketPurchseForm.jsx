@@ -7,7 +7,7 @@ const TicketPurchaseForm = () => {
   const { id } = useParams(); // Get event ID from URL
   const [quantity, setQuantity] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState(''); // Start with an empty value
-  const baseURL = 'http://localhost:5000';
+  const baseURL = 'https://schedulemyschool.onrender.com';
   const navigate = useNavigate();
 
   useEffect(() => {

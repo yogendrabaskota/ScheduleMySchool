@@ -29,12 +29,12 @@ exports.bookTicket = async(req,res)=>{
     }
 
     const existingTicket = await Ticket.findOne({ eventId, userId });
-    // if (existingTicket) {
-    //     return res.status(400).json({
-    //         message:
-    //             "You already have booked a ticket for this event. Users are not allowed to buy tickets more than once for the same event.",
-    //     });
-    // }
+    if (existingTicket) {
+        return res.status(400).json({
+            message:
+                "You already have booked a ticket for this event. Users are not allowed to buy tickets more than once for the same event.",
+        });
+    }
     if(event.ticketsBooked + quantity >= event.totalTickets){
         return res.status(400).json({
             message : "Sorry!! Ticket is already sold out"
@@ -164,7 +164,7 @@ exports.generateTicketPDF = async (req, res) => {
       select: "-createdAt -updatedAt -__v -password -role -isOtpVerified",
     });
 
-    console.log(ticket)
+    //console.log(ticket)
     if (!ticket) {
       return res.status(404).json({ message: "Ticket not found" });
     }
