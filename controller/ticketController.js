@@ -1,6 +1,7 @@
 const Event = require("../model/eventModel")
 const Ticket = require("../model/ticketModel")
 const PDFDocument = require("pdfkit");
+const QRCode = require("qrcode");
 
 
 
@@ -140,9 +141,6 @@ exports.getAllTicket = async(req,res) =>{
          data : tickets 
     });
 }
-const QRCode = require("qrcode");
-
-
 
 exports.generateTicketPDF = async (req, res) => {
   const { ticketId } = req.params;
@@ -201,15 +199,15 @@ exports.generateTicketPDF = async (req, res) => {
     doc.moveDown(1);
 
     // Ticket information
-    doc.fontSize(14).text(`Ticket No: ${ticket.ticketNumber}`, { align: "center" });
+    doc.fontSize(14)
+    .text('Ticket No: ', { align: "center" })
+    .fillColor('blue')
+    .text(ticket.ticketNumber, { align: "center" });
+  
 
-    // Include 'rq' if provided
-    if (rq) {
-      doc.fontSize(12).text(`Request No (RQ): ${rq}`, { align: "center" });
-    }
-
+    doc.moveDown(1);
     // Add Purchase Date
-    doc.text(`Purchase Date: ${new Date(ticket.purchaseDate).toLocaleDateString()}`, { align: "left" });
+    doc.fillColor('black').text(`Purchase Date: ${new Date(ticket.purchaseDate).toLocaleDateString()}`, { align: "left" });
     doc.moveDown(1);
 
 
@@ -229,10 +227,10 @@ exports.generateTicketPDF = async (req, res) => {
 
     // Buyer and Event details (to the left of the QR code)
     doc.moveDown(1);
-    doc.fontSize(12).text(`Event: ${ticket.eventId.title}`);
-    doc.text(`Date: ${new Date(ticket.eventId.date).toLocaleDateString()}`, { indent: 20 });
-    doc.text(`Time: ${ticket.eventId.time}`,{ indent: 20 });
-    doc.text(`Location: ${ticket.eventId.location}`, { indent: 20 });
+    doc.fillColor('black').fontSize(12).text(`Event: ${ticket.eventId.title}`);
+    doc.text(`Date: ${new Date(ticket.eventId.date).toLocaleDateString()}`, { indent: 37 });
+    doc.text(`Time: ${ticket.eventId.time}`,{ indent: 37 });
+    doc.text(`Location: ${ticket.eventId.location}`, { indent: 37 });
     doc.moveDown(1);
     doc.text(`Purchased By: ${ticket.userId.name || "N/A"}`);
     doc.text(`Email: ${ticket.userId.email}`);
