@@ -7,7 +7,7 @@ const TicketPurchaseForm = () => {
   const { id } = useParams(); // Get event ID from URL
   const [quantity, setQuantity] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState(''); // Start with an empty value
-  const baseURL = 'https://schedulemyschool.onrender.com';
+  const baseURL = 'http://localhost:5000';
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -95,8 +95,14 @@ const TicketPurchaseForm = () => {
         }
       );
 
+      //console.log(response)
+      //console.log(response.data.data)
+      //console.log(response.data.data._id)
+
       alert('Ticket purchased successfully!');
-      navigate('/'); // Redirect to home page after purchase
+      //navigate('/'); // Redirect to home page after purchase
+      navigate(`/ticket/${response.data.data._id}`)
+
     } catch (error) {
       console.error('Error purchasing ticket:', error.response?.data?.message || error.message);
       alert(error.response?.data?.message || 'Failed to purchase ticket. Please try again.');

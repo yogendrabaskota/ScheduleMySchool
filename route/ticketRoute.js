@@ -14,7 +14,7 @@ router.route("/:id")
 router.route("/")
     .get(isAuthenticated, catchAsync(getMyTicket))
 
-router.route("/generate/:ticketId")
+router.route("/generate/:id")
     .get(catchAsync(generateTicketPDF))
 
 module.exports = router

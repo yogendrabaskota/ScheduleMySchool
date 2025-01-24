@@ -29,12 +29,12 @@ exports.bookTicket = async(req,res)=>{
     }
 
     const existingTicket = await Ticket.findOne({ eventId, userId });
-    if (existingTicket) {
-        return res.status(400).json({
-            message:
-                "You already have booked a ticket for this event. Users are not allowed to buy tickets more than once for the same event.",
-        });
-    }
+    // if (existingTicket) {
+    //     return res.status(400).json({
+    //         message:
+    //             "You already have booked a ticket for this event. Users are not allowed to buy tickets more than once for the same event.",
+    //     });
+    // }
     if(event.ticketsBooked + quantity >= event.totalTickets){
         return res.status(400).json({
             message : "Sorry!! Ticket is already sold out"
@@ -71,6 +71,7 @@ exports.bookTicket = async(req,res)=>{
     });
     event.ticketsBooked += quantity
     await event.save() 
+   // console.log("ticket",ticket)
     return res.status(200).json({
         message : "Ticket booked successfully",
         data : ticket
@@ -143,12 +144,17 @@ exports.getAllTicket = async(req,res) =>{
 }
 
 exports.generateTicketPDF = async (req, res) => {
-  const { ticketId } = req.params;
-  const { rq } = req.query; // Extract 'rq' from query parameters
+ // const { ticketId } = req.params;
+  const { id } = req.params;
+ // const ticketId = req.params.id
+  //const { rq } = req.query; // Extract 'rq' from query parameters
+//   if (!mongoose.Types.ObjectId.isValid(ticketId)) {
+//     return res.status(400).json({ message: "Invalid ticket ID format" });
+//   }
 
   try {
     // Fetch ticket details along with event data
-    const ticket = await Ticket.findById(ticketId).populate({
+    const ticket = await Ticket.findById(id).populate({
       path: "eventId",
       model: "Event",
       select: "-createdAt -updatedAt -__v", // Exclude unnecessary fields
@@ -158,23 +164,24 @@ exports.generateTicketPDF = async (req, res) => {
       select: "-createdAt -updatedAt -__v -password -role -isOtpVerified",
     });
 
+    console.log(ticket)
     if (!ticket) {
       return res.status(404).json({ message: "Ticket not found" });
     }
 
     // Ensure necessary fields are populated
-    if (!ticket.eventId || !ticket.userId) {
-      return res.status(400).json({ message: "Invalid ticket data" });
-    }
+    // if (!ticket.eventId || !ticket.userId) {
+    //   return res.status(400).json({ message: "Invalid ticket data" });
+    // }
 
     // Generate QR code with ticket details
     const qrData = {
       ticketNumber: ticket.ticketNumber,
-      event: ticket.eventId.title,
+      event: ticket.eventId.title || 'NA',
       date: ticket.eventId.date,
       purchaser: ticket.userId.name,
       email: ticket.userId.email,
-      rq,
+    //  rq,
     };
 
     const qrCodeBase64 = await QRCode.toDataURL(JSON.stringify(qrData));

@@ -50,7 +50,7 @@ function App() {
       <Route path="/student-dashboard" element={<StudentDashboard />} />
       <Route path="/profile" element={<ProfileManager />} />
       <Route path="/ticket" element={<TicketPage />} />
-      <Route path="/ticket/:ticketNumber" element={<GetYourTicket />} />
+      <Route path="/ticket/:id" element={<GetYourTicket />} />
 
 
 

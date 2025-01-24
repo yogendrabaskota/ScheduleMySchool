@@ -3,7 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const GetYourTicket = () => {
-  const { ticketNumber } = useParams(); // Get the ticket number from the URL
+  const { id } = useParams(); // Correctly get 'id' from route parameters
   const [pdfUrl, setPdfUrl] = useState(null); // To store the URL of the PDF file
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -19,15 +19,21 @@ const GetYourTicket = () => {
         return;
       }
 
+      if (!id) {
+        setError("Invalid ticket ID.");
+        setLoading(false);
+        return;
+      }
+
       try {
         // Make the API call to get the ticket PDF file
-        const response = await axios.get(`${baseURL}/api/ticket/generate/${ticketNumber}`, {
-          headers: { Authorization: `${token}` },
+        const response = await axios.get(`${baseURL}/api/ticket/generate/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
           responseType: "blob", // This will tell axios to handle the response as binary data
         });
-        console.log("hello",response)
 
         // Create a URL for the PDF blob
+        console.log(response)
         const fileURL = URL.createObjectURL(response.data);
         setPdfUrl(fileURL); // Set the PDF URL for display
         setLoading(false);
@@ -38,13 +44,13 @@ const GetYourTicket = () => {
     };
 
     fetchTicketPDF();
-  }, [ticketNumber, token]);
+  }, [token, id]);
 
   const handleDownload = () => {
     if (pdfUrl) {
       const link = document.createElement("a");
       link.href = pdfUrl;
-      link.download = `ticket-${ticketNumber}.pdf`;
+      link.download = `ticket-${id}.pdf`;
       link.click();
     }
   };
