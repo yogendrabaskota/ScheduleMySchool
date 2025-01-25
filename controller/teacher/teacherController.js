@@ -17,6 +17,23 @@ exports.getAllUser = async(req,res)=>{
      
   }
 
+  exports.getSingleUser = async(req,res)=>{
+    const id = req.params.id
+    const userFound = await User.findById(id)
+    console.log(userFound)
+    if(userFound.length < 0) {
+     res.status(400).json({
+         message : "No user found"
+     })
+    }else{
+      res.status(200).json({
+          message : "User fetched succesfully",
+          data : userFound
+      })
+    }
+     
+  }
+
 
 
 exports.deleteUser = async(req,res) =>{
@@ -225,3 +242,51 @@ exports.getVerifiedUser = async (req, res) => {
       });
   }
 };
+
+
+exports.deleteUserByTeacher = async(req,res) =>{
+    const userId = req.params.id
+   // const userId = req.user.id
+    if(!userId){
+        res.status(400).json({
+            message : "Please provide userid"
+        })
+  
+    }
+
+      //check that userId exist or not
+  
+    const user = await User.findById(userId)
+    //console.log("this is user.id ",user?.id)
+    //console.log("this is userid",id)
+    //console.log("this is userid ",userId)
+
+   // console.log("user",user)
+   if(!user){
+    return res.status(400).json({
+        message : "User not found with that userId"
+    })
+
+   }
+  
+  
+   if(user.role === 'teacher'){
+    return res.status(400).json({
+        message : "You don't have permission to delete teacher"
+        })
+    }
+
+   
+
+    //     if(id !== userId){
+    //       return res.status(400).json({
+    //           message : "You don't have permission to delete"
+    //       })
+  
+    // }else{
+        await User.findByIdAndDelete(userId)
+        res.status(200).json({
+            message : "User Deleted Successfully"
+        })
+    //}
+  }  

@@ -5,45 +5,47 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const UserManager = () => {
-  const [users, setUsers] = useState([]);  // State to store the list of users
-  const [loading, setLoading] = useState(false);  // State to manage loading state
-  const [error, setError] = useState("");  // State to manage error message
-  const navigate = useNavigate();  // Initialize useNavigate hook
+  const [users, setUsers] = useState([]); // State to store the list of users
+  const [loading, setLoading] = useState(false); // State to manage loading state
+  const [error, setError] = useState(""); // State to manage error message
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   // Function to get the token from localStorage
   const getToken = () => {
-    return localStorage.getItem("token");  // Adjust to sessionStorage if necessary
+    return localStorage.getItem("token"); // Adjust to sessionStorage if necessary
   };
 
   // Axios instance with token for authenticated requests
   const axiosInstance = axios.create({
     headers: {
-      Authorization: `${getToken()}`,  // Add token to Authorization header
+      Authorization: `${getToken()}`, // Add token to Authorization header
     },
   });
 
   // Fetch verified users from the backend
   const fetchVerifiedUsers = async () => {
-    setLoading(true);  // Set loading state to true
+    setLoading(true); // Set loading state to true
     try {
-      const response = await axiosInstance.get("https://schedulemyschool.onrender.com/api/user/verified");
-      setUsers(response.data.data);  // Set users data
-      setLoading(false);  // Set loading state to false
+      const response = await axiosInstance.get(
+        "https://schedulemyschool.onrender.com/api/user/verified"
+      );
+      setUsers(response.data.data); // Set users data
+      setLoading(false); // Set loading state to false
     } catch (err) {
-      setError("Failed to fetch users. Please try again.");  // Handle error
-      setLoading(false);  // Set loading state to false
+      setError("Failed to fetch users. Please try again."); // Handle error
+      setLoading(false); // Set loading state to false
     }
   };
 
   // Navigate to user verification page when clicked
   const handleSeeRequestClick = () => {
-    navigate("/user-verification");  // Navigate to the user verification page using useNavigate
+    navigate("/user-verification"); // Navigate to the user verification page using useNavigate
   };
 
   // Fetch verified users when component mounts
   useEffect(() => {
     fetchVerifiedUsers();
-  }, []);  // Empty dependency array means this effect runs once when the component mounts
+  }, []); // Empty dependency array means this effect runs once when the component mounts
 
   // If loading, display loading message
   if (loading) return <div className="text-center mt-10">Loading...</div>;
@@ -53,9 +55,9 @@ const UserManager = () => {
 
   // Categorize users based on roles (teachers, students, guests)
   const categorizedUsers = {
-    teachers: users.filter(user => user.role === "teacher"),
-    students: users.filter(user => user.role === "student"),
-    guests: users.filter(user => user.role === "guest"),
+    teachers: users.filter((user) => user.role === "teacher"),
+    students: users.filter((user) => user.role === "student"),
+    guests: users.filter((user) => user.role === "guest"),
   };
 
   return (
@@ -81,7 +83,7 @@ const UserManager = () => {
             </button>
           </li>
           <li>
-          <button
+            <button
               onClick={() => navigate("/past-event")}
               className="w-full text-left bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-300"
             >
@@ -95,7 +97,6 @@ const UserManager = () => {
             >
               User Manager
             </button>
-
           </li>
         </ul>
       </div>
@@ -116,7 +117,7 @@ const UserManager = () => {
         {Object.keys(categorizedUsers).map((category) => (
           <div key={category} className="mb-8">
             <h2 className="text-xl font-semibold mb-4 capitalize">{category}</h2>
-            
+
             {/* If no users found for this category, show message */}
             {categorizedUsers[category].length === 0 ? (
               <div className="text-center text-gray-500">No {category} found.</div>
@@ -132,6 +133,13 @@ const UserManager = () => {
                     <p>Email: {user.email}</p>
                     <p>Role: {user.role}</p>
                     <p>Status: {user.isUserVerified ? "Verified" : "Not Verified"}</p>
+                    {/* Add View Details button */}
+                    <button
+                      onClick={() => navigate(`/user-details/${user._id}`)} // Navigate to user details
+                      className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+                    >
+                      View Details
+                    </button>
                   </div>
                 ))}
               </div>

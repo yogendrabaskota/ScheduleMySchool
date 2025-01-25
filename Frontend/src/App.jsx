@@ -21,6 +21,8 @@ import StudentDashboard from './pages/student/StudentDashboard'
 import ProfileManager from './pages/student/Profile'
 import TicketPage from './pages/student/TicketPage'
 import GetYourTicket from './pages/student/GetYourTicket'
+import UserDetails from './pages/teacher/UserDetails'
+import GuestDashboard from './pages/guest/GuestDashboard'
 
 
 function App() {
@@ -51,6 +53,9 @@ function App() {
       <Route path="/profile/:id" element={<ProfileManager />} />
       <Route path="/ticket" element={<TicketPage />} />
       <Route path="/ticket/:id" element={<GetYourTicket />} />
+      <Route path="/user-details/:userId" element={<UserDetails />} />
+      <Route path="/guest-dashboard" element={<GuestDashboard />} />
+
 
 
 
