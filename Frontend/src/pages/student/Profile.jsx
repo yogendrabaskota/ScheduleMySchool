@@ -23,7 +23,7 @@ const ProfileManager = () => {
     const confirmDelete = window.confirm("Are you sure you want to delete your account? This action will delete your account permanently");
     if (confirmDelete) {
       try {
-        const response = await axios.delete(`http://localhost:5000/api/user/${id}`, {
+        const response = await axios.delete(`https://schedulemyschool.onrender.com/api/user/${id}`, {
           headers: {
             Authorization: `${token}`, // Pass the token in headers
           },

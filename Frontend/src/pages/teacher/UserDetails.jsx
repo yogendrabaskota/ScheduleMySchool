@@ -22,7 +22,7 @@ const UserDetails = () => {
     setLoading(true); // Set loading state to true
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/user/${userId}`,
+        `https://schedulemyschool.onrender.com/api/user/${userId}`,
         {
           headers: {
             Authorization: `${getToken()}`, // Add token to Authorization header
@@ -43,7 +43,7 @@ const UserDetails = () => {
 
   const deleteUser = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/user/delete/${userId}`, {
+      await axios.delete(`https://schedulemyschool.onrender.com/api/user/delete/${userId}`, {
         headers: {
           Authorization: `${getToken()}`, // Add token to Authorization header
           role : role
