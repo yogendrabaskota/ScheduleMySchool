@@ -20,10 +20,6 @@ const EventCard = ({ id, title, description, location, date, time, availableTick
       <div className={`text-sm font-bold mb-3 ${availableTickets > 0 ? 'text-green-500' : 'text-red-500'}`}>
         🎟️ Available Tickets: {availableTickets > 0 ? availableTickets : 'Sold Out'}
       </div>
-      {/* <div className="text-sm font-bold mb-3">
-      <span className="font-semibold"> 🎟️ Ticket Booked:</span> {ticketsBooked}
-        
-      </div> */}
       {createdBy && (
         <div className="text-gray-700 mb-3">
           <span className="font-semibold">👤 Created By:</span> {createdBy.name} ({createdBy.email})
@@ -38,26 +34,18 @@ const EventCard = ({ id, title, description, location, date, time, availableTick
   );
 };
 
-
 const Home = () => {
-
-  //const navigate = useNavigate()
   const [events, setEvents] = useState([]);
   const baseURL = 'https://schedulemyschool.onrender.com';
-
-  // useEffect(() => {
-  //   const token = localStorage.getItem('token');
-  //   if (!token) {
-  //     navigate('/login');
-  //   }
-  // }, [navigate]);
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(`${baseURL}/api/event`);
-       // console.log('Response data:', response);
-        setEvents(response.data.data); // Set the events state
+        // Sort events by createdAt (earliest first)
+        const sortedEvents = response.data.data.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        console.log(sortedEvents)
+        setEvents(sortedEvents); // Set the sorted events state
       } catch (error) {
         console.error('Error fetching events:', error);
       }
@@ -68,25 +56,21 @@ const Home = () => {
 
   return (
     <>
-    
-    
-    <div className="mx-auto bg-gray-100 min-h-screen flex flex-wrap justify-center items-center px-8 py-8">
-     
-      {events.map((event) => (
-        <EventCard
-          key={event._id}
-          id={event._id}
-          title={event.title}
-          description={event.description}
-          location={event.location}
-          date={event.date}
-          time={event.time}
-          availableTickets={event.totalTickets - event.ticketsBooked}
-          createdBy={event.createdby}
-         // ticketsBooked={event.ticketsBooked}
-        />
-      ))}
-    </div>
+      <div className="mx-auto bg-gray-100 min-h-screen flex flex-wrap justify-center items-center px-8 py-8">
+        {events.map((event) => (
+          <EventCard
+            key={event._id}
+            id={event._id}
+            title={event.title}
+            description={event.description}
+            location={event.location}
+            date={event.date}
+            time={event.time}
+            availableTickets={event.totalTickets - event.ticketsBooked}
+            createdBy={event.createdby}
+          />
+        ))}
+      </div>
     </>
   );
 };

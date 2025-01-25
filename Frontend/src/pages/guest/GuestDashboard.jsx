@@ -2,7 +2,7 @@
 import React from "react";
 import Sidebar from "./component/Sidebar";
 
-const StudentDashboard = () => {
+const GuestDashboard = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex">
       {/* Sidebar */}
@@ -19,4 +19,4 @@ const StudentDashboard = () => {
   );
 };
 
-export default StudentDashboard;
+export default GuestDashboard;
