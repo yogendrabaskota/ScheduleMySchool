@@ -2,7 +2,8 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import Sidebar from './component/Sidebar';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const Button = ({ color, onClick, children }) => (
   <button
@@ -14,51 +15,61 @@ const Button = ({ color, onClick, children }) => (
 );
 
 const ProfileManager = () => {
-    const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { id } = useParams(); // Get userId from URL params
+  const token = localStorage.getItem('token'); // Retrieve the auth token from localStorage
+
+  const handleDeleteAccount = async () => {
+    const confirmDelete = window.confirm("Are you sure you want to delete your account? This action will delete your account permanently");
+    if (confirmDelete) {
+      try {
+        const response = await axios.delete(`http://localhost:5000/api/user/${id}`, {
+          headers: {
+            Authorization: `${token}`, // Pass the token in headers
+          },
+        });
+
+        if (response.status === 200) {
+          alert('Your account has been successfully deleted.');
+          localStorage.removeItem('token');
+          localStorage.removeItem('role');
+          navigate('/'); // Redirect to home or login page after account deletion
+        } else {
+          alert('Failed to delete the account. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error deleting account:', error);
+        alert('An error occurred. Please try again later.');
+      }
+    }
+  };
+
   return (
     <div className="flex">
       <Sidebar title="Dashboard" />
-      <div className="w-full justify-center ">
+      <div className="w-full justify-center">
         <h1 className="text-4xl font-bold text-blue-700 mb-8"> </h1>
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 justify-center pt-5">
+          <div className="flex justify-center">
+            <Button color="bg-blue-500" onClick={() => navigate("/ticket")}>
+              View Your Ticket
+            </Button>
+          </div>
 
-        {/* <div className="bg-white p-8 rounded-2xl shadow-xl mb-8"> */}
-       
-          {/* <h2 className="text-2xl font-semibold text-gray-800 mb-6">Manage Your Profile</h2> */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 justify-center pt-5">
-      
-            <div className="flex justify-center">
-        
-              <Button
-                color="bg-blue-500"
-                onClick={() => 
-                    navigate("/ticket")
-                 }
-              >
-                View Your Ticket
-              </Button>
-            </div>
+          <div className="flex justify-center">
+            <Button color="bg-green-500" onClick={() => alert('View Your History clicked')}>
+              View Your History
+            </Button>
+          </div>
 
-            <div className="flex justify-center">
-              <Button
-                color="bg-green-500"
-                onClick={() => alert('View Your History clicked')}
-              >
-                View Your History
-              </Button>
-            </div>
-
-            <div className="flex justify-center">
-              <Button
-                color="bg-gray-500"
-                onClick={() => alert('More Options clicked')}
-              >
-                More
-              </Button>
-            </div>
+          <div className="flex justify-center">
+            <Button color="bg-gray-500" onClick={handleDeleteAccount}>
+              Delete Your Account
+            </Button>
           </div>
         </div>
-      {/* </div> */}
+      </div>
     </div>
   );
 };

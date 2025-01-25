@@ -32,7 +32,7 @@ const TicketPage = () => {
         setTickets(response.data.data);
         setLoading(false);
       } catch (err) {
-        setError("Failed to fetch tickets. Please try again.");
+        setError("No tickets found.Please try again.");
         setLoading(false);
       }
     };
@@ -77,22 +77,6 @@ const TicketPage = () => {
      navigate(`/ticket/${_id}`)
   };
 
-  const handleGenerateTicketClick = async (ticketId) => {
-    try {
-      const response = await axios.get("https://schedulemyschool.onrender.com/api/ticket", {
-        headers: {
-          Authorization: `${token}`,
-        },
-      });
-
-      console.log("ticketnumber");
-
-      setLoading(false);
-    } catch (err) {
-      setError("Failed to get tickets. Please try again.");
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="flex">
@@ -162,7 +146,7 @@ const TicketPage = () => {
                       className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600"
                       onClick={() => handleNavigate(ticket._id)}
                     >
-                      Generate Ticket
+                      View Ticket
                     </button>
                   </div>
                 )}

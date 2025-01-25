@@ -48,7 +48,7 @@ function App() {
       <Route path="/past-event" element={<PastEvents />} />
       <Route path="/ticket-purchase/:id" element={<TicketPurchaseForm />} />
       <Route path="/student-dashboard" element={<StudentDashboard />} />
-      <Route path="/profile" element={<ProfileManager />} />
+      <Route path="/profile/:id" element={<ProfileManager />} />
       <Route path="/ticket" element={<TicketPage />} />
       <Route path="/ticket/:id" element={<GetYourTicket />} />
 
