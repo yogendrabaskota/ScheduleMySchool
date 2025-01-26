@@ -8,25 +8,37 @@ import { QrReader } from "react-qr-reader";
 const VerifyPage = () => {
   const [ticketNumber, setTicketNumber] = useState(null);
   const [statusMessage, setStatusMessage] = useState("");
+  const [ticketDetails, setTicketDetails] = useState(null); // State for ticket details
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleScan = async (data) => {
-    if (data) {
+    if (data && data !== ticketNumber) {
+      // Avoid duplicate verification for the same ticket
       setTicketNumber(data); // Get the ticket number from QR code
       try {
+        const token = localStorage.getItem("token");
         // Fetch ticket details from the API
         const response = await axios.get(
-          `https://schedulemyschool.onrender.com/api/ticket/verify/${data}`
+          `https://schedulemyschool.onrender.com/api/ticket/verify/${data}`,
+          {
+            headers: {
+              Authorization: `${token}`,
+            },
+          }
         );
 
+        console.log(response.data);
         if (response.status === 200 && response.data) {
           setStatusMessage("Ticket successfully verified!");
+          setTicketDetails(response.data.ticket); // Save ticket details
         } else {
           setStatusMessage("Ticket not verified.");
+          setTicketDetails(null); // Clear ticket details
         }
       } catch (err) {
         setStatusMessage("Error verifying ticket. Please try again.");
+        setTicketDetails(null); // Clear ticket details
         console.error("Error fetching ticket:", err);
       }
     }
@@ -35,6 +47,12 @@ const VerifyPage = () => {
   const handleError = (err) => {
     setError("Error accessing camera. Please check permissions.");
     console.error(err);
+  };
+
+  const resetVerification = () => {
+    setTicketNumber(null); // Reset ticket number
+    setStatusMessage(""); // Clear status message
+    setTicketDetails(null); // Clear ticket details
   };
 
   return (
@@ -69,13 +87,59 @@ const VerifyPage = () => {
         </div>
       )}
 
-      {/* Back Button */}
-      <button
-        className="px-6 py-3 rounded-lg bg-blue-500 text-white font-semibold shadow-md hover:bg-blue-600 transition"
-        onClick={() => navigate("/teacher-profile")}
-      >
-        Go Back
-      </button>
+      {/* Ticket Details */}
+      {ticketDetails && (
+        <div className="p-4 bg-white rounded-lg shadow-md w-96">
+          <h2 className="text-lg font-bold mb-2">Ticket Details</h2>
+          <p>
+            <strong>Event:</strong> {ticketDetails.eventId.title} <br />
+            {/* <em>{ticketDetails.eventId.description}</em> */}
+          </p>
+          <p>
+            <strong>Ticket Number:</strong> {ticketDetails.ticketNumber}
+          </p>
+          <p>
+            <strong>Quantity:</strong> {ticketDetails.quantity}
+          </p>
+          <p>
+            <strong>Payment Status:</strong>{" "}
+            {ticketDetails.paymentDetails.status}
+          </p>
+          <p>
+            <strong>User Name:</strong> {ticketDetails.userId.name}
+          </p>
+          <p>
+            <strong>User Email:</strong> {ticketDetails.userId.email}
+          </p>
+          <p>
+            <strong>Purchase Date:</strong>{" "}
+            {new Date(ticketDetails.purchaseDate).toLocaleString()}
+          </p>
+          <p>
+            <strong>Event Location:</strong> {ticketDetails.eventId.location}
+          </p>
+          <p>
+            <strong>Expiry Date:</strong>{" "}
+            {new Date(ticketDetails.eventId.date).toLocaleString()}
+          </p>
+        </div>
+      )}
+
+      {/* Reset and Back Buttons */}
+      <div className="flex gap-4 mt-4">
+        <button
+          className="px-6 py-3 rounded-lg bg-blue-500 text-white font-semibold shadow-md hover:bg-blue-600 transition"
+          onClick={() => navigate("/teacher-profile")}
+        >
+          Go Back
+        </button>
+        <button
+          className="px-6 py-3 rounded-lg bg-gray-500 text-white font-semibold shadow-md hover:bg-gray-600 transition"
+          onClick={resetVerification}
+        >
+          Reset
+        </button>
+      </div>
     </div>
   );
 };
