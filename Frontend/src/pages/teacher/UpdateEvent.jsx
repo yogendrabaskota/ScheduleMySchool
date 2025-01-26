@@ -63,6 +63,7 @@ const UpdateEvent = () => {
       setError(err.response?.data?.message || "Failed to update the event.");
     }
   };
+    
 
   if (loading) return <p>Loading event details...</p>;
   if (error) return <p className="text-red-500">{error}</p>;

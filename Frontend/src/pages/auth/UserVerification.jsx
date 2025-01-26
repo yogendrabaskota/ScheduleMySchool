@@ -35,7 +35,7 @@ const UserVerification = () => {
   const fetchUnverifiedUsers = async () => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get("http://localhost:5000/api/user");
+      const response = await axiosInstance.get("https://schedulemyschool.onrender.com/api/user");
       const unverifiedUsers = response.data.data.filter(user => !user.isUserVerified);
       setUsers(unverifiedUsers);
       setLoading(false);

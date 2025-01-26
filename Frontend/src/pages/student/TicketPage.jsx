@@ -14,8 +14,9 @@ const TicketPage = () => {
 
   const navigate = useNavigate();
 
-  // Authorization token
+  // Authorization token and user role
   const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role"); // Get the user role from localStorage
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -26,13 +27,10 @@ const TicketPage = () => {
           },
         });
 
-        //const a = response.data.data;
-
-       // console.log("response 1", a[0]);
         setTickets(response.data.data);
         setLoading(false);
       } catch (err) {
-        setError("No tickets found.Please try again.");
+        setError("No tickets found. Please try again.");
         setLoading(false);
       }
     };
@@ -43,7 +41,7 @@ const TicketPage = () => {
   if (loading) {
     return (
       <div className="flex">
-        <Sidebar title="Ticket Page" />
+        {role !== "teacher" && <Sidebar title="Ticket Page" />}
         <div className="w-full p-8 text-center">
           <h2 className="text-xl font-semibold">Loading tickets...</h2>
         </div>
@@ -54,7 +52,7 @@ const TicketPage = () => {
   if (error) {
     return (
       <div className="flex">
-        <Sidebar title="Ticket Page" />
+        {role !== "teacher" && <Sidebar title="Ticket Page" />}
         <div className="w-full p-8 text-center">
           <h2 className="text-xl font-semibold text-red-600">{error}</h2>
         </div>
@@ -72,15 +70,12 @@ const TicketPage = () => {
   };
 
   const handleNavigate = async (_id) => {
-   // console.log("clicked");
-    //console.log("tn", ticketNumber);
-     navigate(`/ticket/${_id}`)
+    navigate(`/ticket/${_id}`);
   };
-
 
   return (
     <div className="flex">
-      <Sidebar title="Ticket Page" />
+      {role !== "teacher" && <Sidebar title="Ticket Page" />}
       <div className="w-full bg-gray-100 p-8">
         <h1 className="text-3xl font-bold text-blue-600 mb-6">Your Tickets</h1>
 
@@ -164,6 +159,8 @@ const TicketPage = () => {
             ))}
           </div>
         )}
+     
+
       </div>
     </div>
   );

@@ -1,7 +1,11 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import {jwtDecode} from "jwt-decode";
+
+
 
 const EventCard = ({ id, title, description, location, date, time, availableTickets, ticketsBooked }) => {
   const eventDate = new Date(date);
@@ -41,6 +45,9 @@ const EventCard = ({ id, title, description, location, date, time, availableTick
   );
 };
 
+
+
+
 const YourEvents = () => {
   const [events, setEvents] = useState([]);
   const baseURL = "https://schedulemyschool.onrender.com";
@@ -74,6 +81,20 @@ const YourEvents = () => {
 
     fetchEvents();
   }, [token]);
+  const handleProfile = () => {
+
+    // Decode the token to get the user ID
+    
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const userId = decodedToken.id; // Assuming the token contains a property `id`
+      navigate(`/teacherprofile/${userId}`); // Redirect to the teacher profile page
+    } else {
+      alert("User not authenticated!");
+      navigate("/login");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex">
@@ -111,6 +132,14 @@ const YourEvents = () => {
               className="w-full text-left bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition duration-300"
             >
               User Manager
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={handleProfile}
+              className="w-full text-left bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition duration-300"
+            >
+              Profile
             </button>
           </li>
         </ul>
