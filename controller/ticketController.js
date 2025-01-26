@@ -176,15 +176,17 @@ exports.generateTicketPDF = async (req, res) => {
 
     // Generate QR code with ticket details
     const qrData = {
-      ticketNumber: ticket.ticketNumber,
-      event: ticket.eventId.title || 'NA',
-      date: ticket.eventId.date,
-      purchaser: ticket.userId.name,
-      email: ticket.userId.email,
+    //   ticketNumber: ticket.ticketNumber,
+    //   event: ticket.eventId.title || 'NA',
+    //   date: ticket.eventId.date,
+    //   purchaser: ticket.userId.name,
+    //   email: ticket.userId.email,
+    tickrtNumber : ticket.ticketNumber
     //  rq,
     };
+    const data = ticket.ticketNumber
 
-    const qrCodeBase64 = await QRCode.toDataURL(JSON.stringify(qrData));
+    const qrCodeBase64 = await QRCode.toDataURL(JSON.stringify(data));
 
 
     // Create a new PDF document
