@@ -24,6 +24,7 @@ import GetYourTicket from './pages/student/GetYourTicket'
 import UserDetails from './pages/teacher/UserDetails'
 import GuestDashboard from './pages/guest/GuestDashboard'
 import TeacherProfile from './pages/teacher/TeacherProfile'
+import VerifyPage from './pages/teacher/VerifyPage'
 
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
       <Route path="/user-details/:userId" element={<UserDetails />} />
       <Route path="/guest-dashboard" element={<GuestDashboard />} />
       <Route path="/teacherprofile/:id" element={<TeacherProfile />} />
+      <Route path="/verify-page" element={<VerifyPage />} />
 
 
 

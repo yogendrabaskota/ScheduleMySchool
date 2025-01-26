@@ -266,3 +266,23 @@ exports.generateTicketPDF = async (req, res) => {
 };
 
   
+
+exports.verifyTicket = async (req, res) => {
+  const { ticketNumber } = req.params;
+
+  if (!ticketNumber || typeof ticketNumber !== "string") {
+    return res.status(400).json({ success: false, message: "Invalid ticket number" });
+  }
+
+  try {
+    const ticket = await Ticket.findOne({ ticketNumber }).populate('eventId').populate('userId');
+    if (!ticket) {
+      return res.status(404).json({ success: false, message: "Ticket not found" });
+    }
+
+    res.status(200).json({ success: true, ticket });
+  } catch (error) {
+    console.error("Error verifying ticket:", error);
+    res.status(500).json({ success: false, message: "Error verifying ticket" });
+  }
+};
