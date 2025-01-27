@@ -27,6 +27,7 @@ import TeacherProfile from './pages/teacher/TeacherProfile'
 import VerifyPage from './pages/teacher/VerifyPage'
 import Contact from './pages/home/Contact'
 import AboutUs from './pages/home/AboutUs'
+import HistoryPage from './pages/student/HistoryPage'
 
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
       <Route path="/ticket" element={<TicketPage />} />
       <Route path="/ticket/:id" element={<GetYourTicket />} />
       <Route path="/user-details/:userId" element={<UserDetails />} />
+      <Route path="/history" element={<HistoryPage />} />
       <Route path="/guest-dashboard" element={<GuestDashboard />} />
       <Route path="/teacherprofile/:id" element={<TeacherProfile />} />
       <Route path="/verify-page" element={<VerifyPage />} />

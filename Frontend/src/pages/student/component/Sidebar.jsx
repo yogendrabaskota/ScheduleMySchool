@@ -49,7 +49,7 @@ const Sidebar = ({ title }) => {
         </li>
         <li>
           <button
-            onClick={() => handleNavigation("/your-assignments")}
+            onClick={() => handleNavigation("/history")}
             className="w-full text-left bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
           >
             Your History

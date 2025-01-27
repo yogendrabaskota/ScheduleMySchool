@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { QRCodeCanvas } from "qrcode.react"; // Import the QRCode component
 
-const TicketPage = () => {
+const HistoryPage = () => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -13,8 +13,6 @@ const TicketPage = () => {
   const [qrCodeData, setQrCodeData] = useState(""); // Track QR code data
 
   const navigate = useNavigate();
-
-  // Authorization token and user role
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role"); // Get the user role from localStorage
 
@@ -27,17 +25,17 @@ const TicketPage = () => {
           },
         });
 
-        // Filter tickets based on event date
+        // Filter tickets with event dates before today
         const today = new Date();
         const filteredTickets = response.data.data.filter((ticket) => {
           const eventDate = new Date(ticket.eventId.date);
-          return eventDate >= today; // Show tickets for today or future dates
+          return eventDate < today; // Event date is before today
         });
 
         setTickets(filteredTickets);
         setLoading(false);
       } catch (err) {
-        setError("No tickets found. Please try again.");
+        setError("No tickets found for past events. Please try again.");
         setLoading(false);
       }
     };
@@ -48,9 +46,9 @@ const TicketPage = () => {
   if (loading) {
     return (
       <div className="flex">
-        {role !== "teacher" && <Sidebar title="Ticket Page" />}
+        {role !== "teacher" && <Sidebar title="History Page" />}
         <div className="w-full p-8 text-center">
-          <h2 className="text-xl font-semibold">Loading tickets...</h2>
+          <h2 className="text-xl font-semibold">Loading history...</h2>
         </div>
       </div>
     );
@@ -59,7 +57,7 @@ const TicketPage = () => {
   if (error) {
     return (
       <div className="flex">
-        {role !== "teacher" && <Sidebar title="Ticket Page" />}
+        {role !== "teacher" && <Sidebar title="History Page" />}
         <div className="w-full p-8 text-center">
           <h2 className="text-xl font-semibold text-red-600">{error}</h2>
         </div>
@@ -82,12 +80,12 @@ const TicketPage = () => {
 
   return (
     <div className="flex">
-      {role !== "teacher" && <Sidebar title="Ticket Page" />}
+      {role !== "teacher" && <Sidebar title="History Page" />}
       <div className="w-full bg-gray-100 p-8">
-        <h1 className="text-3xl font-bold text-blue-600 mb-6">Your Tickets</h1>
+        <h1 className="text-3xl font-bold text-blue-600 mb-6">Ticket History</h1>
 
         {tickets.length === 0 ? (
-          <p className="text-lg text-gray-600">No tickets found.</p>
+          <p className="text-lg text-gray-600">No past tickets found.</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {tickets.map((ticket) => (
@@ -171,4 +169,4 @@ const TicketPage = () => {
   );
 };
 
-export default TicketPage;
+export default HistoryPage;
