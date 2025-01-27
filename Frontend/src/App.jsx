@@ -26,6 +26,7 @@ import GuestDashboard from './pages/guest/GuestDashboard'
 import TeacherProfile from './pages/teacher/TeacherProfile'
 import VerifyPage from './pages/teacher/VerifyPage'
 import Contact from './pages/home/Contact'
+import AboutUs from './pages/home/AboutUs'
 
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/About" element={<AboutUs />} />
 
       <Route path="/event/:id" element={<EventDetails />} />
       <Route path="/register" element={<Register />} />
