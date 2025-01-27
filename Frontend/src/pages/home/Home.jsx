@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Contact from './Contact';
 
 const EventCard = ({ id, title, description, location, date, time, availableTickets, createdBy }) => {
   return (
@@ -71,6 +72,7 @@ const Home = () => {
           />
         ))}
       </div>
+      <Contact />
     </>
   );
 };

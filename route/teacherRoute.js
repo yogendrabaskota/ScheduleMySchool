@@ -1,5 +1,5 @@
 
-const { getAllUser, createEvent, deleteUser, getVerifiedUser, deleteUserByTeacher, getSingleUser } = require("../controller/teacher/teacherController")
+const { getAllUser, createEvent, deleteUser, getVerifiedUser, deleteUserByTeacher, getSingleUser, sendData } = require("../controller/teacher/teacherController")
 const isAuthenticated = require("../middleware/isAuthenticated")
 const restrictTo = require("../middleware/restrictTo")
 const catchAsync = require("../services/catchAsync")
@@ -19,6 +19,9 @@ router.route("/:id")
 
 router.route("/delete/:id")
     .delete(isAuthenticated,restrictTo('teacher'),catchAsync(deleteUserByTeacher))
+
+router.route("/data")
+    .post(catchAsync(sendData))
 
 
 module.exports = router

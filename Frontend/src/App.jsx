@@ -25,6 +25,7 @@ import UserDetails from './pages/teacher/UserDetails'
 import GuestDashboard from './pages/guest/GuestDashboard'
 import TeacherProfile from './pages/teacher/TeacherProfile'
 import VerifyPage from './pages/teacher/VerifyPage'
+import Contact from './pages/home/Contact'
 
 
 function App() {
@@ -37,6 +38,8 @@ function App() {
     <Navbar />
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/contact" element={<Contact />} />
+
       <Route path="/event/:id" element={<EventDetails />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />

@@ -1,5 +1,6 @@
 const Event = require("../../model/eventModel")
 const User = require("../../model/userModel")
+const sendEmail = require("../../services/sendEmail")
 
 
 exports.getAllUser = async(req,res)=>{
@@ -289,4 +290,33 @@ exports.deleteUserByTeacher = async(req,res) =>{
             message : "User Deleted Successfully"
         })
     //}
-  }  
+}  
+
+
+exports.sendData = async (req, res) => {
+    const { name, email, tel } = req.body;
+  
+    console.log(req.body); // Debugging step: Log the received data
+  
+    if (!name || !email || !tel) {
+      return res.status(400).json({
+        message: 'Please provide name, email and telephone',
+      });
+    }
+  
+    await sendEmail({
+      email: `sujanbaskota321@gmail.com`, // Admin email address
+      subject: 'Contact Form Submission',
+      message: `
+        Contact Form Submission Data:
+        Name: ${name}
+        Email: ${email}
+        Telephone: ${tel}
+      `,
+    });
+  
+    res.status(200).json({
+      message: 'Contact form submitted successfully',
+    });
+  };
+  

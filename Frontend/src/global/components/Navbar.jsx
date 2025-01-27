@@ -77,6 +77,13 @@ const Navbar = () => {
               Contact
             </Link>
 
+            {/* <a
+              href='/contact'
+              className="text-white hover:text-yellow-300 transition duration-300"
+            >
+              Contact
+            </a> */}
+
             {!token ? (
               <>
                 <Link
