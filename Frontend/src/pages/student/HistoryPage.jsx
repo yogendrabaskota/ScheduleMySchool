@@ -2,17 +2,12 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "./component/Sidebar";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { QRCodeCanvas } from "qrcode.react"; // Import the QRCode component
 
 const HistoryPage = () => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [selectedTicketId, setSelectedTicketId] = useState(null); // Track selected ticket
-  const [qrCodeData, setQrCodeData] = useState(""); // Track QR code data
 
-  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role"); // Get the user role from localStorage
 
@@ -65,19 +60,6 @@ const HistoryPage = () => {
     );
   }
 
-  const handleViewClick = (ticketId) => {
-    setSelectedTicketId(ticketId); // Set the selected ticket
-    setQrCodeData(""); // Reset QR code data when a new ticket is selected
-  };
-
-  const handleQRClick = (ticketId, ticketNumber) => {
-    setQrCodeData(ticketNumber); // Set the ticket number as QR code data
-  };
-
-  const handleNavigate = async (_id) => {
-    navigate(`/ticket/${_id}`);
-  };
-
   return (
     <div className="flex">
       {role !== "teacher" && <Sidebar title="History Page" />}
@@ -124,42 +106,6 @@ const HistoryPage = () => {
                 <p className="text-sm text-gray-600">
                   <strong>Event Time:</strong> {ticket.eventId.time || "N/A"}
                 </p>
-
-                {/* View button */}
-                <button
-                  className="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-                  onClick={() => handleViewClick(ticket._id)}
-                >
-                  View
-                </button>
-
-                {/* Conditional rendering for additional buttons */}
-                {selectedTicketId === ticket._id && (
-                  <div className="mt-4 space-x-4">
-                    <button
-                      className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
-                      onClick={() => handleQRClick(ticket._id, ticket.ticketNumber)}
-                    >
-                      QR verify
-                    </button>
-                    <button
-                      className="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600"
-                      onClick={() => handleNavigate(ticket._id)}
-                    >
-                      View Ticket
-                    </button>
-                  </div>
-                )}
-
-                {/* Display QR code */}
-                {qrCodeData && selectedTicketId === ticket._id && (
-                  <div className="mt-4">
-                    <h3 className="text-lg font-semibold text-gray-700 mb-2">
-                      QR Code for Ticket
-                    </h3>
-                    <QRCodeCanvas value={qrCodeData} size={150} />
-                  </div>
-                )}
               </div>
             ))}
           </div>
