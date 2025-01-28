@@ -8,7 +8,7 @@ const Report = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const baseURL = "http://localhost:5000"; // Your backend's base URL
+  const baseURL = "https://schedulemyschool.onrender.com"; // Your backend's base URL
   const token = localStorage.getItem("token");
 
   useEffect(() => {
