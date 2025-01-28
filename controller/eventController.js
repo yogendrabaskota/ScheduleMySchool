@@ -79,7 +79,7 @@ exports.getEventReport = async (req, res) => {
     // Event statistics
     doc.text(`Total Participants: ${event.ticketsBooked}`);
     doc.text(`Tickets Sold: ${event.ticketsBooked}`);
-    doc.text(`Revenue Collected: $${Finalrevenue.toFixed(2)}`);
+    doc.text(`Revenue Collected: NPR ${Finalrevenue.toFixed(2)}`);
     doc.moveDown();
 
     // Finalize the document and save it
