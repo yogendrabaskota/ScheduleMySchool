@@ -44,10 +44,12 @@ const Home = () => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(`${baseURL}/api/event`);
-        // Sort events by createdAt (earliest first)
-        const sortedEvents = response.data.data.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
-        console.log(sortedEvents)
-        setEvents(sortedEvents); // Set the sorted events state
+        const currentDate = new Date(); // Get the current date
+        const sortedAndFilteredEvents = response.data.data
+          .filter((event) => new Date(event.date) >= currentDate) // Filter out past events
+          .sort((a, b) => new Date(a.date) - new Date(b.date)); // Sort events by date (soonest first)
+        console.log(sortedAndFilteredEvents);
+        setEvents(sortedAndFilteredEvents); // Set the sorted and filtered events state
       } catch (error) {
         console.error('Error fetching events:', error);
       }

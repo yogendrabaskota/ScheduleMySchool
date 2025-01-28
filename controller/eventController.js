@@ -46,6 +46,7 @@ exports.getEventReport = async (req, res) => {
 
     // Ensure revenue is a number, fallback to 0 if not defined
     const revenue = event.revenue || 0;
+    const Finalrevenue = event.ticketsBooked * 100
 
     // Create a new PDF document
     const doc = new PDFDocument();
@@ -77,8 +78,8 @@ exports.getEventReport = async (req, res) => {
 
     // Event statistics
     doc.text(`Total Participants: ${event.ticketsBooked}`);
-    doc.text(`Tickets Sold: ${event.ticketsSold}`);
-    doc.text(`Revenue Collected: $${revenue.toFixed(2)}`);
+    doc.text(`Tickets Sold: ${event.ticketsBooked}`);
+    doc.text(`Revenue Collected: $${Finalrevenue.toFixed(2)}`);
     doc.moveDown();
 
     // Finalize the document and save it
