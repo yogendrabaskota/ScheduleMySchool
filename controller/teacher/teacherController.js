@@ -296,7 +296,7 @@ exports.deleteUserByTeacher = async(req,res) =>{
 exports.sendData = async (req, res) => {
     const { name, email, tel } = req.body;
   
-    console.log(req.body); // Debugging step: Log the received data
+    //console.log(req.body); 
   
     if (!name || !email || !tel) {
       return res.status(400).json({

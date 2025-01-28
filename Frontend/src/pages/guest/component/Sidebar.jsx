@@ -12,10 +12,11 @@ const Sidebar = ({ title }) => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
-        const decodedToken = jwtDecode(token); // Decode the JWT
+        const decodedToken = jwtDecode(token); 
+
         //console.log(decodedToken)
         //console.log(decodedToken.id)
-        setUserId(decodedToken.id); // Use the correct key from your token structure
+        setUserId(decodedToken.id); 
       } catch (error) {
         console.error("Invalid token", error);
       }
