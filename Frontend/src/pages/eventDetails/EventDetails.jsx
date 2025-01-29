@@ -7,12 +7,18 @@ const EventDetails = () => {
   const [event, setEvent] = useState(null);
   const navigate = useNavigate(); // To redirect
   const baseURL = 'https://schedulemyschool.onrender.com';
+  const [role, setRole] = useState(null);
 
   useEffect(() => {
+    // Get role from localStorage
+    const storedRole = localStorage.getItem("role");
+    setRole(storedRole);
+
     const fetchEventDetails = async () => {
       try {
         const response = await axios.get(`${baseURL}/api/event/${id}`);
         setEvent(response.data.data); // Set the event details state
+        //console.log(response.data.data)
       } catch (error) {
         console.error('Error fetching event details:', error);
       }
@@ -56,12 +62,15 @@ const EventDetails = () => {
           </div>
         )}
 
-        <button
-          onClick={handleRegister}
-          className="mt-8 w-full bg-blue-500 hover:bg-blue-600 text-white text-lg font-semibold py-3 px-6 rounded-lg"
-        >
-          Register
-        </button>
+        {/* Hide Register button if the user role is "admin" */}
+        {role !== "admin" && (
+          <button
+            onClick={handleRegister}
+            className="mt-8 w-full bg-blue-500 hover:bg-blue-600 text-white text-lg font-semibold py-3 px-6 rounded-lg"
+          >
+            Register
+          </button>
+        )}
       </div>
     </div>
   );

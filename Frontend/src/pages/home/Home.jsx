@@ -48,7 +48,7 @@ const Home = () => {
         const sortedAndFilteredEvents = response.data.data
           .filter((event) => new Date(event.date) >= currentDate) // Filter out past events
           .sort((a, b) => new Date(a.date) - new Date(b.date)); // Sort events by date (soonest first)
-        console.log(sortedAndFilteredEvents);
+       // console.log(sortedAndFilteredEvents);
         setEvents(sortedAndFilteredEvents); // Set the sorted and filtered events state
       } catch (error) {
         console.error('Error fetching events:', error);
