@@ -7,10 +7,10 @@ const router = require("express").Router()
 
 
 router.route("/")
-    .get( isAuthenticated,restrictTo('admin'),catchAsync(getAllUser))
+    .get( isAuthenticated,restrictTo('admin','teacher'),catchAsync(getAllUser))
 
 router.route("/verified")
-    .get(isAuthenticated,restrictTo('admin'),catchAsync(getVerifiedUser))
+    .get(isAuthenticated,restrictTo('admin','teacher'),catchAsync(getVerifiedUser))
 
 router.route("/:id")
     .delete(isAuthenticated,catchAsync(deleteUser))

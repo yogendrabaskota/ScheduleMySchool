@@ -26,13 +26,18 @@ const TicketPage = () => {
             Authorization: `${token}`,
           },
         });
+        //console.log(response.data.data)
 
         // Filter tickets based on event date
         const today = new Date();
+        //console.log(today)
         const filteredTickets = response.data.data.filter((ticket) => {
           const eventDate = new Date(ticket.eventId.date);
+          console.log(eventDate)
           return eventDate >= today; // Show tickets for today or future dates
         });
+
+        //console.log("fii")
 
         setTickets(filteredTickets);
         setLoading(false);

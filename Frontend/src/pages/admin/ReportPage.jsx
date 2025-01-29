@@ -32,7 +32,7 @@ const ReportPage = () => {
   };
 
   const handleSeeDetails = (eventId) => {
-    navigate(`/event-details/${eventId}`);
+    navigate(`/event/${eventId}`);
   };
 
   if (loading) return <div className="text-center mt-10">Loading...</div>;
