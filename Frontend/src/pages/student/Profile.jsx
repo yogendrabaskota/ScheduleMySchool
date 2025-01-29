@@ -1,7 +1,8 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import Sidebar from './component/Sidebar';
+import Sidebar from './component/Sidebar'; // Default sidebar for non-admin users
+import AdminSidebar from '../admin/sidebar/Sidebar'; // Sidebar for admin users
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
@@ -18,6 +19,7 @@ const ProfileManager = () => {
   const navigate = useNavigate();
   const { id } = useParams(); // Get userId from URL params
   const token = localStorage.getItem('token'); // Retrieve the auth token from localStorage
+  const role = localStorage.getItem('role'); // Retrieve the role from localStorage
 
   const handleDeleteAccount = async () => {
     const confirmDelete = window.confirm("Are you sure you want to delete your account? This action will delete your account permanently");
@@ -46,7 +48,13 @@ const ProfileManager = () => {
 
   return (
     <div className="flex">
-      <Sidebar title="Dashboard" />
+      {/* Conditionally render the Sidebar based on the role */}
+      {role === 'admin' ? (
+        <AdminSidebar title="Admin Dashboard" />  // Admin sidebar
+      ) : (
+        <Sidebar title="Dashboard" />  // Default sidebar for non-admin users
+      )}
+
       <div className="w-full justify-center">
         <h1 className="text-4xl font-bold text-blue-700 mb-8"> </h1>
 
