@@ -8,7 +8,7 @@ const Report = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const baseURL = "https://schedulemyschool.onrender.com"; // Your backend's base URL
+  const baseURL = "http://localhost:5000"; // Your backend's base URL
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const Report = () => {
       try {
         // Make the API call to get the PDF file
         const response = await axios.get(`${baseURL}/api/event/report/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
+        //  headers: { Authorization: `Bearer ${token}` },
           responseType: "blob", // This will tell axios to handle the response as binary data
         });
 
