@@ -271,11 +271,11 @@ exports.deleteUserByTeacher = async(req,res) =>{
    }
   
   
-   if(user.role === 'teacher'){
-    return res.status(400).json({
-        message : "You don't have permission to delete teacher"
-        })
-    }
+  //  if(user.role === 'teacher'){
+  //   return res.status(400).json({
+  //       message : "You don't have permission to delete teacher"
+  //       })
+  //   }
 
    
 

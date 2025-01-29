@@ -44,6 +44,7 @@ const Home = () => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get(`${baseURL}/api/event`);
+        console.log(response.data.data)
         const currentDate = new Date(); // Get the current date
         const sortedAndFilteredEvents = response.data.data
           .filter((event) => new Date(event.date) >= currentDate) // Filter out past events
