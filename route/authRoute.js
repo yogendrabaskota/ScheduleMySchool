@@ -1,5 +1,6 @@
 
-const { registerUser, loginUser, forgetPassword, verifyotp, resetPassword, approveUser, rejectUser } = require("../controller/auth/authController")
+const { registerUser, loginUser, forgetPassword, verifyotp, resetPassword, approveUser, rejectUser, deleteAccount, confirmDelete } = require("../controller/auth/authController")
+const isAuthenticated = require("../middleware/isAuthenticated")
 const catchAsync = require("../services/catchAsync")
 
 
@@ -21,6 +22,11 @@ router.route("/verifyUser/:id")
     .put(catchAsync(approveUser))
 router.route("/rejectUser/:id")
     .put(catchAsync(rejectUser))
+router.route("/delete")
+    .post(isAuthenticated,catchAsync(deleteAccount))
+
+router.route("/confirmDelete")
+    .delete(isAuthenticated,catchAsync(confirmDelete))
 
 
 module.exports = router

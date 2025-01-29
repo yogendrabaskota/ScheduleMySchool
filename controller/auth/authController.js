@@ -125,6 +125,36 @@ exports.forgetPassword =async(req,res)=>{
 
 }
 
+
+exports.deleteAccount = async(req,res)=>{
+     const {userId} = req.user.id
+
+     const email = req.user.email
+    // console.log(email)
+
+     if(!email){
+        return res.status(400).json({
+            messageg : "Please provide email"
+        })
+     }
+     const userFound = await User.find({email})
+     const otp = Math.floor(Math.random() *10000)
+     userFound[0].otp = otp
+     await userFound[0].save()
+
+
+     await sendEmail({
+        email : email, //to this email
+        subject : "OTP for delete your account",
+        message : `This is your otp.\n ${otp} \nDon't share it with anyone\n If this action is not done by you, please ignore this email`
+     }) 
+     res.status(200).json({
+        message : "OTP sent successfully"
+     })
+}
+
+
+
 exports.verifyotp = async(req,res) => {
     const {email,otp} = req.body
     if(!email || !otp) {
@@ -157,6 +187,30 @@ exports.verifyotp = async(req,res) => {
         })
     }
 }
+
+exports.confirmDelete =async(req,res)=>{
+    const userId = req.user.id
+    const email = req.user.email
+
+
+    const userFound = await User.find({email})
+    //console.log(userFound)
+
+    if(userFound[0].isOtpVerified !== true){
+        return res.status(403).json({
+            message : "You cannot perform this action"
+        })
+    }
+
+
+    userFound[0].isOtpVerified = false
+    await userFound[0].save()
+    await User.findByIdAndDelete(userId)
+    res.status(200).json({
+        message : "User deleted successfully"
+    })
+}
+
 
 exports.resetPassword = async(req,res) => {
     const{email,newPassword,confirmPassword} = req.body
