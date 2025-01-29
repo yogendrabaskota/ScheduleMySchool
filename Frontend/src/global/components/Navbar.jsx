@@ -77,13 +77,6 @@ const Navbar = () => {
               Contact
             </Link>
 
-            {/* <a
-              href='/contact'
-              className="text-white hover:text-yellow-300 transition duration-300"
-            >
-              Contact
-            </a> */}
-
             {!token ? (
               <>
                 <Link
@@ -129,6 +122,14 @@ const Navbar = () => {
                     className="text-white hover:text-yellow-300 transition duration-300"
                   >
                     Guest Dashboard
+                  </Link>
+                )}
+                {role === 'admin' && (
+                  <Link
+                    to="/admin-dashboard"
+                    className="text-white hover:text-yellow-300 transition duration-300"
+                  >
+                    Admin Dashboard
                   </Link>
                 )}
               </>
@@ -214,6 +215,15 @@ const Navbar = () => {
                       className="block text-white hover:text-yellow-300 transition duration-300"
                     >
                       Guest Dashboard
+                    </Link>
+                  )}
+                  {role === 'admin' && (
+                    <Link
+                      to="/admin-dashboard"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="block text-white hover:text-yellow-300 transition duration-300"
+                    >
+                      Admin Dashboard
                     </Link>
                   )}
                 </>

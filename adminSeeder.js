@@ -15,7 +15,8 @@ if(!isAdminExists){
         name : "admin",
         password : bcrypt.hashSync("admin",10),
         phoneNumber : "9090",
-        role : "admin"
+        role : "admin",
+        isUserVerified : true
     })
     console.log("Admin seeded successfully")
 
