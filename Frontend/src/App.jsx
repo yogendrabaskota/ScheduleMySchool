@@ -13,7 +13,7 @@ import CreateEvent from './pages/teacher/CreateEvent'
 import YourEvents from './pages/teacher/YourEvent'
 import UpdateEvent from './pages/teacher/UpdateEvent'
 import Report from './pages/teacher/Report'
-import UserVerification from './pages/auth/UserVerification'
+import UserVerification from './pages/admin/UserVerification'
 import UserManager from './pages/teacher/UserManager'
 import PastEvents from './pages/teacher/PastEvent'
 import TicketPurchaseForm from './pages/eventDetails/TicketPurchseForm'
@@ -28,6 +28,8 @@ import VerifyPage from './pages/teacher/VerifyPage'
 import Contact from './pages/home/Contact'
 import AboutUs from './pages/home/AboutUs'
 import HistoryPage from './pages/student/HistoryPage'
+import AdminDashboard from './pages/admin/AdminDashboard'
+import ReportPage from './pages/admin/ReportPage'
 
 
 function App() {
@@ -66,6 +68,8 @@ function App() {
       <Route path="/guest-dashboard" element={<GuestDashboard />} />
       <Route path="/teacherprofile/:id" element={<TeacherProfile />} />
       <Route path="/verify-page" element={<VerifyPage />} />
+      <Route path="/admin-dashboard" element={<AdminDashboard />} />
+      <Route path="/admin/reports" element={<ReportPage />} />
 
 
 
