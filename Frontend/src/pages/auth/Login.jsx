@@ -20,11 +20,11 @@ const Login = () => {
     e.preventDefault();
     try {
       // Send login request to the server
-      const response = await axios.post('https://schedulemyschool.onrender.com/api/auth/login', formData);
+      const response = await axios.post('http://localhost:5000/api/auth/login', formData);
 
       if (response.status === 200) {
         // Save token and role in localStorage
-        const { data, role } = response.data; // Assuming response contains token and role
+        const { data, role} = response.data; // Assuming response contains token and role
         localStorage.setItem('token', data);
         localStorage.setItem('role', role);
 

@@ -31,12 +31,6 @@ const TeacherDashboard = () => {
     }
   };
 
-  const handleLogout = () => {
-    // Clear token and role from localStorage and redirect to login
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    navigate("/login");
-  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex">

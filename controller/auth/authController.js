@@ -79,7 +79,7 @@ exports.loginUser = async(req,res)=>{
 
     if(isMatched) {
        
-        const token = jwt.sign({id : userFound[0]._id},process.env.SECRET_KEY,{
+        const token = jwt.sign({id : userFound[0]._id,email:userFound[0].email},process.env.SECRET_KEY,{
         expiresIn : '30d'
         })
         res.status(200).json({
@@ -159,7 +159,7 @@ exports.verifyotp = async(req,res) => {
     const {email,otp} = req.body
     if(!email || !otp) {
         return res.status(400).json({
-            message : "Please provide otp"
+            message : "Please provide otp and email"
         })
     }
     const userExists = await User.find({email})

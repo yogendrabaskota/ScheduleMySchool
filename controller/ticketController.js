@@ -186,7 +186,7 @@ exports.generateTicketPDF = async (req, res) => {
     };
     const data = ticket.ticketNumber
 
-    const qrCodeBase64 = await QRCode.toDataURL(JSON.stringify(data));
+    const qrCodeBase64 = await QRCode.toDataURL(string(data));
 
 
     // Create a new PDF document
