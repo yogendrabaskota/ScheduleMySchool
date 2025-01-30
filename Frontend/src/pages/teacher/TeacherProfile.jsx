@@ -56,7 +56,7 @@ const TeacherProfile = () => {
 
       try {
         await axios.post(
-          "http://localhost:5000/api/auth/delete",
+          "https://schedulemyschool.onrender.com/api/auth/delete",
           { email: email }, // Send email to backend
           {
             headers: {
@@ -80,7 +80,7 @@ const TeacherProfile = () => {
       console.log("Sending OTP:", otp);
       console.log("Sending email:", email);
       const response = await axios.post(
-        "http://localhost:5000/api/auth/verifyOtp",
+        "https://schedulemyschool.onrender.com/api/auth/verifyOtp",
         { email: email, otp }, // Send email & OTP for verification
         {
           headers: {
@@ -90,7 +90,7 @@ const TeacherProfile = () => {
       );
 
       if (response.status === 200) {
-        await axios.delete("http://localhost:5000/api/auth/confirmDelete", {
+        await axios.delete("https://schedulemyschool.onrender.com/api/auth/confirmDelete", {
           headers: {
             Authorization: `${token}`,
           },

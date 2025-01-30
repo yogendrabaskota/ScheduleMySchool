@@ -20,7 +20,7 @@ const Login = () => {
     e.preventDefault();
     try {
       // Send login request to the server
-      const response = await axios.post('http://localhost:5000/api/auth/login', formData);
+      const response = await axios.post('https://schedulemyschool.onrender.com/api/auth/login', formData);
 
       if (response.status === 200) {
         // Save token and role in localStorage
@@ -29,7 +29,7 @@ const Login = () => {
         localStorage.setItem('role', role);
 
         // Show success message and redirect
-        alert(response.data.message);
+        //alert(response.data.message);
         navigate('/');
       } else {
         alert(response.data.message || 'An unexpected error occurred.');

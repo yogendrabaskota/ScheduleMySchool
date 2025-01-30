@@ -106,8 +106,10 @@ const Navbar = () => {
                     className="text-white hover:text-yellow-300 transition duration-300"
                   >
                     Teacher Dashboard
+                   
                   </Link>
                 )}
+                
                 {role === 'student' && (
                   <Link
                     to="/student-dashboard"
@@ -197,7 +199,9 @@ const Navbar = () => {
                       className="block text-white hover:text-yellow-300 transition duration-300"
                     >
                       Teacher Dashboard
+                  
                     </Link>
+                
                   )}
                   {role === 'student' && (
                     <Link
