@@ -32,7 +32,7 @@ const UserManager = () => {
   const fetchVerifiedUsers = async () => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get("http://localhost:5000/api/user/verified");
+      const response = await axiosInstance.get("https://schedulemyschool.onrender.com/api/user/verified");
       setUsers(response.data.data);
       setLoading(false);
     } catch (err) {

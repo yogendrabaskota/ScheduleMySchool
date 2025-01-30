@@ -2,6 +2,7 @@ const Event = require("../model/eventModel")
 const Ticket = require("../model/ticketModel")
 const PDFDocument = require("pdfkit");
 const QRCode = require("qrcode");
+const User = require("../model/userModel");
 
 
 
@@ -271,6 +272,14 @@ exports.generateTicketPDF = async (req, res) => {
 
 exports.verifyTicket = async (req, res) => {
   const { ticketNumber } = req.params;
+  const userId = req.user.id
+
+  const userFound = await User.findById(userId)
+  if(!userFound){
+    return res.status(400).json({
+        message : "Ticket is not verified"
+    })
+  }
 
   if (!ticketNumber || typeof ticketNumber !== "string") {
     return res.status(400).json({ success: false, message: "Invalid ticket number" });

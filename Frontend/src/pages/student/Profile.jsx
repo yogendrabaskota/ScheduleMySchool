@@ -118,7 +118,7 @@ const ProfileManager = () => {
           </div>
 
           <div className="flex justify-center">
-            <Button color="bg-green-500" onClick={() => alert("View Your History clicked")}>
+            <Button color="bg-green-500" onClick={() => navigate("/history")}>
               View Your History
             </Button>
           </div>

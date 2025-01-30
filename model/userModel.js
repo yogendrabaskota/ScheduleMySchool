@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const Ticket = require('./ticketModel');
 const Schema = mongoose.Schema
 
 const userSchema = new Schema({

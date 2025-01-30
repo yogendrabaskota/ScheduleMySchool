@@ -15,7 +15,7 @@ const ReportPage = () => {
     const fetchEvents = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("http://localhost:5000/api/event");
+        const response = await axios.get("https://schedulemyschool.onrender.com/api/event");
         setEvents(response.data.data);
       } catch (err) {
         setError("Failed to fetch events. Please try again.");

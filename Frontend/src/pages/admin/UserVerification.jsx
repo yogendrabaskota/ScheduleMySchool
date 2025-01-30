@@ -27,7 +27,7 @@ const UserVerification = () => {
   const fetchUnverifiedUsers = async () => {
     setLoading(true);
     try {
-      const response = await axiosInstance.get("http://localhost:5000/api/user");
+      const response = await axiosInstance.get("https://schedulemyschool.onrender.com/api/user");
       const unverifiedUsers = response.data.data.filter((user) => !user.isUserVerified);
       setUsers(unverifiedUsers);
     } catch {
@@ -42,7 +42,7 @@ const UserVerification = () => {
       return;
     }
     try {
-      await axiosInstance.put(`http://localhost:5000/api/auth/verifyUser/${id}`);
+      await axiosInstance.put(`https://schedulemyschool.onrender.com/api/auth/verifyUser/${id}`);
       alert("User approved successfully!");
       fetchUnverifiedUsers();
     } catch {
@@ -56,7 +56,7 @@ const UserVerification = () => {
       return;
     }
     try {
-      await axiosInstance.put(`http://localhost:5000/api/auth/rejectUser/${id}`);
+      await axiosInstance.put(`https://schedulemyschool.onrender.com/api/auth/rejectUser/${id}`);
       alert("User rejected successfully!");
       fetchUnverifiedUsers();
     } catch {

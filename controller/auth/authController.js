@@ -4,6 +4,8 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 //const sendEmail = require("../../services/sendEmail")
 const sendEmail = require("../../services/sendEmail")
+const Ticket = require("../../model/ticketModel")
+const Event = require("../../model/eventModel")
 
 
 //Register user
@@ -205,7 +207,10 @@ exports.confirmDelete =async(req,res)=>{
 
     userFound[0].isOtpVerified = false
     await userFound[0].save()
+    const tickets = await Ticket.deleteMany({ userId });
+    const Events = await Event.deleteMany({ createdby: userId });
     await User.findByIdAndDelete(userId)
+    
     res.status(200).json({
         message : "User deleted successfully"
     })
