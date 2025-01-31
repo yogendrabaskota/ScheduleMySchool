@@ -6,7 +6,11 @@
 ### Click [Here](https://schedule-my-school.vercel.app/) to visit this site.
 
 ---
-## Features  
+## Features 
+- **Admin Features**:  
+  - View the user request and approve/reject them
+  - can delete any user  
+
 - **Teacher Features**:  
   - Create new events with details like title, description, date, time and location.  
   - Update existing events which was created by him/her.  
@@ -83,8 +87,16 @@ cd Frontend
 ## Output :
 - Home page:
 ![Homepage Snapshot](frontend/public/1.png)
-- getting output:
-![getting output after filling form](frontend/public/2.png)
+- Admin Dashboard:
+![Admin Dashboard Snapshot](frontend/public/2.png)
+- Teacher Dashboard:
+![Teacher Dashboard Snapshot](frontend/public/3.png)
+- Event report page:
+![Event report Snapshot](frontend/public/4.png)
+- Contact page:
+![Contact page Snapshot](frontend/public/5.png)
+
+
 
 
 ### To get API documentation, click [Here](https://documenter.getpostman.com/view/33322053/2sAYQWKZR1)
@@ -97,7 +109,6 @@ cd Frontend
 
 ## Feedback
   If you have any feedback, please reach out to me at yogendrabaskota18@gmail.com  
-
 
 
 
