@@ -20,7 +20,7 @@ const ForgotPassword = () => {
     if (!isOtpSent) {
       // Send email to get OTP
       try {
-        const response = await axios.post('http://localhost:5000/api/auth/forgetpassword', { email: formData.email });
+        const response = await axios.post('https://schedulemyschool.onrender.com/api/auth/forgetpassword', { email: formData.email });
 
         if (response.status === 200) {
           setIsOtpSent(true);  // Show OTP input field if OTP is sent

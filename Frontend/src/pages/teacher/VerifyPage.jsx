@@ -119,8 +119,10 @@ const VerifyPage = () => {
             <strong>Event Location:</strong> {ticketDetails.eventId.location}
           </p>
           <p>
-            <strong>Expiry Date:</strong>{" "}
-            {new Date(ticketDetails.eventId.date).toLocaleString()}
+          <strong>Expiry Date:</strong>{" "}
+{new Date(ticketDetails.eventId.date)
+  .setHours(23, 59, 59, 999) && 
+  new Date(ticketDetails.eventId.date).toLocaleString()}
           </p>
         </div>
       )}

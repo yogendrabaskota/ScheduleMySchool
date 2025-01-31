@@ -23,6 +23,7 @@ const TicketPurchaseForm = () => {
       }
     } else {
       alert('You must be logged in to purchase tickets!');
+      navigate("/login")
     }
   }, []);
 
@@ -34,6 +35,7 @@ const TicketPurchaseForm = () => {
 
     if (!token) {
       alert('You need to log in to purchase tickets!');
+      navigate('/login')
       return;
     }
 
