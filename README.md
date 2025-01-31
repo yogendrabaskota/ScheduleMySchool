@@ -86,15 +86,15 @@ cd Frontend
 
 ## Output :
 - Home page:
-![Homepage Snapshot](frontend/public/1.png)
+![Homepage Snapshot](Frontend/public/1.png)
 - Admin Dashboard:
-![Admin Dashboard Snapshot](frontend/public/2.png)
+![Admin Dashboard Snapshot](Frontend/public/2.png)
 - Teacher Dashboard:
-![Teacher Dashboard Snapshot](frontend/public/3.png)
+![Teacher Dashboard Snapshot](Frontend/public/3.png)
 - Event report page:
-![Event report Snapshot](frontend/public/4.png)
+![Event report Snapshot](Frontend/public/4.png)
 - Contact page:
-![Contact page Snapshot](frontend/public/5.png)
+![Contact page Snapshot](Frontend/public/5.png)
 
 
 
