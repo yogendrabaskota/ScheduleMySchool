@@ -71,7 +71,7 @@ const AboutUs = () => {
                 Contact Us
               </Link>
               <Link
-                to="/events"
+                to="/"
                 className="border-2 border-[#3F51B5] text-[#3F51B5] hover:bg-[#3F51B5]/10 font-semibold py-3 px-6 rounded-lg transition-colors"
               >
                 View Events

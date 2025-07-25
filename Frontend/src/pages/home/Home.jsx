@@ -89,13 +89,13 @@ const Home = () => {
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link
-              to="/create-event"
+              to="/register"
               className="bg-[#FF9800] hover:bg-[#F57C00] text-[#212121] font-bold py-3 px-6 rounded-lg transition-colors"
             >
               Create an Event
             </Link>
             <Link
-              to="/events"
+              to="/"
               className="bg-transparent border-2 border-white hover:bg-white hover:text-[#3F51B5] font-bold py-3 px-6 rounded-lg transition-colors"
             >
               Browse All Events

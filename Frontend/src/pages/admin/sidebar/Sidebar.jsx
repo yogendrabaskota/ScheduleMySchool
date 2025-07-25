@@ -1,84 +1,145 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import {
+  FiUsers,
+  FiFileText,
+  FiActivity,
+  FiSettings,
+  FiLogOut,
+  FiHome,
+} from "react-icons/fi";
 
 const AdminSidebar = ({ title }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [id, setUserId] = useState(null);
+  const [activeItem, setActiveItem] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
-        setUserId(decodedToken.id); // Set the user ID from the decoded token
+        setUserId(decodedToken.id);
       } catch (error) {
         console.error("Invalid token", error);
       }
     }
-  }, []);
 
-  const handleNavigation = (path) => {
-    navigate(path);
+    // Set active item based on current route
+    const path = location.pathname;
+    if (path.includes("all-users")) setActiveItem("users");
+    else if (path.includes("reports")) setActiveItem("reports");
+    else if (path.includes("audit-logs")) setActiveItem("logs");
+    else if (path.includes("system-settings")) setActiveItem("settings");
+  }, [location]);
+
+  const menuItems = [
+    {
+      name: "dashboard",
+      label: "Dashboard",
+      path: "/admin-dashboard",
+      icon: <FiHome size={20} />,
+      visible: true,
+    },
+    {
+      name: "users",
+      label: "User Management",
+      path: "/all-users",
+      icon: <FiUsers size={20} />,
+      visible: true,
+    },
+    {
+      name: "reports",
+      label: "Reports",
+      path: "/admin/reports",
+      icon: <FiFileText size={20} />,
+      visible: true,
+    },
+    {
+      name: "logs",
+      label: "Audit Logs",
+      path: "/admin/audit-logs",
+      icon: <FiActivity size={20} />,
+      visible: true,
+    },
+    {
+      name: "settings",
+      label: "System Settings",
+      path: "/admin/system-settings",
+      icon: <FiSettings size={20} />,
+      visible: false, // Hidden for now as per your original code
+    },
+  ];
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    navigate("/login");
   };
 
   return (
-    <div className="w-64 p-6">
-      <h1 className="text-xl font-bold text-blue-600 mb-8">{title}</h1>
-      <ul className="space-y-6">
-        {/* Profile Manager */}
-        {/* <li>
-          <button
-            onClick={() => id && handleNavigation(`/profile/${id}`)}
-            className="w-full text-left bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300"
-            disabled={!id}
-          >
-            Profile Manager
-          </button>
-        </li> */}
+    <div className="w-64 h-screen bg-[#3F51B5] text-white flex flex-col">
+      {/* Header */}
+      <div className="p-6 border-b border-[#5C6BC0]">
+        <h1 className="text-xl font-bold">{title}</h1>
+        <p className="text-sm text-[#C5CAE9] mt-1">Administration Panel</p>
+      </div>
 
-        {/* User Manager */}
-        <li>
-          <button
-            onClick={() => handleNavigation("/all-users")}
-            className="w-full text-left bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 transition duration-300"
-          >
-            User Manager
-          </button>
-        </li>
+      {/* Navigation */}
+      <nav className="flex-1 p-4 overflow-y-auto">
+        <ul className="space-y-2">
+          {menuItems
+            .filter((item) => item.visible)
+            .map((item) => (
+              <li key={item.name}>
+                <button
+                  onClick={() => navigate(item.path)}
+                  className={`w-full flex items-center space-x-3 py-3 px-4 rounded-lg transition-all duration-200 ${
+                    activeItem === item.name
+                      ? "bg-white text-[#3F51B5] shadow-md"
+                      : "hover:bg-[#303F9F] hover:bg-opacity-50"
+                  }`}
+                >
+                  <span
+                    className={`${
+                      activeItem === item.name ? "text-[#3F51B5]" : "text-white"
+                    }`}
+                  >
+                    {item.icon}
+                  </span>
+                  <span>{item.label}</span>
+                </button>
+              </li>
+            ))}
+        </ul>
+      </nav>
 
-        {/* System Settings */}
-        {/* <li>
-          <button
-            onClick={() => handleNavigation("/admin/system-settings")}
-            className="w-full text-left bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 transition duration-300"
-          >
-            System Settings
-          </button>
-        </li> */}
-
-        {/* Reports */}
-        <li>
-          <button
-            onClick={() => handleNavigation("/admin/reports")}
-            className="w-full text-left bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition duration-300"
-          >
-            Reports
-          </button>
-        </li>
-
-        {/* Audit Logs */}
-        <li>
-          <button
-            onClick={() => handleNavigation("/admin/audit-logs")}
-            className="w-full text-left bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-300"
-          >
-            Audit Logs
-          </button>
-        </li>
-      </ul>
+      {/* Footer */}
+      <div className="p-4 border-t border-[#5C6BC0]">
+        <div className="flex items-center space-x-3 mb-4">
+          <div className="h-10 w-10 rounded-full bg-[#FF9800] flex items-center justify-center">
+            <span className="font-bold text-white">
+              {id ? id.charAt(0).toUpperCase() : "A"}
+            </span>
+          </div>
+          <div>
+            <p className="text-sm font-medium">Admin Account</p>
+            <p className="text-xs text-[#C5CAE9]">
+              {id ? `ID: ${id.substring(0, 6)}...` : "Logged In"}
+            </p>
+          </div>
+        </div>
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center space-x-3 py-3 px-4 rounded-lg hover:bg-[#303F9F] hover:bg-opacity-50 text-white"
+        >
+          <FiLogOut size={20} />
+          <span>Logout</span>
+        </button>
+      </div>
     </div>
   );
 };
